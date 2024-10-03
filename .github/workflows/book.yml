@@ -11,6 +11,10 @@ on:
 jobs:
   deploy-book:
     runs-on: windows-latest
+
+    permissions:
+      contents: write  # To push a branch 
+
     steps:
     - uses: actions/checkout@v2
 
