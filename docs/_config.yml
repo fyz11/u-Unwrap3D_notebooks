@@ -1,6 +1,6 @@
-title: Bio-image Analysis Notebooks
-author: Felix Zhou
-logo: logo.png
+title: u-Unwrap3D Analysis Notebooks
+author: Felix Y. Zhou
+#logo: logo.png
 
 # Execute notebooks if the have one missing output
 # could be "force" or "auto" or "off"
@@ -30,7 +30,7 @@ html:
   use_repository_button: true
   extra_footer: |
     <p>
-    Copyright: Licensed <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC-BY 4.0</a> and <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/main/LICENSE" target="_blank">GPL3</a> unless mentioned otherwise. 
+    Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/main/LICENSE" target="_blank">GPL3</a> unless mentioned otherwise. 
     </p>
 sphinx:
   config:
