@@ -8,7 +8,6 @@ parts:
   - caption: Basics
     chapters:
     - file: 01_introduction/readme
-
     - file: 02_installation/readme
 
   - caption: Basic Workflow
@@ -51,12 +50,12 @@ parts:
 
   - caption: Applying u-Unwrap3D to live-cell imaging
     chapters:
-    -file: 17_timelapse_anlaysis/readme # unwrapping temporal
-    -file: 16_shape_registration/readme # registration for additional 
-    -file: 15_compute_distortion_corrected_uv_measurements/readme
-    -file: 20_surface_flow_analytics/readme
-    -file: 19_tracking_in_uv/readme
-    -file: 21_tracking_analytics/readme
+    - file: 17_timelapse_anlaysis/readme # unwrapping temporal
+    - file: 16_shape_registration/readme # registration for additional 
+    - file: 15_compute_distortion_corrected_uv_measurements/readme
+    - file: 20_surface_flow_analytics/readme
+    - file: 19_tracking_in_uv/readme
+    - file: 21_tracking_analytics/readme
     
   - caption: Applications of different surface representations
     chapters:
@@ -66,8 +65,8 @@ parts:
 
   - caption: Mapping open 3D surfaces into 2D
     chapters:
-    -file: 12_unwrapping_individual_protrusions/readme # including refinement of segmentation.
-    -file: 12a_unwrapping_2D_images/readme
+    - file: 12_unwrapping_individual_protrusions/readme # including refinement of segmentation.
+    - file: 12a_unwrapping_2D_images/readme
 
   - caption: Appendix
     chapters:
