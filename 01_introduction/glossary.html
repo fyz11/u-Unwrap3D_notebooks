@@ -1,0 +1,775 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Glossary &#8212; u-Unwrap3D Analysis Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '01_introduction/glossary';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Basic workflow for unwrapping 3D surfaces" href="../12_unwrapping_individual_protrusions/readme.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">u-Unwrap3D Analysis Notebooks</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    u-Unwrap3D Analysis Notebooks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Basics</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_installation/readme.html">Installation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Workflow</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_basic_workflow/readme.html">Basic workflow for unwrapping 3D surfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step0_find_cell_surface_from_segmentation.html">Segmenting a single cell from a volume image</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step1_find_reference_surface.html">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step2_quasiconformal_spherical_parameterization.html">Step 2: Quasi-conformal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step4_uv_mapping_spherical_parameterization.html">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step5_building_topography_surface.html">Step 5: Building a topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space using the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterized <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step6_find_topographic_surface_mesh.html">Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Customizing the Basic Workflow to input data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../04_customizing_basic_workflow/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">In-depth Breakdown of Mapping Steps</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../05_obtaining_surfaces/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06_find_reference_surface/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07_uv_parameterization/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08_building_topography_space/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09_spherical_parameterization/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11_flatten_topography_surface/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Transporting measurements between representations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../22_transporting_measurements/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Applying u-Unwrap3D to live-cell imaging</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../16_shape_registration/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15_compute_distortion_corrected_uv_measurements/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../20_surface_flow_analytics/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../19_tracking_in_uv/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../21_tracking_analytics/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Applications of different surface representations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../13_segmenting_surface_protrusions/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14_volumizing_reference_and_protrusions/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../18_spherical_harmonics/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Mapping open 3D surfaces into 2D</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../12_unwrapping_individual_protrusions/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Glossary</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks/issues/new?title=Issue%20on%20page%20%2F01_introduction/glossary.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/01_introduction/glossary.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Glossary</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#array">Array</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binarization">Binarization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-image">Binary image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#boolean">Boolean</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification">Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering">Clustering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connected-component-labeling">Connected component labeling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolution">Convolution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutional-neural-networks">Convolutional neural networks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe">DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning">Deep learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-image">Feature image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filter">Filter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu">GPU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hyperstack">Hyperstack</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-segmentation">Instance segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#intensity-image">Intensity image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel">Kernel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-image">Label image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#labeling">Labeling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#list">List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-learning">Machine learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix">Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametric-image">Parametric image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-classification">Pixel classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-maps">Probability maps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-forest-classifier">Random forest classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regionalization">Regionalization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression">Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-segmentation">Semantic segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequential-labeling">Sequential labeling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#string">String</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuple">Tuple</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="glossary">
+<h1>Glossary<a class="headerlink" href="#glossary" title="Link to this heading">#</a></h1>
+<p>This glossary contains terms used throughout the jupyter book. The descriptions should be interpreted in the context of biological image analysis.</p>
+<section id="array">
+<h2>Array<a class="headerlink" href="#array" title="Link to this heading">#</a></h2>
+<p>A common term for datastructures that contain multiple values. In python, two common array types are <a class="reference internal" href="#list"><span class="xref myst">lists</span></a> and <a class="reference internal" href="#tuple"><span class="xref myst">tuples</span></a>.
+Multi-dimensional arrays are also called <a class="reference internal" href="#matrix"><span class="xref myst">matrices</span></a> and <a class="reference internal" href="#hyperstack"><span class="xref myst">hyperstacks</span></a>.</p>
+</section>
+<section id="binarization">
+<h2>Binarization<a class="headerlink" href="#binarization" title="Link to this heading">#</a></h2>
+<p>Binarization is the act of segmenting an image into two classes: True and False. True typically is referring to a region in the image where there are objects, also calle the foreground.
+False refers to the background region where there are no objects present.</p>
+</section>
+<section id="binary-image">
+<h2>Binary image<a class="headerlink" href="#binary-image" title="Link to this heading">#</a></h2>
+<p>A binary image is an image that contains only two different intensities. Depending on the used software that can be the <a class="reference internal" href="#boolean"><span class="xref myst">boolean</span></a> values True and False, numbers such as 0 and 1, or like in ImageJ 0 and 255.
+A common definition is to associate 0 with False and all other possible values with True.</p>
+</section>
+<section id="boolean">
+<h2>Boolean<a class="headerlink" href="#boolean" title="Link to this heading">#</a></h2>
+<p>A variable of type boolean can only contain two values: True or False.</p>
+</section>
+<section id="classification">
+<h2>Classification<a class="headerlink" href="#classification" title="Link to this heading">#</a></h2>
+<p>Classification is the task of categorizing things such as cells or pixels into different categories (“classes”).
+Classification can be achieved using simple classical methods such as the python <code class="docutils literal notranslate"><span class="pre">if</span></code> statement, and using more complext <a class="reference internal" href="#machine-learning"><span class="xref myst">machine learning</span></a> techniques.</p>
+</section>
+<section id="clustering">
+<h2>Clustering<a class="headerlink" href="#clustering" title="Link to this heading">#</a></h2>
+<p>Algorithms that group objects or pixels together according to their properties are clustering algoithms. These algorithms can be used for <a class="reference internal" href="#semantic-segmentation"><span class="xref myst">semantic segmentation</span></a> and cell <a class="reference internal" href="#classification"><span class="xref myst">classification</span></a>.</p>
+</section>
+<section id="connected-component-labeling">
+<h2>Connected component labeling<a class="headerlink" href="#connected-component-labeling" title="Link to this heading">#</a></h2>
+<p>Connected component analysis or <em>labeling</em> is a category of algorithms that typically take binary images as input and produce <a class="reference internal" href="#label-image"><span class="xref myst">label images</span></a>.
+These algorithms label neighboring pixels that are marked as objects equally. Pixels where there is connection are labeled differently.
+See also <a class="reference external" href="https://en.wikipedia.org/wiki/Connected-component_labeling">wikipedia</a>.</p>
+</section>
+<section id="convolution">
+<h2>Convolution<a class="headerlink" href="#convolution" title="Link to this heading">#</a></h2>
+<p>Convolution is the procedure that combines an image and a filter <a class="reference internal" href="#kernel"><span class="xref myst">kernel</span></a> to produce a new image. For every pixel, its intensity and its neighbor pixels intensities are combined as defined by the filter kernel to calculate the intensity of the corresponding pixel in the output image.</p>
+</section>
+<section id="convolutional-neural-networks">
+<h2>Convolutional neural networks<a class="headerlink" href="#convolutional-neural-networks" title="Link to this heading">#</a></h2>
+<p>Convolutional neural networks are a category of machine learning algorithms that are commonly used in image denoising, restoration and segmentation.
+These algorithms use architectures simulating the functionality of the brain to learn how to perform <a class="reference internal" href="#regression"><span class="xref myst">regression</span></a> or <a class="reference internal" href="#classification"><span class="xref myst">classification</span></a> tasks.</p>
+</section>
+<section id="dataframe">
+<h2>DataFrame<a class="headerlink" href="#dataframe" title="Link to this heading">#</a></h2>
+<p>A <a class="reference external" href="https://pandas.pydata.org/">pandas</a> DataFrame is a data structure mimicking a table.
+DataFrames are commonly used by data scientists to store tabular data such as quantitative measurements to perform statistical analysis.</p>
+</section>
+<section id="deep-learning">
+<h2>Deep learning<a class="headerlink" href="#deep-learning" title="Link to this heading">#</a></h2>
+<p>Deep learning, often associated with Deep <a class="reference internal" href="#convolutional-neural-networks"><span class="xref myst">convolutional neural networks</span></a>, is a category of machine learning algorithms with high complexity and large architectures.
+These algorithms are used in more and more scientific fields and prove outperforming classical algorithms.
+On the other hand, often large amounts of training data and large computational resources are necessary to train these models.</p>
+</section>
+<section id="feature-image">
+<h2>Feature image<a class="headerlink" href="#feature-image" title="Link to this heading">#</a></h2>
+<p>Feature images are used for <a class="reference internal" href="#classification"><span class="xref myst">pixel classification</span></a> algorithms such as <a class="reference internal" href="#random-forest-classifier"><span class="xref myst">random forest classifiers</span></a>.
+Those images are produces by applying <a class="reference internal" href="#filter"><span class="xref myst">filters</span></a> to image data.</p>
+</section>
+<section id="filter">
+<h2>Filter<a class="headerlink" href="#filter" title="Link to this heading">#</a></h2>
+<p>In image processing, a filter is an operation that takes an input image to produce an output image. Input and output images can be of different dimensionality and size.
+Linear image processing filters are produced by applying <a class="reference internal" href="#convolution"><span class="xref myst">convolution</span></a> to images.
+Non-linear image processing filters combine pixel intensities in a defined local neighborhood of every pixel in a non-linear way, for example by determining the minimum, maximum or median value in this region.</p>
+</section>
+<section id="gpu">
+<h2>GPU<a class="headerlink" href="#gpu" title="Link to this heading">#</a></h2>
+<p>Graphics processing unit. Used for processing image data and for training machine learning algorithms, <a class="reference internal" href="#deep-learning"><span class="xref myst">deep learning</span></a> algorithms in particular.</p>
+</section>
+<section id="hyperstack">
+<h2>Hyperstack<a class="headerlink" href="#hyperstack" title="Link to this heading">#</a></h2>
+<p>The term hyperstack is commonly used in image processing to describe an image data set that has more then 3 dimensions. The additional, typically non-spatial dimensions can be time, wavelength, or other information such as stored in <a class="reference internal" href="#parametric-image"><span class="xref myst">parametric images</span></a>.</p>
+</section>
+<section id="instance-segmentation">
+<h2>Instance segmentation<a class="headerlink" href="#instance-segmentation" title="Link to this heading">#</a></h2>
+<p>Segmentation algorithms that identify individual images, e.g. in the form of <a class="reference internal" href="#label-image"><span class="xref myst">label images</span></a> segment instances.</p>
+</section>
+<section id="intensity-image">
+<h2>Intensity image<a class="headerlink" href="#intensity-image" title="Link to this heading">#</a></h2>
+<p>Intensity images are typically produced by microscopes, cameras and medical tomography devices. The intensity in the pixels of the image describe a physical measurement, e.g. of the number of photons that hit the detector during acquisition.</p>
+</section>
+<section id="kernel">
+<h2>Kernel<a class="headerlink" href="#kernel" title="Link to this heading">#</a></h2>
+<p>A filter kernel describes how local pixel intensities around a given pixel need to be combined using a weighted sum to <a class="reference internal" href="#convolution"><span class="xref myst">convolve</span></a> an input image.</p>
+</section>
+<section id="label-image">
+<h2>Label image<a class="headerlink" href="#label-image" title="Link to this heading">#</a></h2>
+<p>A label image is an image where the pixel intensity expresses to which object the pixel belongs.
+E.g. if a pixel has intensity 1, it belongs to object 1. If a pixel has intensity 3, it belongs to object 3.
+The maximum intensity in a <a class="reference internal" href="#sequential-labeling"><span class="xref myst">sequentially labeled</span></a> image corresponds to the number of objects in the image.</p>
+</section>
+<section id="labeling">
+<h2>Labeling<a class="headerlink" href="#labeling" title="Link to this heading">#</a></h2>
+<p>Labeling algorithms take typically images as input and produce <a class="reference internal" href="#label-image"><span class="xref myst">label images</span></a>. In that way pixels are associated with object identities.</p>
+</section>
+<section id="list">
+<h2>List<a class="headerlink" href="#list" title="Link to this heading">#</a></h2>
+<p>Lists are data structures, e.g. in Python programming, that can be changed. It is possible to add, remove and change items in the list.</p>
+</section>
+<section id="machine-learning">
+<h2>Machine learning<a class="headerlink" href="#machine-learning" title="Link to this heading">#</a></h2>
+<p>Machine learning is a category of algorithms that base on statistical methods for deriving models from data.
+For example an algorithm that takes manually generated image annotations from humans and manages to <em>learn</em> from the annotations how to annotate other images is a learning machine.</p>
+</section>
+<section id="matrix">
+<h2>Matrix<a class="headerlink" href="#matrix" title="Link to this heading">#</a></h2>
+<p>Multi-dimensional array of values. Two-dimensional matrices can be interpreted as images. Three dimensional matrices are commonly called image stacks. Matrices of higher dimensionality are also called hyperstacks.</p>
+</section>
+<section id="parametric-image">
+<h2>Parametric image<a class="headerlink" href="#parametric-image" title="Link to this heading">#</a></h2>
+<p>Parametric images, or parametric maps, are images where a given pixel intensity expresses a measurement of a given object.
+For example, a pixel with value 2 in an <code class="docutils literal notranslate"><span class="pre">aspect-ratio-image</span></code> belongs to an object that is twice as long as it is wide. See also <a class="reference internal" href="#data_visualization.parametric_maps"><span class="xref myst">parametric maps</span></a>.</p>
+</section>
+<section id="pixel-classification">
+<h2>Pixel classification<a class="headerlink" href="#pixel-classification" title="Link to this heading">#</a></h2>
+<p>Pixel classification is the process of categorizing pixels into multiple classes. Typically, pixel classification leads to an image expressing a <a class="reference internal" href="#semantic-segmentation"><span class="xref myst">semantic segmentation</span></a> or to <a class="reference internal" href="#probability-maps"><span class="xref myst">probability maps</span></a>.</p>
+</section>
+<section id="probability-maps">
+<h2>Probability maps<a class="headerlink" href="#probability-maps" title="Link to this heading">#</a></h2>
+<p>A probability map is an image where the pixel intensity expressed the probability of the pixel belonging to a specific class or category. These images are common intermediate results of <a class="reference internal" href="#pixel-classification"><span class="xref myst">pixel classification</span></a> algorithms.</p>
+</section>
+<section id="random-forest-classifier">
+<h2>Random forest classifier<a class="headerlink" href="#random-forest-classifier" title="Link to this heading">#</a></h2>
+<p>Supervised machine learning algorithm, commonly used for <a class="reference internal" href="#pixel_classification.apoc"><span class="xref myst">pixel classification</span></a> and <a class="reference internal" href="#pixel_classification.apoc"><span class="xref myst">object classification</span></a> in microscopy image data.</p>
+</section>
+<section id="regionalization">
+<h2>Regionalization<a class="headerlink" href="#regionalization" title="Link to this heading">#</a></h2>
+<p>Subdividing an image into multiple regions. See als <a class="reference internal" href="#labeling"><span class="xref myst">Labeling</span></a>.</p>
+</section>
+<section id="regression">
+<h2>Regression<a class="headerlink" href="#regression" title="Link to this heading">#</a></h2>
+<p>Regression in the context of machine learning is a category of algorithms attempt to reduce an observed system, e.g. a video of moving cells, to numeric values, e.g. average speed of moving cells.
+See also <a class="reference external" href="https://en.wikipedia.org/wiki/Regression_analysis">regression analysis (Wikipedia)</a>.</p>
+</section>
+<section id="semantic-segmentation">
+<h2>Semantic segmentation<a class="headerlink" href="#semantic-segmentation" title="Link to this heading">#</a></h2>
+<p>Associating pixels with a category such as “cytoplasm” or “nucleus” but not specifying which cell or nucleus.</p>
+</section>
+<section id="sequential-labeling">
+<h2>Sequential labeling<a class="headerlink" href="#sequential-labeling" title="Link to this heading">#</a></h2>
+<p>Sequential labeling is a processing step that takes any <a class="reference internal" href="#label-image"><span class="xref myst">label image</span></a> and produces another label image which fulfills a condition: Every integer pixel intensity between 0 and the maximum intensity exists.
+Thus, if the image contains value 4, it is garanteed that also pixel values 1, 2 and 3 exist.
+There are algorithms which only work with sequentially labeled input images.</p>
+</section>
+<section id="string">
+<h2>String<a class="headerlink" href="#string" title="Link to this heading">#</a></h2>
+<p>String variables in common programming languages are variables that hold text. Technically variable is an <a class="reference internal" href="#array"><span class="xref myst">array</span></a> or characters.</p>
+</section>
+<section id="tuple">
+<h2>Tuple<a class="headerlink" href="#tuple" title="Link to this heading">#</a></h2>
+<p>Data structure in python containing multiple values that cannot be changed (immutable).</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./01_introduction"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../12_unwrapping_individual_protrusions/readme.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Basic workflow for unwrapping 3D surfaces</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#array">Array</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binarization">Binarization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-image">Binary image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#boolean">Boolean</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification">Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering">Clustering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connected-component-labeling">Connected component labeling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolution">Convolution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutional-neural-networks">Convolutional neural networks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe">DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning">Deep learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-image">Feature image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filter">Filter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu">GPU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hyperstack">Hyperstack</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-segmentation">Instance segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#intensity-image">Intensity image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kernel">Kernel</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-image">Label image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#labeling">Labeling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#list">List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-learning">Machine learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix">Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parametric-image">Parametric image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-classification">Pixel classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-maps">Probability maps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-forest-classifier">Random forest classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regionalization">Regionalization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression">Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-segmentation">Semantic segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequential-labeling">Sequential labeling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#string">String</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuple">Tuple</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Felix Y. Zhou
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>
+Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/main/LICENSE" target="_blank">GPL3</a> unless mentioned otherwise. 
+</p>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

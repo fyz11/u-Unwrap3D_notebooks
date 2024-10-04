@@ -1,0 +1,1087 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, \(S_{ref}(x,y,z)\) &#8212; u-Unwrap3D Analysis Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03_basic_workflow/Step3_equiareal_spherical_parameterization';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Step 4: UV mapping \(S_{ref}(x,y,z)\) using its equiareal spherical parameterization, \(S_{\Omega}(x,y,z)\)" href="Step4_uv_mapping_spherical_parameterization.html" />
+    <link rel="prev" title="Step 2: Quasi-conformal spherical parameterization of a genus-0 surface, \(S_{ref}(x,y,z)\)" href="Step2_quasiconformal_spherical_parameterization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">u-Unwrap3D Analysis Notebooks</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    u-Unwrap3D Analysis Notebooks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Basics</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_introduction/readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_installation/readme.html">Installation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Workflow</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="readme.html">Basic workflow for unwrapping 3D surfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Step0_find_cell_surface_from_segmentation.html">Segmenting a single cell from a volume image</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Step1_find_reference_surface.html">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Step2_quasiconformal_spherical_parameterization.html">Step 2: Quasi-conformal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Step4_uv_mapping_spherical_parameterization.html">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Step5_building_topography_surface.html">Step 5: Building a topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space using the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterized <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Step6_find_topographic_surface_mesh.html">Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Customizing the Basic Workflow to input data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../04_customizing_basic_workflow/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">In-depth Breakdown of Mapping Steps</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../05_obtaining_surfaces/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06_find_reference_surface/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07_uv_parameterization/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08_building_topography_space/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09_spherical_parameterization/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11_flatten_topography_surface/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Transporting measurements between representations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../22_transporting_measurements/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Applying u-Unwrap3D to live-cell imaging</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../16_shape_registration/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15_compute_distortion_corrected_uv_measurements/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../20_surface_flow_analytics/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../19_tracking_in_uv/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../21_tracking_analytics/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Applications of different surface representations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../13_segmenting_surface_protrusions/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14_volumizing_reference_and_protrusions/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../18_spherical_harmonics/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Mapping open 3D surfaces into 2D</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../12_unwrapping_individual_protrusions/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_introduction/glossary.html">Glossary</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks/issues/new?title=Issue%20on%20page%20%2F03_basic_workflow/Step3_equiareal_spherical_parameterization.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/03_basic_workflow/Step3_equiareal_spherical_parameterization.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, S_{ref}(x,y,z)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-s-ref-x-y-z-and-s-mathcal-q-x-y-z-mesh-and-create-an-analysis-save-folder">Load <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>  and <span class="math notranslate nohighlight">\(S_{\mathcal{Q}(x,y,z)}\)</span> mesh and create an analysis save folder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equiareal-spherical-parameterization-of-s-ref-x-y-z-mesh-by-relaxation-to-get-s-omega-x-y-z">Equiareal spherical parameterization of  <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>  mesh by relaxation to get <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-during-the-relaxation">Quantifying and colormapping the conformal and equiareal distortion error during the relaxation</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-now-proceed-to-step-4-notebook-to-uv-map-the-equiareal-parameterization-onto-the-2d-plane">We now proceed to step 4 notebook to uv map the equiareal parameterization onto the 2D plane …</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="step-3-quasi-equiareal-spherical-parameterization-of-a-genus-0-surface-s-ref-x-y-z">
+<h1>Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span><a class="headerlink" href="#step-3-quasi-equiareal-spherical-parameterization-of-a-genus-0-surface-s-ref-x-y-z" title="Link to this heading">#</a></h1>
+<p>Whilst any genus-0 surface can be mapped to a sphere minimizing conformal error, it can be at the expense of shrinking surface features to point-like singularities. For this detrimentally affects the representation of high curvature surface protrusions on the sphere.</p>
+<p>This workbook will walk through our area-distortion relaxation scheme which adapts the approach of <a class="reference external" href="https://www.cs.jhu.edu/~misha/MyPapers/SGP19.pdf">Lee et al.</a>, to relax distortion on the sphere and can achieve near-ideal area-distortion minimisation.</p>
+<section id="load-s-ref-x-y-z-and-s-mathcal-q-x-y-z-mesh-and-create-an-analysis-save-folder">
+<h2>Load <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>  and <span class="math notranslate nohighlight">\(S_{\mathcal{Q}(x,y,z)}\)</span> mesh and create an analysis save folder<a class="headerlink" href="#load-s-ref-x-y-z-and-s-mathcal-q-x-y-z-mesh-and-create-an-analysis-save-folder" title="Link to this heading">#</a></h2>
+<p>We assume the user has worked through step 2 which generates and saves the conformal parameterization <span class="math notranslate nohighlight">\(S_{\mathcal{Q}}(x,y,z)\)</span> of the genus-0 reference surface for an input cell surface mesh to the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step2_confocal_sphere_param</span></code>. We also need the reference surface from step 1 saved to the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step1_cMCF_reference</span></code>. Moreover these surface has been colored by curvature or molecular intensity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Utility_Functions.file_io</span> <span class="k">as</span> <span class="nn">fio</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Mesh.meshtools</span> <span class="k">as</span> <span class="nn">meshtools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span> 
+<span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">spio</span>
+
+<span class="c1"># example cell used</span>
+<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;example_data/img&#39;</span>
+<span class="n">imgfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imgfolder</span><span class="p">,</span> <span class="s1">&#39;bleb_example.tif&#39;</span><span class="p">)</span>
+<span class="n">basefname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">imgfile</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get the filename with extension</span>
+
+<span class="c1"># create the analysis save folder for this step</span>
+<span class="n">savefolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;example_results&#39;</span><span class="p">,</span> 
+                         <span class="n">basefname</span><span class="p">,</span>
+                         <span class="s1">&#39;step3_equiareal_sphere_param&#39;</span><span class="p">)</span>
+<span class="n">fio</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">savefolder</span><span class="p">)</span> <span class="c1"># auto generates the specified folder structure if doesn&#39;t currently exist.</span>
+
+
+<span class="c1"># load the pre-computed genus-0 reference, S_ref(x,y,z)</span>
+<span class="n">S_ref_folder</span> <span class="o">=</span> <span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step1_cMCF_reference&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)</span>
+<span class="n">S_ref_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">S_ref_folder</span><span class="p">,</span> 
+                            <span class="s1">&#39;unwrap_cMCF_Sref_mesh_H_color.obj&#39;</span><span class="p">)</span> 
+<span class="n">S_ref_mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">S_ref_file</span><span class="p">)</span>
+
+<span class="c1"># load the pre-computed genus-0 spherical parameterization of S_ref(x,y,z)</span>
+<span class="n">conformal_folder</span> <span class="o">=</span> <span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step2_confocal_sphere_param&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)</span>
+<span class="n">conformal_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conformal_folder</span><span class="p">,</span> 
+                               <span class="s1">&#39;conformal_sphere_param_Sref_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">))</span>
+<span class="n">conformal_sphere_mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">conformal_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="equiareal-spherical-parameterization-of-s-ref-x-y-z-mesh-by-relaxation-to-get-s-omega-x-y-z">
+<h2>Equiareal spherical parameterization of  <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>  mesh by relaxation to get <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span><a class="headerlink" href="#equiareal-spherical-parameterization-of-s-ref-x-y-z-mesh-by-relaxation-to-get-s-omega-x-y-z" title="Link to this heading">#</a></h2>
+<p>To relax area distortion, we can compute the area fraction of the current spherical parameterization and <span class="math notranslate nohighlight">\(S_{ref}\)</span>. We can think of this as a sort of energy and advect the vertices on the sphere to maximally dissipate this energy over the surface. As this dissipation necessarily requires changing the triangle edge lengths, minimizing area distortion is in direct opposition to minimizing conformal error.</p>
+<p>Depending on the intended application, the user does not need to fully relax the area. For this reason we chose to implement an iterative relaxation scheme.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Area distortion relaxation </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># For a single cell I like to set debugviz=True. </span>
+<span class="c1"># This will plot a histogram of the log area distortion and we can watch the area distortion converging to a symmetric distribution around 0. </span>
+<span class="c1"># If the plots don&#39;t converge it can mean your mesh was not genus-0 or the triangulation of the mesh is not isotropic with many small angles in which case an isotropic remesh is required.</span>
+<span class="n">relax_v</span><span class="p">,</span> <span class="n">relax_f</span><span class="p">,</span> <span class="n">area_distortion_iter</span><span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">area_distortion_flow_relax_sphere</span><span class="p">(</span><span class="n">conformal_sphere_mesh</span><span class="p">,</span> 
+                                                                                    <span class="n">S_ref_mesh</span><span class="p">,</span> 
+                                                                                    <span class="n">max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                                                                                    <span class="n">delta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="c1"># controls the stiffness, if too high - there is no flow, if too low - bijectivity is lost and flow may breakdown </span>
+                                                                                    <span class="n">stepsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                                                                                    <span class="n">debugviz</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># the flip delaunay is not very smooth...?  </span>
+
+<span class="c1"># compute the evolution of the mean area distortion. We use this to determine the first iteration when area distortion is minimized. </span>
+<span class="n">area_distortion_iter_curve</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mm</span><span class="p">)</span> <span class="k">for</span> <span class="n">mm</span> <span class="ow">in</span> <span class="n">area_distortion_iter</span><span class="p">])</span>
+
+<span class="c1"># to determine when area distortion is minimised we look for the timepoint when the sign first changes. This is because once the minimum is reached, depending on stepsize, the mesh will start to oscilate. The larger the stepsize, the faster the convergence but the larger the oscillatory instability. </span>
+<span class="n">min_area_distort</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">area_distortion_iter_curve</span><span class="p">))[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">area_distortion_iter_curve</span><span class="p">))</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># falls below 0. </span>
+
+
+<span class="c1"># create the equiareal mesh and save it out</span>
+<span class="n">equiareal_sphere_mesh</span> <span class="o">=</span> <span class="n">conformal_sphere_mesh</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">relax_v</span><span class="p">[</span><span class="n">min_area_distort</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                               <span class="s1">&#39;equiareal_sphere_param_Sref_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|                                                                                                                                             | 0/50 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<img alt="../_images/5d836071ac0b0fd83182f9ec7683c2c28423e5f378d9f83db0088d434d674b9f.png" src="../_images/5d836071ac0b0fd83182f9ec7683c2c28423e5f378d9f83db0088d434d674b9f.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  2%|██▋                                                                                                                                  | 1/50 [00:02&lt;02:10,  2.66s/it]
+</pre></div>
+</div>
+<img alt="../_images/35f679bde5834d8075dbb80c09d9122927029f66dcc79ef9ecbd0965b7fd81cb.png" src="../_images/35f679bde5834d8075dbb80c09d9122927029f66dcc79ef9ecbd0965b7fd81cb.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  4%|█████▎                                                                                                                               | 2/50 [00:03&lt;01:27,  1.83s/it]
+</pre></div>
+</div>
+<img alt="../_images/0f1fef417ed91ddd09ebe48a0cccf7f3a83925d7e286088d4f5fae3fdaf6b6c3.png" src="../_images/0f1fef417ed91ddd09ebe48a0cccf7f3a83925d7e286088d4f5fae3fdaf6b6c3.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  6%|███████▉                                                                                                                             | 3/50 [00:05&lt;01:11,  1.52s/it]
+</pre></div>
+</div>
+<img alt="../_images/e9ebaef84a791afad3e24f458aad20d142baf421a4594b47484d765e8434f796.png" src="../_images/e9ebaef84a791afad3e24f458aad20d142baf421a4594b47484d765e8434f796.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  8%|██████████▋                                                                                                                          | 4/50 [00:06&lt;01:02,  1.35s/it]
+</pre></div>
+</div>
+<img alt="../_images/08ee897a7c1d4699986e52bbec5781ae6ac9386e64133a88160785ebbe17953d.png" src="../_images/08ee897a7c1d4699986e52bbec5781ae6ac9386e64133a88160785ebbe17953d.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 10%|█████████████▎                                                                                                                       | 5/50 [00:07&lt;00:57,  1.28s/it]
+</pre></div>
+</div>
+<img alt="../_images/d74be7b67414a7c05ea315d0252deac6582e09376544454d761c1ff7571a278e.png" src="../_images/d74be7b67414a7c05ea315d0252deac6582e09376544454d761c1ff7571a278e.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 12%|███████████████▉                                                                                                                     | 6/50 [00:08&lt;00:53,  1.22s/it]
+</pre></div>
+</div>
+<img alt="../_images/1443bcb36f24b1c117487186e514667b7a33ced74801116302345599d90bd587.png" src="../_images/1443bcb36f24b1c117487186e514667b7a33ced74801116302345599d90bd587.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 14%|██████████████████▌                                                                                                                  | 7/50 [00:09&lt;00:50,  1.18s/it]
+</pre></div>
+</div>
+<img alt="../_images/9fe38f0a8cdd11dd0ae993a0d2ad3b66eed572550fc2b0bb575661f43eb8395e.png" src="../_images/9fe38f0a8cdd11dd0ae993a0d2ad3b66eed572550fc2b0bb575661f43eb8395e.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 16%|█████████████████████▎                                                                                                               | 8/50 [00:10&lt;00:49,  1.18s/it]
+</pre></div>
+</div>
+<img alt="../_images/f8350389014499c6b4380f08576dde38d34b5244f339bc06aa8d0c02d8ae0030.png" src="../_images/f8350389014499c6b4380f08576dde38d34b5244f339bc06aa8d0c02d8ae0030.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 18%|███████████████████████▉                                                                                                             | 9/50 [00:12&lt;00:50,  1.23s/it]
+</pre></div>
+</div>
+<img alt="../_images/12695bfeb8ea5e5d4cf10f643fd9001091aec582401f6105d28c3c608ed43c36.png" src="../_images/12695bfeb8ea5e5d4cf10f643fd9001091aec582401f6105d28c3c608ed43c36.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 20%|██████████████████████████▍                                                                                                         | 10/50 [00:13&lt;00:49,  1.23s/it]
+</pre></div>
+</div>
+<img alt="../_images/0c0dbea58301a660747e1b8feb24ac2f20e9e24e2aab9b4ff76fc548cfdbcb31.png" src="../_images/0c0dbea58301a660747e1b8feb24ac2f20e9e24e2aab9b4ff76fc548cfdbcb31.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 22%|█████████████████████████████                                                                                                       | 11/50 [00:14&lt;00:48,  1.25s/it]
+</pre></div>
+</div>
+<img alt="../_images/6f199dd9d71903c78d6b7a80e36a48477df3bfb2fb8af31fd3c0f794529d66ad.png" src="../_images/6f199dd9d71903c78d6b7a80e36a48477df3bfb2fb8af31fd3c0f794529d66ad.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 24%|███████████████████████████████▋                                                                                                    | 12/50 [00:15&lt;00:48,  1.27s/it]
+</pre></div>
+</div>
+<img alt="../_images/2b4c66090e16704ed75288533aadc8e9455915cdcd6a09ec8ef045a12d034c98.png" src="../_images/2b4c66090e16704ed75288533aadc8e9455915cdcd6a09ec8ef045a12d034c98.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 26%|██████████████████████████████████▎                                                                                                 | 13/50 [00:17&lt;00:46,  1.27s/it]
+</pre></div>
+</div>
+<img alt="../_images/809bdb8fa49b9ce344b48bbfa85810412440047f843d1c9f99e32f823f23187e.png" src="../_images/809bdb8fa49b9ce344b48bbfa85810412440047f843d1c9f99e32f823f23187e.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 28%|████████████████████████████████████▉                                                                                               | 14/50 [00:18&lt;00:45,  1.26s/it]
+</pre></div>
+</div>
+<img alt="../_images/a50457b98bfa0a294cb83c60f97fa0b240aa575f661ef76ebeb4bcd4ff0f61db.png" src="../_images/a50457b98bfa0a294cb83c60f97fa0b240aa575f661ef76ebeb4bcd4ff0f61db.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 30%|███████████████████████████████████████▌                                                                                            | 15/50 [00:19&lt;00:44,  1.27s/it]
+</pre></div>
+</div>
+<img alt="../_images/c12bc4edf455385b17c2338ff7a3b7d02eecd798be420908307ee542e81cb4da.png" src="../_images/c12bc4edf455385b17c2338ff7a3b7d02eecd798be420908307ee542e81cb4da.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 32%|██████████████████████████████████████████▏                                                                                         | 16/50 [00:20&lt;00:42,  1.26s/it]
+</pre></div>
+</div>
+<img alt="../_images/cb66b0ea71d731cd09bcb7daf1ba729c9ac5060741afe75a7fe42cb656305348.png" src="../_images/cb66b0ea71d731cd09bcb7daf1ba729c9ac5060741afe75a7fe42cb656305348.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 34%|████████████████████████████████████████████▉                                                                                       | 17/50 [00:22&lt;00:41,  1.25s/it]
+</pre></div>
+</div>
+<img alt="../_images/9cc9ddce5dd49b4cd86cb1cf56d085257fe59c856d220aa99d75f56e95140660.png" src="../_images/9cc9ddce5dd49b4cd86cb1cf56d085257fe59c856d220aa99d75f56e95140660.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 36%|███████████████████████████████████████████████▌                                                                                    | 18/50 [00:23&lt;00:40,  1.27s/it]
+</pre></div>
+</div>
+<img alt="../_images/b48b7f7ebd4349284b6b699994678deca7d445cdd003d54e59391f8ee06eb32a.png" src="../_images/b48b7f7ebd4349284b6b699994678deca7d445cdd003d54e59391f8ee06eb32a.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 38%|██████████████████████████████████████████████████▏                                                                                 | 19/50 [00:24&lt;00:38,  1.25s/it]
+</pre></div>
+</div>
+<img alt="../_images/672d618db09dd542f9c141179900f65d75878720a0ff837801af9af109edcccd.png" src="../_images/672d618db09dd542f9c141179900f65d75878720a0ff837801af9af109edcccd.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 40%|████████████████████████████████████████████████████▊                                                                               | 20/50 [00:26&lt;00:38,  1.30s/it]
+</pre></div>
+</div>
+<img alt="../_images/9dddba1f864f96038e55863e4630ccb0ea343690dbb6300a6756d71f063bffe3.png" src="../_images/9dddba1f864f96038e55863e4630ccb0ea343690dbb6300a6756d71f063bffe3.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 42%|███████████████████████████████████████████████████████▍                                                                            | 21/50 [00:27&lt;00:39,  1.36s/it]
+</pre></div>
+</div>
+<img alt="../_images/92ed5d0e7991188390201e73d6904d9cd1cb7c5b77629756314e69e44c47658d.png" src="../_images/92ed5d0e7991188390201e73d6904d9cd1cb7c5b77629756314e69e44c47658d.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 44%|██████████████████████████████████████████████████████████                                                                          | 22/50 [00:28&lt;00:38,  1.36s/it]
+</pre></div>
+</div>
+<img alt="../_images/92c933ab99f249ebc16ca04a7ef3101568d055bef1402d0a3ac30a013eb4e1c1.png" src="../_images/92c933ab99f249ebc16ca04a7ef3101568d055bef1402d0a3ac30a013eb4e1c1.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 46%|████████████████████████████████████████████████████████████▋                                                                       | 23/50 [00:30&lt;00:37,  1.38s/it]
+</pre></div>
+</div>
+<img alt="../_images/d817371ab4657e4c92f18a25cc9939ab5ec9850933308b557a311593cdb5d851.png" src="../_images/d817371ab4657e4c92f18a25cc9939ab5ec9850933308b557a311593cdb5d851.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 48%|███████████████████████████████████████████████████████████████▎                                                                    | 24/50 [00:31&lt;00:35,  1.36s/it]
+</pre></div>
+</div>
+<img alt="../_images/a16aec3f0176f318fb018821d16cb5d04a1a72b951a986a68861b1e8e06af75d.png" src="../_images/a16aec3f0176f318fb018821d16cb5d04a1a72b951a986a68861b1e8e06af75d.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 50%|██████████████████████████████████████████████████████████████████                                                                  | 25/50 [00:32&lt;00:33,  1.32s/it]
+</pre></div>
+</div>
+<img alt="../_images/98342a62d9b10e3fb960b75cf1c466324ba61a6446eac1b350839745f03e1cc7.png" src="../_images/98342a62d9b10e3fb960b75cf1c466324ba61a6446eac1b350839745f03e1cc7.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 52%|████████████████████████████████████████████████████████████████████▋                                                               | 26/50 [00:34&lt;00:32,  1.34s/it]
+</pre></div>
+</div>
+<img alt="../_images/3585803e9cb8e634082dd737b28127741c7abc572095f96a5ef85eae9addb4b9.png" src="../_images/3585803e9cb8e634082dd737b28127741c7abc572095f96a5ef85eae9addb4b9.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 54%|███████████████████████████████████████████████████████████████████████▎                                                            | 27/50 [00:35&lt;00:31,  1.35s/it]
+</pre></div>
+</div>
+<img alt="../_images/674151b39b87a2abda3bf247ad93a0c88f7f3f140b367252af35a2a137cb8ce5.png" src="../_images/674151b39b87a2abda3bf247ad93a0c88f7f3f140b367252af35a2a137cb8ce5.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 56%|█████████████████████████████████████████████████████████████████████████▉                                                          | 28/50 [00:36&lt;00:28,  1.30s/it]
+</pre></div>
+</div>
+<img alt="../_images/cc97248af77138cd69cd3a416eaa6e0d9b02ce5c9a9fd7ce5e4f83e6da513d79.png" src="../_images/cc97248af77138cd69cd3a416eaa6e0d9b02ce5c9a9fd7ce5e4f83e6da513d79.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 58%|████████████████████████████████████████████████████████████████████████████▌                                                       | 29/50 [00:38&lt;00:26,  1.27s/it]
+</pre></div>
+</div>
+<img alt="../_images/85ca1ff357c58052729904f5e3c8fbcab532c519c18a6436b2711b3347081b26.png" src="../_images/85ca1ff357c58052729904f5e3c8fbcab532c519c18a6436b2711b3347081b26.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 60%|███████████████████████████████████████████████████████████████████████████████▏                                                    | 30/50 [00:39&lt;00:24,  1.24s/it]
+</pre></div>
+</div>
+<img alt="../_images/d683ea0a3e454cbe7a75d0e812b7aae697d04e1a58e73813d47c16caa32d9215.png" src="../_images/d683ea0a3e454cbe7a75d0e812b7aae697d04e1a58e73813d47c16caa32d9215.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 62%|█████████████████████████████████████████████████████████████████████████████████▊                                                  | 31/50 [00:40&lt;00:23,  1.23s/it]
+</pre></div>
+</div>
+<img alt="../_images/3cca47a3fca04198d4ee66215ac4ec3d39eff4348e622eb27b849b68a7d0af1a.png" src="../_images/3cca47a3fca04198d4ee66215ac4ec3d39eff4348e622eb27b849b68a7d0af1a.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 64%|████████████████████████████████████████████████████████████████████████████████████▍                                               | 32/50 [00:41&lt;00:22,  1.25s/it]
+</pre></div>
+</div>
+<img alt="../_images/eacdf0fb0ded13504a2d0be6d0016530e5ac7071f0a6ccf45fda32f37789252c.png" src="../_images/eacdf0fb0ded13504a2d0be6d0016530e5ac7071f0a6ccf45fda32f37789252c.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 66%|███████████████████████████████████████████████████████████████████████████████████████                                             | 33/50 [00:42&lt;00:21,  1.25s/it]
+</pre></div>
+</div>
+<img alt="../_images/4385d8972710c463d1d167c08bf56c876e3132d9a243c46ad0f0c99742b92fe3.png" src="../_images/4385d8972710c463d1d167c08bf56c876e3132d9a243c46ad0f0c99742b92fe3.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 68%|█████████████████████████████████████████████████████████████████████████████████████████▊                                          | 34/50 [00:44&lt;00:19,  1.24s/it]
+</pre></div>
+</div>
+<img alt="../_images/5f0810c7f34136146d1dd47c9e5cff79e3182c910bd41d7780e1759c758d1da4.png" src="../_images/5f0810c7f34136146d1dd47c9e5cff79e3182c910bd41d7780e1759c758d1da4.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 70%|████████████████████████████████████████████████████████████████████████████████████████████▍                                       | 35/50 [00:45&lt;00:18,  1.21s/it]
+</pre></div>
+</div>
+<img alt="../_images/28f43d4775feff1c86340f9cc186495b63010728b54ac0a03373250b913187d2.png" src="../_images/28f43d4775feff1c86340f9cc186495b63010728b54ac0a03373250b913187d2.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72%|███████████████████████████████████████████████████████████████████████████████████████████████                                     | 36/50 [00:46&lt;00:16,  1.18s/it]
+</pre></div>
+</div>
+<img alt="../_images/9c5124e9c04ddddaeb4a7bef0231e6fbefdec31ba671b9b75a75a477fe30c10d.png" src="../_images/9c5124e9c04ddddaeb4a7bef0231e6fbefdec31ba671b9b75a75a477fe30c10d.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 74%|█████████████████████████████████████████████████████████████████████████████████████████████████▋                                  | 37/50 [00:47&lt;00:15,  1.16s/it]
+</pre></div>
+</div>
+<img alt="../_images/f3dd50de0ced1c5239883814fd77e27f9ccc889c84fa60b68319371f1b537e08.png" src="../_images/f3dd50de0ced1c5239883814fd77e27f9ccc889c84fa60b68319371f1b537e08.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 76%|████████████████████████████████████████████████████████████████████████████████████████████████████▎                               | 38/50 [00:48&lt;00:14,  1.19s/it]
+</pre></div>
+</div>
+<img alt="../_images/e82db0a3704640ba13c6289cccf70204da0ac5433963738bee448818af2eccc0.png" src="../_images/e82db0a3704640ba13c6289cccf70204da0ac5433963738bee448818af2eccc0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 78%|██████████████████████████████████████████████████████████████████████████████████████████████████████▉                             | 39/50 [00:50&lt;00:13,  1.20s/it]
+</pre></div>
+</div>
+<img alt="../_images/a8ba82eb7e19650be8967300fbc4b3a9e6bd98460e2a786cf0d7ed1599ab0e93.png" src="../_images/a8ba82eb7e19650be8967300fbc4b3a9e6bd98460e2a786cf0d7ed1599ab0e93.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 80%|█████████████████████████████████████████████████████████████████████████████████████████████████████████▌                          | 40/50 [00:51&lt;00:11,  1.19s/it]
+</pre></div>
+</div>
+<img alt="../_images/ae95481fe90a9ca23cf183159a58d4f74160ed4ba2e1624197f51820d2a44339.png" src="../_images/ae95481fe90a9ca23cf183159a58d4f74160ed4ba2e1624197f51820d2a44339.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 82%|████████████████████████████████████████████████████████████████████████████████████████████████████████████▏                       | 41/50 [00:52&lt;00:10,  1.19s/it]
+</pre></div>
+</div>
+<img alt="../_images/31d1710d854d59d32fb8c3ca1e819f9968ba71d042db8f89f1f486b08c8ea54c.png" src="../_images/31d1710d854d59d32fb8c3ca1e819f9968ba71d042db8f89f1f486b08c8ea54c.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 84%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████▉                     | 42/50 [00:53&lt;00:09,  1.17s/it]
+</pre></div>
+</div>
+<img alt="../_images/0522b5774340e53689a2a1038d78812acc323af0ec30a4361d8dec184ad8ffbe.png" src="../_images/0522b5774340e53689a2a1038d78812acc323af0ec30a4361d8dec184ad8ffbe.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 86%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                  | 43/50 [00:54&lt;00:08,  1.17s/it]
+</pre></div>
+</div>
+<img alt="../_images/5a1016c6ad4bcafa8f4f06664fefd205abcc57aa80a63c492751bfc1a10343bb.png" src="../_images/5a1016c6ad4bcafa8f4f06664fefd205abcc57aa80a63c492751bfc1a10343bb.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 88%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▏               | 44/50 [00:55&lt;00:06,  1.15s/it]
+</pre></div>
+</div>
+<img alt="../_images/e751e0b9cc5d0fb54fdee6f11b3416bf5f51b346f60be331f3df3b00474056f2.png" src="../_images/e751e0b9cc5d0fb54fdee6f11b3416bf5f51b346f60be331f3df3b00474056f2.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▊             | 45/50 [00:56&lt;00:05,  1.13s/it]
+</pre></div>
+</div>
+<img alt="../_images/a1e6e5736d165864e5d74f80990ac950abad9a4b2dd49e6cfcd97f8e5ac15194.png" src="../_images/a1e6e5736d165864e5d74f80990ac950abad9a4b2dd49e6cfcd97f8e5ac15194.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 92%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▍          | 46/50 [00:58&lt;00:04,  1.17s/it]
+</pre></div>
+</div>
+<img alt="../_images/0aa7e25c9aef9cac39106742d82b3d88342f99f18d6dfff7276f890b1477f4c7.png" src="../_images/0aa7e25c9aef9cac39106742d82b3d88342f99f18d6dfff7276f890b1477f4c7.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 94%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████        | 47/50 [00:59&lt;00:03,  1.22s/it]
+</pre></div>
+</div>
+<img alt="../_images/f673a69b64707ba9246f86e5ac4e9f392c5a97c766e0fbfa8f19565789dc9177.png" src="../_images/f673a69b64707ba9246f86e5ac4e9f392c5a97c766e0fbfa8f19565789dc9177.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 96%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▋     | 48/50 [01:00&lt;00:02,  1.21s/it]
+</pre></div>
+</div>
+<img alt="../_images/00073c53ad4f47719afa8f1621f94f9329ad4602e7e7aacaf19e3edfe1bf417c.png" src="../_images/00073c53ad4f47719afa8f1621f94f9329ad4602e7e7aacaf19e3edfe1bf417c.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 98%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▎  | 49/50 [01:01&lt;00:01,  1.19s/it]
+</pre></div>
+</div>
+<img alt="../_images/509bfb8edabb33cd14a9aa97e5e6a329a27c2b5db3cc05533a1508c971675067.png" src="../_images/509bfb8edabb33cd14a9aa97e5e6a329a27c2b5db3cc05533a1508c971675067.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 50/50 [01:02&lt;00:00,  1.26s/it]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-during-the-relaxation">
+<h2>Quantifying and colormapping the conformal and equiareal distortion error during the relaxation<a class="headerlink" href="#quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-during-the-relaxation" title="Link to this heading">#</a></h2>
+<p>The area distortion was computed as part of the relaxation process. Here we compute the conformal error per iteration.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.colors</span> <span class="k">as</span> <span class="nn">vol_colors</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.plotting</span> <span class="k">as</span> <span class="nn">plotting</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span> 
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">plt</span> 
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Compute the conformal error for each iteration of the relaxation and also color the resulting mesh. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">save_area_relaxation_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> <span class="s1">&#39;area_relaxation_iterations&#39;</span><span class="p">);</span> 
+<span class="n">fio</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">save_area_relaxation_folder</span><span class="p">)</span>
+
+
+<span class="c1"># this will save both the conformal + equiareal error.</span>
+<span class="n">conformal_error_flow</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">iter_ii</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">area_distortion_iter</span><span class="p">)):</span>
+
+    <span class="c1"># color by curvature</span>
+    <span class="n">relax_mesh_H</span> <span class="o">=</span> <span class="n">conformal_sphere_mesh</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">relax_mesh_H</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">relax_v</span><span class="p">[</span><span class="n">iter_ii</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">relax_mesh_H</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_area_relaxation_folder</span><span class="p">,</span>
+                                           <span class="s1">&#39;sphere_curvature_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">iter_ii</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">))))</span>
+
+    <span class="c1"># color by area distortion error</span>
+    <span class="n">area_distortion_error_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">area_distortion_iter</span><span class="p">[</span><span class="n">iter_ii</span><span class="p">]),</span> 
+                                                         <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span> 
+                                                         <span class="n">vmin</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">relax_mesh_area_distort</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">create_mesh</span><span class="p">(</span><span class="n">relax_v</span><span class="p">[</span><span class="n">iter_ii</span><span class="p">],</span>
+                                                    <span class="n">relax_f</span><span class="p">[</span><span class="n">iter_ii</span><span class="p">],</span>
+                                                    <span class="n">face_colors</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mi">255</span><span class="o">*</span><span class="n">area_distortion_error_colors</span><span class="p">[</span><span class="o">...</span><span class="p">,:</span><span class="mi">3</span><span class="p">]))</span>
+    <span class="n">relax_mesh_area_distort</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_area_relaxation_folder</span><span class="p">,</span>
+                                                <span class="s1">&#39;sphere_area_distortion_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">iter_ii</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">))))</span>
+
+    <span class="c1"># measure and color by conformal error relative to the sphere at the start</span>
+    <span class="n">conformal_errors</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">quasi_conformal_error</span><span class="p">(</span><span class="n">relax_v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
+                                                      <span class="n">relax_v</span><span class="p">[</span><span class="n">iter_ii</span><span class="p">],</span> 
+                                                      <span class="n">relax_f</span><span class="p">[</span><span class="n">iter_ii</span><span class="p">])</span>
+    <span class="n">conformal_error_flow</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conformal_errors</span><span class="p">)</span>
+
+    <span class="n">conformal_error_color</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">conformal_errors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="c1"># per face conformal error. </span>
+                                                  <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">,</span> 
+                                                  <span class="n">vmin</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">relax_mesh_conformal_error</span> <span class="o">=</span> <span class="n">relax_mesh_area_distort</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">relax_mesh_conformal_error</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">face_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mi">255</span><span class="o">*</span><span class="n">conformal_error_color</span><span class="p">)</span>
+    <span class="n">relax_mesh_conformal_error</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_area_relaxation_folder</span><span class="p">,</span>
+                                                   <span class="s1">&#39;sphere_conformal_error_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">iter_ii</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">))))</span>
+    
+    
+    <span class="c1"># matplotlib visualization</span>
+    <span class="n">sampling</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># plot every just so its not fully dense in the plot so we don&#39;t see anything!</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Area-distortion relaxation Iteration &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">iter_ii</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">relax_mesh_H</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+               <span class="n">relax_mesh_H</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+               <span class="n">relax_mesh_H</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+               <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+               <span class="n">c</span><span class="o">=</span><span class="n">relax_mesh_H</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+    <span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+<span class="c1"># reorganising the conformal error_flow from the relaxation process. </span>
+<span class="n">conformal_error_flow_arrays</span> <span class="o">=</span> <span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cc</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">conformal_error_flow</span><span class="p">])</span> <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">conformal_error_flow</span><span class="p">[</span><span class="mi">0</span><span class="p">]))]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ddb2e4e29b1901941411edc99c4d06cbde785cb9198b92dc7bdcd1324f16487b.png" src="../_images/ddb2e4e29b1901941411edc99c4d06cbde785cb9198b92dc7bdcd1324f16487b.png" />
+<img alt="../_images/7683c1d3a68c3ae4469e22217d42ba516dadf81b400bfb8713b42315f1655ec7.png" src="../_images/7683c1d3a68c3ae4469e22217d42ba516dadf81b400bfb8713b42315f1655ec7.png" />
+<img alt="../_images/2866103b1aefb54b77be734b739bd3560e000995177183d0e6a3052b23e567a1.png" src="../_images/2866103b1aefb54b77be734b739bd3560e000995177183d0e6a3052b23e567a1.png" />
+<img alt="../_images/a2ae15849f67761091d1995ee3a39d611428f536276429912f0350141df4aa0d.png" src="../_images/a2ae15849f67761091d1995ee3a39d611428f536276429912f0350141df4aa0d.png" />
+<img alt="../_images/a5100322cf0dbb855620f277ed1cc7c1128a9e06e0bd437a14cb438faa670988.png" src="../_images/a5100322cf0dbb855620f277ed1cc7c1128a9e06e0bd437a14cb438faa670988.png" />
+<img alt="../_images/ca1f740ad4e1fc46be879681adcc6e5872c9c9ba901d8604c63223fbdcd6dc88.png" src="../_images/ca1f740ad4e1fc46be879681adcc6e5872c9c9ba901d8604c63223fbdcd6dc88.png" />
+<img alt="../_images/7152e6b4e8789f1890ef0d40de0aa29c3c775cf7944e401ebf5a44e67c2514ec.png" src="../_images/7152e6b4e8789f1890ef0d40de0aa29c3c775cf7944e401ebf5a44e67c2514ec.png" />
+<img alt="../_images/7c2c9277d871c6a43c9d0b7f4f89b329413e0febda40fd3b696fd5a5f7dc4ae4.png" src="../_images/7c2c9277d871c6a43c9d0b7f4f89b329413e0febda40fd3b696fd5a5f7dc4ae4.png" />
+<img alt="../_images/4f08bf0980efa2f908cf16d89330efaa21c5aa25c15441cc021e21bc65786d79.png" src="../_images/4f08bf0980efa2f908cf16d89330efaa21c5aa25c15441cc021e21bc65786d79.png" />
+<img alt="../_images/31e7ed69fb299b0e2f28b49f63952162cd57603caf21e4b02cee1aff944e262a.png" src="../_images/31e7ed69fb299b0e2f28b49f63952162cd57603caf21e4b02cee1aff944e262a.png" />
+<img alt="../_images/7fe290119ac347e3064edb48ff2a18b0f537fb83a17bad6ac84c3c643f15925d.png" src="../_images/7fe290119ac347e3064edb48ff2a18b0f537fb83a17bad6ac84c3c643f15925d.png" />
+<img alt="../_images/698a825bda9afc65de330fd3eb05ff8d62b63bf18f111e390a028f17ca5e2309.png" src="../_images/698a825bda9afc65de330fd3eb05ff8d62b63bf18f111e390a028f17ca5e2309.png" />
+<img alt="../_images/3893a3939aa544d17f3f0e28136f6a7c59575395f8cf34e8533f871dbbdae74c.png" src="../_images/3893a3939aa544d17f3f0e28136f6a7c59575395f8cf34e8533f871dbbdae74c.png" />
+<img alt="../_images/95bdfc2ed5c1ec28d9a36f31f86596a37e4ff35abecc08cf5a1fd308e228d1c4.png" src="../_images/95bdfc2ed5c1ec28d9a36f31f86596a37e4ff35abecc08cf5a1fd308e228d1c4.png" />
+<img alt="../_images/3b855f50470d6755697f897c711a0bdfab95538e1e50a61986adbfd3ff656d3f.png" src="../_images/3b855f50470d6755697f897c711a0bdfab95538e1e50a61986adbfd3ff656d3f.png" />
+<img alt="../_images/164ce2207e9df8e9cbd4e67b5d9558fd48cda9be3c139e12097cf0c4d0203d12.png" src="../_images/164ce2207e9df8e9cbd4e67b5d9558fd48cda9be3c139e12097cf0c4d0203d12.png" />
+<img alt="../_images/9e990128bd12c7e0c7da7bba0541d4053fbb600cc3501ca87acf6d0ef004a44e.png" src="../_images/9e990128bd12c7e0c7da7bba0541d4053fbb600cc3501ca87acf6d0ef004a44e.png" />
+<img alt="../_images/315b1578b5f252a93130d375b2975846e58b54abb6df37fbda08b70ded0f5bfe.png" src="../_images/315b1578b5f252a93130d375b2975846e58b54abb6df37fbda08b70ded0f5bfe.png" />
+<img alt="../_images/7fa7e3f8eb40ff9ad987fb97fe6fd0f1b21ff35fd64f7a767ee66e5a4bcb85cf.png" src="../_images/7fa7e3f8eb40ff9ad987fb97fe6fd0f1b21ff35fd64f7a767ee66e5a4bcb85cf.png" />
+<img alt="../_images/3ee9616eda2d413bcbfd25731ca8eb6b69882a0f69144086236d4daa05c47b04.png" src="../_images/3ee9616eda2d413bcbfd25731ca8eb6b69882a0f69144086236d4daa05c47b04.png" />
+<img alt="../_images/de8e74c1fd713c38b1c9a882718011a45bc1f42bfae028b8b86a258f0e666d63.png" src="../_images/de8e74c1fd713c38b1c9a882718011a45bc1f42bfae028b8b86a258f0e666d63.png" />
+<img alt="../_images/f3aced3fed7615176e4c2926549f497ed939ece9250d26e64235866c91c46801.png" src="../_images/f3aced3fed7615176e4c2926549f497ed939ece9250d26e64235866c91c46801.png" />
+<img alt="../_images/fce6350c60ce4e0c300d7d250b7192e0443b2104991c14e592610364b88daab3.png" src="../_images/fce6350c60ce4e0c300d7d250b7192e0443b2104991c14e592610364b88daab3.png" />
+<img alt="../_images/6a5b215a3fee876ca82346752e8bbddbc98d5fa7139e91d056ba2f0c02f3a154.png" src="../_images/6a5b215a3fee876ca82346752e8bbddbc98d5fa7139e91d056ba2f0c02f3a154.png" />
+<img alt="../_images/3765a78ffb6c841540e68c3218cef3f9b105168381487e658e4ced19eaa6a050.png" src="../_images/3765a78ffb6c841540e68c3218cef3f9b105168381487e658e4ced19eaa6a050.png" />
+<img alt="../_images/081372d764ba9233e2ead2668a516adfb7be38eaabf21992e403264fe8a5145a.png" src="../_images/081372d764ba9233e2ead2668a516adfb7be38eaabf21992e403264fe8a5145a.png" />
+<img alt="../_images/347ff7abd83f0718d056bfe714e60bb9c4d6bd76f77c407ecc675218fb64fc76.png" src="../_images/347ff7abd83f0718d056bfe714e60bb9c4d6bd76f77c407ecc675218fb64fc76.png" />
+<img alt="../_images/1e2b216c5c8d5fbb96a28aa1bb22f63322015f2fb8a77f89417f1935cea60d4e.png" src="../_images/1e2b216c5c8d5fbb96a28aa1bb22f63322015f2fb8a77f89417f1935cea60d4e.png" />
+<img alt="../_images/60774caef52d2602deac673b02dbfb36c5067b87af9f78ceb999db636584a1f7.png" src="../_images/60774caef52d2602deac673b02dbfb36c5067b87af9f78ceb999db636584a1f7.png" />
+<img alt="../_images/d97c6061b731f5afba839ff76e457ce64dc25db0f2284351a985606f59cc5c8c.png" src="../_images/d97c6061b731f5afba839ff76e457ce64dc25db0f2284351a985606f59cc5c8c.png" />
+<img alt="../_images/e45dd9113e3c7032fb67180856ddf38b0c88f89068de0c4b4c18176f1e7c595a.png" src="../_images/e45dd9113e3c7032fb67180856ddf38b0c88f89068de0c4b4c18176f1e7c595a.png" />
+<img alt="../_images/43f5fe1ffd022ff81fe0969974b7c5182b533e2a85271d57f28d9006d6570819.png" src="../_images/43f5fe1ffd022ff81fe0969974b7c5182b533e2a85271d57f28d9006d6570819.png" />
+<img alt="../_images/235428ed633fee069ef1c64e8686493a41236cd7964c57a7c20daeb3e5b35e01.png" src="../_images/235428ed633fee069ef1c64e8686493a41236cd7964c57a7c20daeb3e5b35e01.png" />
+<img alt="../_images/bb748ffbeaee46d9f1db195f0daaaa05b4141912242594476f80e4471738ed9f.png" src="../_images/bb748ffbeaee46d9f1db195f0daaaa05b4141912242594476f80e4471738ed9f.png" />
+<img alt="../_images/b02748015336cde76adfc84cb2e935af3d010e85bfc608090f324900a648d7b9.png" src="../_images/b02748015336cde76adfc84cb2e935af3d010e85bfc608090f324900a648d7b9.png" />
+<img alt="../_images/3f7b41f9a59261c41ce4a8de644e81038cbc1cecff2a5dd768f4336eda775a97.png" src="../_images/3f7b41f9a59261c41ce4a8de644e81038cbc1cecff2a5dd768f4336eda775a97.png" />
+<img alt="../_images/6161af9e207910b4b05b4e869db77679f4d1cd56ba670d9deacd735217502291.png" src="../_images/6161af9e207910b4b05b4e869db77679f4d1cd56ba670d9deacd735217502291.png" />
+<img alt="../_images/5f6887d2efe7bbed362248f5fc50d286bcdc6db2e91ac047113d9da69d7220aa.png" src="../_images/5f6887d2efe7bbed362248f5fc50d286bcdc6db2e91ac047113d9da69d7220aa.png" />
+<img alt="../_images/52e1fe8b5e3ce06279c9909115a70115c6f9a3e3d8d1f4127a53daf09886a8c0.png" src="../_images/52e1fe8b5e3ce06279c9909115a70115c6f9a3e3d8d1f4127a53daf09886a8c0.png" />
+<img alt="../_images/9fa7e97838ce71eadd5b406f056b712ed60ae65e93c83af476b23ffa02f51ff1.png" src="../_images/9fa7e97838ce71eadd5b406f056b712ed60ae65e93c83af476b23ffa02f51ff1.png" />
+<img alt="../_images/ff87d6cf75a604c2102b9d0bb6c09f9dcf9a7be94a2e96dc00da378e64affcf6.png" src="../_images/ff87d6cf75a604c2102b9d0bb6c09f9dcf9a7be94a2e96dc00da378e64affcf6.png" />
+<img alt="../_images/7ad2a63298ca13537b11914d75d6915ca84018524742543585c9c7a04c19ffa9.png" src="../_images/7ad2a63298ca13537b11914d75d6915ca84018524742543585c9c7a04c19ffa9.png" />
+<img alt="../_images/0a72aba7b0ec8dda77d8de6f01b57a829852662321bcb40687f605c3e2cf2bc4.png" src="../_images/0a72aba7b0ec8dda77d8de6f01b57a829852662321bcb40687f605c3e2cf2bc4.png" />
+<img alt="../_images/cc74185d665881928b828f3f56d2ddd2fda244aa8cd7a2958246579d1c0c5299.png" src="../_images/cc74185d665881928b828f3f56d2ddd2fda244aa8cd7a2958246579d1c0c5299.png" />
+<img alt="../_images/4a8a1c1cc7be31b6d789fc505abd3f50e4867b3e302211c0d088999b33bc3a59.png" src="../_images/4a8a1c1cc7be31b6d789fc505abd3f50e4867b3e302211c0d088999b33bc3a59.png" />
+<img alt="../_images/a860fbb6f8a235363b7583259385d0bf1a219c410f69799dbace30880bc74427.png" src="../_images/a860fbb6f8a235363b7583259385d0bf1a219c410f69799dbace30880bc74427.png" />
+<img alt="../_images/0fecb39e8bd52135bba80e69f10e6bc9a843ec95053d86a2846216bdd4b9f4a2.png" src="../_images/0fecb39e8bd52135bba80e69f10e6bc9a843ec95053d86a2846216bdd4b9f4a2.png" />
+<img alt="../_images/d777a56a43ce0d5244135de9b49871af2997e4078c62881632e4437afc46e745.png" src="../_images/d777a56a43ce0d5244135de9b49871af2997e4078c62881632e4437afc46e745.png" />
+<img alt="../_images/de43e4382decdc4f23ec118d84bd35c6b951b74895ba0a957f0f12b44c7cab83.png" src="../_images/de43e4382decdc4f23ec118d84bd35c6b951b74895ba0a957f0f12b44c7cab83.png" />
+<img alt="../_images/9eee1402b397cfa733bf9824efbc2216bd1c714259a62c6006286ae4dbf24a6b.png" src="../_images/9eee1402b397cfa733bf9824efbc2216bd1c714259a62c6006286ae4dbf24a6b.png" />
+</div>
+</div>
+<p>Plotting the mean conformal and equiareal error at each relaxation iteration.</p>
+<p><strong>NOTE</strong>: the conformal and area distortion curves will be different from that in the paper as we are using the remeshed <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> for illustration purposes. In the paper we didn’t actually remesh this cell since it was already genus-0 and isotropically meshed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_conformal_curve</span> <span class="o">=</span> <span class="n">conformal_error_flow_arrays</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">mean_area_distort_curve</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">area_distortion_iter</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">plt</span> 
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration Number&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Conformal error&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mean_conformal_curve</span><span class="p">)),</span> <span class="n">mean_conformal_curve</span><span class="p">,</span> <span class="s1">&#39;ko-&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">min_area_distort</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>  <span class="c1"># instantiate a second axes that shares the same x-axis</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Final area / initial area&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>  <span class="c1"># we already handled the x-label with ax1</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mean_area_distort_curve</span><span class="p">)),</span> <span class="mf">1.</span><span class="o">/</span><span class="n">mean_area_distort_curve</span><span class="p">,</span> <span class="s1">&#39;ro-&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>  
+                        <span class="s1">&#39;mean_area-relax_distortion_errors_iterations_&#39;</span><span class="o">+</span><span class="n">basefname</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">),</span> 
+            <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    
+<span class="c1"># print the mean errors</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mean conformal distortion: &#39;</span><span class="p">,</span> <span class="n">mean_conformal_curve</span><span class="p">[</span><span class="n">min_area_distort</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mean area distortion: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">area_distortion_iter</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="n">min_area_distort</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/664c1c645106fe9272366dc3e0aa157f4ed750191dddf1971e721c0b5cef24d2.png" src="../_images/664c1c645106fe9272366dc3e0aa157f4ed750191dddf1971e721c0b5cef24d2.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean conformal distortion:  1.4690168501124183
+mean area distortion:  1.0001059119096485
+</pre></div>
+</div>
+</div>
+</div>
+<p>You will notice that there appears a tradeoff between conformal and area distortion. To make this explicit we can plot a combined ‘isometric’ error proposed in the paper, conformal + log(area distortion). It is then apparent that there exists a global minimum where both types of errors are minimised.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_combined</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">mean_conformal_curve</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mean_area_distort_curve</span><span class="p">))</span>
+
+<span class="c1"># plotting combined conformal + log(area distortion) error</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration Number&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Conformal + log(area distortion) error&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mean_conformal_curve</span><span class="p">)),</span> <span class="n">mean_conformal_curve</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mean_area_distort_curve</span><span class="p">),</span> <span class="s1">&#39;go-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">min_area_distort</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span> <span class="c1"># this is the iteration number for equiareal</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">min_combined</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span> <span class="c1"># this is the iteration number for global minimum of conformal + equiareal</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ec5d615253449a17323ff411d9cc65123b0a34a2caf9781a296dc89ad6b55901.png" src="../_images/ec5d615253449a17323ff411d9cc65123b0a34a2caf9781a296dc89ad6b55901.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Save all the computed measurements out</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">save_sphere_parametrization_mat</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                                                <span class="s1">&#39;Sref_area_relax_sphere.mat&#39;</span><span class="p">)</span>
+<span class="n">spio</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">save_sphere_parametrization_mat</span><span class="p">,</span>
+              <span class="p">{</span><span class="s1">&#39;relax_v&#39;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">relax_v</span><span class="p">),</span> 
+              <span class="s1">&#39;relax_f&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">relax_f</span><span class="p">),</span> 
+              <span class="s1">&#39;area_distortion_iter&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">area_distortion_iter</span><span class="p">),</span> <span class="c1"># we have this saved.... (we want also the conformal area?)</span>
+              <span class="s1">&#39;min_area_distort_id&#39;</span><span class="p">:</span><span class="n">min_area_distort</span><span class="p">,</span>
+              <span class="s1">&#39;sphere_param&#39;</span><span class="p">:</span> <span class="n">conformal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> 
+              <span class="s1">&#39;conformal_Jac_eigvals&#39;</span><span class="p">:</span> <span class="n">conformal_error_flow_arrays</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
+              <span class="s1">&#39;conformal_stretch_factors&#39;</span><span class="p">:</span> <span class="n">conformal_error_flow_arrays</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
+              <span class="s1">&#39;mean_conformal_stretch_factors&#39;</span><span class="p">:</span> <span class="n">conformal_error_flow_arrays</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> 
+              <span class="s1">&#39;conformal_tri_area_pairs&#39;</span><span class="p">:</span> <span class="n">conformal_error_flow_arrays</span><span class="p">[</span><span class="mi">3</span><span class="p">]})</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="we-now-proceed-to-step-4-notebook-to-uv-map-the-equiareal-parameterization-onto-the-2d-plane">
+<h1>We now proceed to step 4 notebook to uv map the equiareal parameterization onto the 2D plane …<a class="headerlink" href="#we-now-proceed-to-step-4-notebook-to-uv-map-the-equiareal-parameterization-onto-the-2d-plane" title="Link to this heading">#</a></h1>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "conda-env-unwrap3D_test-py"
+        },
+        kernelOptions: {
+            name: "conda-env-unwrap3D_test-py",
+            path: "./03_basic_workflow"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'conda-env-unwrap3D_test-py'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Step2_quasiconformal_spherical_parameterization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Step 2: Quasi-conformal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Step4_uv_mapping_spherical_parameterization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-s-ref-x-y-z-and-s-mathcal-q-x-y-z-mesh-and-create-an-analysis-save-folder">Load <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>  and <span class="math notranslate nohighlight">\(S_{\mathcal{Q}(x,y,z)}\)</span> mesh and create an analysis save folder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equiareal-spherical-parameterization-of-s-ref-x-y-z-mesh-by-relaxation-to-get-s-omega-x-y-z">Equiareal spherical parameterization of  <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>  mesh by relaxation to get <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-during-the-relaxation">Quantifying and colormapping the conformal and equiareal distortion error during the relaxation</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-now-proceed-to-step-4-notebook-to-uv-map-the-equiareal-parameterization-onto-the-2d-plane">We now proceed to step 4 notebook to uv map the equiareal parameterization onto the 2D plane …</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Felix Y. Zhou
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>
+Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/main/LICENSE" target="_blank">GPL3</a> unless mentioned otherwise. 
+</p>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

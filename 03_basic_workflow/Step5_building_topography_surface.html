@@ -1,0 +1,962 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Step 5: Building a topographic volume \(V(d,u,v)\) space using the \((u,v)\) parameterized \(S_{ref}(x,y,z)\) &#8212; u-Unwrap3D Analysis Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03_basic_workflow/Step5_building_topography_surface';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Step 6: Extract topographic surface \(S(d,u,v)\) given the topographic volume \(V(d,u,v)\) space" href="Step6_find_topographic_surface_mesh.html" />
+    <link rel="prev" title="Step 4: UV mapping \(S_{ref}(x,y,z)\) using its equiareal spherical parameterization, \(S_{\Omega}(x,y,z)\)" href="Step4_uv_mapping_spherical_parameterization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">u-Unwrap3D Analysis Notebooks</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    u-Unwrap3D Analysis Notebooks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Basics</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_introduction/readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_installation/readme.html">Installation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Workflow</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="readme.html">Basic workflow for unwrapping 3D surfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Step0_find_cell_surface_from_segmentation.html">Segmenting a single cell from a volume image</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Step1_find_reference_surface.html">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Step2_quasiconformal_spherical_parameterization.html">Step 2: Quasi-conformal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Step4_uv_mapping_spherical_parameterization.html">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 5: Building a topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space using the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterized <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Step6_find_topographic_surface_mesh.html">Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space</a></li>
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Customizing the Basic Workflow to input data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../04_customizing_basic_workflow/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">In-depth Breakdown of Mapping Steps</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../05_obtaining_surfaces/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06_find_reference_surface/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07_uv_parameterization/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08_building_topography_space/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09_spherical_parameterization/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11_flatten_topography_surface/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Transporting measurements between representations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../22_transporting_measurements/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Applying u-Unwrap3D to live-cell imaging</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../16_shape_registration/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15_compute_distortion_corrected_uv_measurements/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../20_surface_flow_analytics/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../19_tracking_in_uv/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../21_tracking_analytics/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Applications of different surface representations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../13_segmenting_surface_protrusions/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../14_volumizing_reference_and_protrusions/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../18_spherical_harmonics/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Mapping open 3D surfaces into 2D</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../12_unwrapping_individual_protrusions/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_introduction/glossary.html">Glossary</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks/issues/new?title=Issue%20on%20page%20%2F03_basic_workflow/Step5_building_topography_surface.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/03_basic_workflow/Step5_building_topography_surface.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Step 5: Building a topographic volume V(d,u,v) space using the (u,v) parameterized S_{ref}(x,y,z)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 5: Building a topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space using the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterized <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-s-x-y-z-and-s-u-v-parameterization-and-create-an-analysis-save-folder">Load <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S(u,v)\)</span> parameterization and create an analysis save folder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#propagating-s-u-v-to-build-the-topographic-volume-space-v-d-u-v">Propagating <span class="math notranslate nohighlight">\(S(u,v)\)</span> to build the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-cartesian-volume-quantities-i-v-x-y-z-into-the-topographic-volume-space-v-d-u-v">Mapping Cartesian volume quantities <span class="math notranslate nohighlight">\(I(V(x,y,z))\)</span> into the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-now-proceed-to-step-6-notebook-to-obtain-the-topographic-surface-parameterization-of-the-input-surface">We now proceed to step 6 notebook to obtain the topographic surface parameterization of the input surface</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="step-5-building-a-topographic-volume-v-d-u-v-space-using-the-u-v-parameterized-s-ref-x-y-z">
+<h1>Step 5: Building a topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space using the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterized <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span><a class="headerlink" href="#step-5-building-a-topographic-volume-v-d-u-v-space-using-the-u-v-parameterized-s-ref-x-y-z" title="Link to this heading">#</a></h1>
+<p>Using <span class="math notranslate nohighlight">\(S(u,v)\)</span>, the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterization of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> we can propagate the surface along the steepest gradient of its signed distance transform in desired stepsizes to map the surrounding ‘normal’ space external and internal to the cell. This produces a ‘topographic’ volume representation that is particularly useful for analysing surface features.</p>
+<p>This workbook shows how to build the topographic space to enable a topographic surface to be extracted as well as to map the original Cartesian volume image into a topographic volume image.</p>
+<section id="load-s-x-y-z-and-s-u-v-parameterization-and-create-an-analysis-save-folder">
+<h2>Load <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S(u,v)\)</span> parameterization and create an analysis save folder<a class="headerlink" href="#load-s-x-y-z-and-s-u-v-parameterization-and-create-an-analysis-save-folder" title="Link to this heading">#</a></h2>
+<p>We assume the user has worked through step 4 which generates and saves the (u,v) parameterization of the reference surface <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> for an input cell surface mesh to the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step4_uv_mapping</span></code>. We also need the original image in the folder <code class="docutils literal notranslate"><span class="pre">example_data/img</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Utility_Functions.file_io</span> <span class="k">as</span> <span class="nn">fio</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Mesh.meshtools</span> <span class="k">as</span> <span class="nn">meshtools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span> 
+<span class="kn">import</span> <span class="nn">skimage.io</span> <span class="k">as</span> <span class="nn">skio</span> 
+<span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">spio</span>
+
+<span class="c1"># example cell used</span>
+<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;example_data/img&#39;</span>
+<span class="n">imgfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imgfolder</span><span class="p">,</span> <span class="s1">&#39;bleb_example.tif&#39;</span><span class="p">)</span>
+<span class="n">basefname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">imgfile</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get the filename with extension</span>
+
+<span class="c1"># create the analysis save folder for this step</span>
+<span class="n">savefolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;example_results&#39;</span><span class="p">,</span> 
+                         <span class="n">basefname</span><span class="p">,</span>
+                         <span class="s1">&#39;step5_topographic_space&#39;</span><span class="p">)</span>
+<span class="n">fio</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">savefolder</span><span class="p">)</span> <span class="c1"># auto generates the specified folder structure if doesn&#39;t currently exist.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Loading</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># original image</span>
+<span class="n">img_file</span> <span class="o">=</span> <span class="s1">&#39;example_data/img/</span><span class="si">%s</span><span class="s1">.tif&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">skio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_file</span><span class="p">)</span>
+
+<span class="c1"># binary image file</span>
+<span class="n">binary_img_file</span> <span class="o">=</span> <span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step0_cell_segmentation/</span><span class="si">%s</span><span class="s1">_binary_seg.tif&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">,</span> <span class="n">basefname</span><span class="p">)</span>
+<span class="n">binary_img</span> <span class="o">=</span> <span class="n">skio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">binary_img_file</span><span class="p">)</span>
+
+<span class="c1"># load the original surface which is used to determine the maximal extent to propagate out from the surface.</span>
+<span class="n">surf_file</span> <span class="o">=</span> <span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step0_cell_segmentation/curvature_binary_mesh_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">,</span> <span class="n">basefname</span><span class="p">)</span>
+<span class="n">surf_mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">surf_file</span><span class="p">)</span>
+
+<span class="c1"># load the pre-computed uv-mapping of S_ref(x,y,z)</span>
+<span class="n">uv_folder</span> <span class="o">=</span> <span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step4_uv_mapping&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)</span>
+<span class="n">uv_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uv_folder</span><span class="p">,</span> 
+                       <span class="s1">&#39;uv_mapping_params.mat&#39;</span><span class="p">)</span>
+<span class="n">uv_map_obj</span> <span class="o">=</span> <span class="n">spio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">uv_file</span><span class="p">)</span> <span class="c1"># reads the .mat like a python dictionary. </span>
+
+<span class="n">S_uv</span> <span class="o">=</span> <span class="n">uv_map_obj</span><span class="p">[</span><span class="s1">&#39;uv_map&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="propagating-s-u-v-to-build-the-topographic-volume-space-v-d-u-v">
+<h2>Propagating <span class="math notranslate nohighlight">\(S(u,v)\)</span> to build the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span><a class="headerlink" href="#propagating-s-u-v-to-build-the-topographic-volume-space-v-d-u-v" title="Link to this heading">#</a></h2>
+<p>The topographic volume space is build by propagating <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> in cartesian space a total number of <span class="math notranslate nohighlight">\(D_{out}\)</span> steps outwards and a total number of <span class="math notranslate nohighlight">\(D_{in}\)</span> steps into the cell along the gradient of the signed distance transform, whilst being indexed by <span class="math notranslate nohighlight">\((u,v)\)</span> coordinates.</p>
+<p>The signed distance transform is computed after voxelizing <span class="math notranslate nohighlight">\(S(u,v)\)</span> in Cartesian space.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Specify the alpha step-size - this is the regular step size in voxels to offset the surface every iteration.   </span>
+
+<span class="sd">There are two ways to determine alpha:</span>
+<span class="sd">    1. manual specification</span>
+<span class="sd">    2. based on the mean (u,v) pixel size. </span>
+
+<span class="sd">We will use option 2 here which here gives approx 0.5 voxel. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Option 1: manual specification </span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># step with one voxel</span>
+
+<span class="c1"># Option 2: compute the </span>
+<span class="n">delta_xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">S_uv</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># column-wise difference in (x,y,z)</span>
+<span class="n">delta_yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">S_uv</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># row-wise difference in (x,y,z)</span>
+<span class="c1"># convert the difference to magnitude. </span>
+<span class="n">delta_xx_abs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">delta_xx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">delta_yy_abs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">delta_yy</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># take the mean of the x-, y- direction magnitude </span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">.5</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">delta_xx_abs</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">delta_yy_abs</span><span class="p">))</span> 
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;======&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using alpha step-size: &#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;======&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>======
+using alpha step-size:  0.4728185534477234
+======
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will now do the outer propagation with this the computed alpha step.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Unzipping.unzip</span> <span class="k">as</span> <span class="nn">uzip</span> <span class="c1"># this module handles the image-type mesh functions i.e. not triangle mesh representations.</span>
+
+<span class="c1"># prop outwards. </span>
+<span class="n">Suv_prop_outside</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">prop_ref_surface</span><span class="p">(</span><span class="n">S_uv</span><span class="p">[</span><span class="o">...</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="c1"># since the uv parameterization uses the mesh vertices, which are opposite in convention to the image volume we need to flip the axis.</span>
+                                          <span class="n">vol_size</span><span class="o">=</span><span class="n">binary_img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>  <span class="c1"># this is required to ensure volume coordinates.</span>
+                                          <span class="n">vol_binary</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># we can specify a predefined binary for signed distance transform computation </span>
+                                          <span class="n">d_step</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="c1"># positive alpha = outwards </span>
+                                          <span class="n">n_dist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># we don&#39;t specify because we will automatically infer from the surface mesh.</span>
+                                          <span class="n">surf_pts_ref</span><span class="o">=</span><span class="n">surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="o">...</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                          <span class="n">pad_dist</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="c1"># This gives extra padding just to make sure we absolutely cover protrusions</span>
+                                          <span class="n">smooth_method</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> <span class="c1"># Propagating large distance needs to some instability, we apply 1D uniform filters to suppress this</span>
+                                          <span class="n">smooth_win</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># sets the window size of the filter. </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Suv_prop_outside</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> 
+<span class="n">N_out</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Suv_prop_outside</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># this is the total number of steps.</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3D_test\lib\site-packages\unwrap3D\Unzipping\unzip.py:44: FutureWarning: In the future `np.bool` will be defined as the corresponding NumPy scalar.
+  surf_unwrap_vol = np.zeros(vol_shape, dtype=np.bool)
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 127/127 [00:19&lt;00:00,  6.45it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(128, 256, 512, 3)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># use matplotlib and plot every 10th iteration wireframe surface to see the effect relative to the surface mesh.  </span>
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">plt</span> 
+
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">Suv_prop_outside</span><span class="p">),</span> <span class="n">sampling</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">,</span> <span class="n">proj_type</span> <span class="o">=</span> <span class="s1">&#39;ortho&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># this works. </span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+               <span class="n">surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+               <span class="n">surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span> <span class="c1"># note the surface mesh vertices are inverse order to the image. </span>
+    <span class="c1"># plot the propagated surface.</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot_wireframe</span><span class="p">(</span><span class="n">Suv_prop_outside</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+                      <span class="n">Suv_prop_outside</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+                      <span class="n">Suv_prop_outside</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">rstride</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0e69917fdbc0129d6027b29539eabd38fc03ee803fe6feaacd9a7dc3a8beca42.png" src="../_images/0e69917fdbc0129d6027b29539eabd38fc03ee803fe6feaacd9a7dc3a8beca42.png" />
+<img alt="../_images/ecfaf3b3a78c7aae76aa1ab6a5e35d5fd65b97f1dcf88b183bfb4a9a5a762584.png" src="../_images/ecfaf3b3a78c7aae76aa1ab6a5e35d5fd65b97f1dcf88b183bfb4a9a5a762584.png" />
+<img alt="../_images/823d38c6cf538ae91e805206b6a03ee58549684c9982545e22fab42dc2ea4986.png" src="../_images/823d38c6cf538ae91e805206b6a03ee58549684c9982545e22fab42dc2ea4986.png" />
+<img alt="../_images/d91d490bf76c41158c7185502c104a3a2032b2a5668ee857d213f05d99009429.png" src="../_images/d91d490bf76c41158c7185502c104a3a2032b2a5668ee857d213f05d99009429.png" />
+<img alt="../_images/3cc92f1542e01a0bc005045bc67da912d74e2830f40158800a12ecac3b1cc706.png" src="../_images/3cc92f1542e01a0bc005045bc67da912d74e2830f40158800a12ecac3b1cc706.png" />
+<img alt="../_images/b6eae97ca4dc508bb27415801b21ee6b8120142cf046d46ad401094578a2c8d3.png" src="../_images/b6eae97ca4dc508bb27415801b21ee6b8120142cf046d46ad401094578a2c8d3.png" />
+<img alt="../_images/f0387ce52b8d769c959c75b8a590bb4ad12847e2e8a754b6f62815471ef2b709.png" src="../_images/f0387ce52b8d769c959c75b8a590bb4ad12847e2e8a754b6f62815471ef2b709.png" />
+<img alt="../_images/e3615e2d98fef7e932f8d6a46f595910d6b3bbe170f62df54c81adec03d0ee21.png" src="../_images/e3615e2d98fef7e932f8d6a46f595910d6b3bbe170f62df54c81adec03d0ee21.png" />
+<img alt="../_images/a88a38abc2b78b8c8cc2b794c160ce43a6052f9b231f896485b651d7f71a2e3d.png" src="../_images/a88a38abc2b78b8c8cc2b794c160ce43a6052f9b231f896485b651d7f71a2e3d.png" />
+<img alt="../_images/5e1a74d7d3b0c44b4f425f7542fc741a142f1fe6e5a861effc939e8be5f7db08.png" src="../_images/5e1a74d7d3b0c44b4f425f7542fc741a142f1fe6e5a861effc939e8be5f7db08.png" />
+<img alt="../_images/8ac390fe9ba8495d15663543531b670756c7ead857e9f60d1aa6bafd2dbb4ba0.png" src="../_images/8ac390fe9ba8495d15663543531b670756c7ead857e9f60d1aa6bafd2dbb4ba0.png" />
+<img alt="../_images/1e08173e2060e65f19364c559a2c524b3fd8b3b3cb4a03a777e7157d42b20e4b.png" src="../_images/1e08173e2060e65f19364c559a2c524b3fd8b3b3cb4a03a777e7157d42b20e4b.png" />
+<img alt="../_images/32705a037ede55b611b2f0fe6c8b16244be6a23c9c34480edc19a460aaeecde4.png" src="../_images/32705a037ede55b611b2f0fe6c8b16244be6a23c9c34480edc19a460aaeecde4.png" />
+</div>
+</div>
+<p>We now do the inner propagation with the computed alpha step. The number of steps is harder to determine automatically for arbitrary shapes. We leave it for future work. At the moment it is easiest to manually set the total number of steps.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_distance_inside</span> <span class="o">=</span> <span class="mi">30</span> <span class="c1"># voxels. </span>
+
+<span class="c1"># further inside propagation. </span>
+<span class="n">Suv_prop_inside</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">prop_ref_surface</span><span class="p">(</span><span class="n">S_uv</span><span class="p">[</span><span class="o">...</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> 
+                                          <span class="n">vol_size</span><span class="o">=</span><span class="n">binary_img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>  
+                                          <span class="n">vol_binary</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># we can specify a predefined binary for signed distance transform. </span>
+                                          <span class="n">d_step</span><span class="o">=</span> <span class="o">-</span><span class="n">alpha</span><span class="p">,</span>  <span class="c1"># note sign reversal of step to move into the cell. </span>
+                                          <span class="n">n_dist</span><span class="o">=</span><span class="n">max_distance_inside</span><span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">alpha</span><span class="p">,</span> 
+                                          <span class="n">surf_pts_ref</span><span class="o">=</span><span class="n">surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="o">...</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="c1"># not currently used to autodetermine number of steps</span>
+                                          <span class="n">pad_dist</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
+                                          <span class="n">smooth_method</span><span class="o">=</span><span class="s1">&#39;uniform&#39;</span><span class="p">,</span> 
+                                          <span class="n">smooth_win</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Suv_prop_inside</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> 
+<span class="n">N_in</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Suv_prop_inside</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># this is the total number of steps into cell. </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 64/64 [00:08&lt;00:00,  7.12it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(65, 256, 512, 3)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># use matplotlib and plot every 10th iteration wireframe surface to see the effect relative to the surface mesh with this inside surface propagation  </span>
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">plt</span> 
+
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">Suv_prop_inside</span><span class="p">),</span> <span class="n">sampling</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">,</span> <span class="n">proj_type</span> <span class="o">=</span> <span class="s1">&#39;ortho&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># this works. </span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+               <span class="n">surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+               <span class="n">surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span> <span class="c1"># note the surface mesh vertices are inverse order to the image. </span>
+    <span class="c1"># plot the propagated surface.</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot_wireframe</span><span class="p">(</span><span class="n">Suv_prop_inside</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+                      <span class="n">Suv_prop_inside</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+                      <span class="n">Suv_prop_inside</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">rstride</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0e69917fdbc0129d6027b29539eabd38fc03ee803fe6feaacd9a7dc3a8beca42.png" src="../_images/0e69917fdbc0129d6027b29539eabd38fc03ee803fe6feaacd9a7dc3a8beca42.png" />
+<img alt="../_images/f5e0f3fae4d66f002ea1884668cf05fca9ca53328dfae3b3f5874ad76714d6a8.png" src="../_images/f5e0f3fae4d66f002ea1884668cf05fca9ca53328dfae3b3f5874ad76714d6a8.png" />
+<img alt="../_images/4884bb78a5d541021514116a6d1254e3f4505130df02facb6299bea136e616de.png" src="../_images/4884bb78a5d541021514116a6d1254e3f4505130df02facb6299bea136e616de.png" />
+<img alt="../_images/5bce56f0c205ba3d9abdf23787d71bc1296a5e75660cc30e29fbeac276387acf.png" src="../_images/5bce56f0c205ba3d9abdf23787d71bc1296a5e75660cc30e29fbeac276387acf.png" />
+<img alt="../_images/5219484dcb7d4fe6e84bf46015e23c2c88a581dec06064aba2b9294db788ae60.png" src="../_images/5219484dcb7d4fe6e84bf46015e23c2c88a581dec06064aba2b9294db788ae60.png" />
+<img alt="../_images/fd3705e1c492fb8939d4e2da25aabcf7cc10058b5e8b02f9ba3cd16bed3035d2.png" src="../_images/fd3705e1c492fb8939d4e2da25aabcf7cc10058b5e8b02f9ba3cd16bed3035d2.png" />
+<img alt="../_images/9664ef56ca165f3ca9957fdbbb73f037a8623c89a0ac1c1ab0a53550824558a6.png" src="../_images/9664ef56ca165f3ca9957fdbbb73f037a8623c89a0ac1c1ab0a53550824558a6.png" />
+</div>
+</div>
+<p>Finally, we combine both the outside and inside propagation accounting for double counting of the reference surface.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">topographic_coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">Suv_prop_inside</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="c1"># flip the inside propagation so that we have continuous evolution from innermost to outermost.</span>
+                                          <span class="n">Suv_prop_outside</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;final topographic coordinates shape: &#39;</span><span class="p">,</span> <span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>final topographic coordinates shape:  (192, 256, 512, 3)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mapping-cartesian-volume-quantities-i-v-x-y-z-into-the-topographic-volume-space-v-d-u-v">
+<h2>Mapping Cartesian volume quantities <span class="math notranslate nohighlight">\(I(V(x,y,z))\)</span> into the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span><a class="headerlink" href="#mapping-cartesian-volume-quantities-i-v-x-y-z-into-the-topographic-volume-space-v-d-u-v" title="Link to this heading">#</a></h2>
+<p>We have now constructed a bijective mapping from topographic <span class="math notranslate nohighlight">\((d,u,v)\)</span> into Cartesian <span class="math notranslate nohighlight">\((x,y,z)\)</span> space. Specifically it maps a subvolume around <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>. We can now visualize any scalar quantity of interest in our topographic space with the huge huge advantage of seeing everything in the vicinity of the cell surface in a single field-of-view !</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">For fun, let&#39;s take a look at how the topographic volume maps into the Cartesian volume. </span>
+
+<span class="sd">We will do this by coloring each (d,u,v) coordinate with a unique color. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.colors</span> <span class="k">as</span> <span class="nn">vol_colors</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span> 
+
+<span class="n">topographic_space_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">topographic_space_color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mi">255</span><span class="o">*</span><span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">topographic_space_index</span><span class="p">,</span>
+                                                             <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral</span><span class="p">)[</span><span class="o">...</span><span class="p">,:</span><span class="mi">3</span><span class="p">])</span>
+
+
+<span class="c1"># check the mid-slices of the colormap to see how it looks in the three orthogonal views.</span>
+<span class="n">topography_size</span> <span class="o">=</span> <span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">topographic_space_color</span><span class="p">[</span><span class="n">topography_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">,:,:])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">topographic_space_color</span><span class="p">[:,</span><span class="n">topography_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">,:])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">topographic_space_color</span><span class="p">[:,:,</span><span class="n">topography_size</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d685dda12c43670146d57db299d8172224729c64ba76933d718d5527e866782c.png" src="../_images/d685dda12c43670146d57db299d8172224729c64ba76933d718d5527e866782c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now we initialise an array based on the size of the original cartesian volume image</span>
+<span class="n">topographic_cartesian_color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">binary_img</span><span class="o">.</span><span class="n">shape</span><span class="o">+</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+<span class="c1">#populate the color using the topographic coordinates. for simplicity we cast the float to int.</span>
+<span class="n">topographic_cartesian_color</span><span class="p">[</span><span class="n">topographic_coordinates</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span> 
+                            <span class="n">topographic_coordinates</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span> 
+                            <span class="n">topographic_coordinates</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)]</span> <span class="o">=</span> <span class="n">topographic_space_color</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">img_size</span> <span class="o">=</span> <span class="n">binary_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+
+
+<span class="c1"># Now we take a look at the topography space mapped into the volume ! </span>
+<span class="c1"># We see the covering is good except as expected the North/South poles where we expect undersampling. </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">topographic_cartesian_color</span><span class="p">[</span><span class="n">img_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">,:,:])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">topographic_cartesian_color</span><span class="p">[:,</span><span class="n">img_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">,:])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">topographic_cartesian_color</span><span class="p">[:,:,</span><span class="n">img_size</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b488e92d9d605bb1d7c049f31c049fc9edb3ab0d3aef5ab178f5529fd88bd0b5.png" src="../_images/b488e92d9d605bb1d7c049f31c049fc9edb3ab0d3aef5ab178f5529fd88bd0b5.png" />
+</div>
+</div>
+<p>Now let’s map the original image into a topographic volume image !. We do this by linear interpolation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Image_Functions.image</span> <span class="k">as</span> <span class="nn">image_fn</span>
+
+<span class="n">topographic_I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">(</span><span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp3</span><span class="p">(</span><span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> 
+                                                       <span class="n">grid_shape</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> 
+                                                       <span class="n">I_ref</span><span class="o">=</span><span class="n">img</span><span class="p">))</span>
+<span class="n">topographic_I</span> <span class="o">=</span> <span class="n">topographic_I</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># visualize the mid cross sections of topographic and original cartesian.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Topographic mid cross-section intensities&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">topographic_I</span><span class="p">[</span><span class="n">topography_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">,:,:],</span><span class="mi">2</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">topographic_I</span><span class="p">[:,</span><span class="n">topography_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">,:],</span><span class="mi">2</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">topographic_I</span><span class="p">[:,:,</span><span class="n">topography_size</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">],</span><span class="mi">2</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cartesian mid cross-section intensities&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="n">img_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">,:,:],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">[:,</span><span class="n">img_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">,:],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">[:,:,</span><span class="n">img_size</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/487b1a71b2a1172c6641d84dbe604980412c9323578e9f71e624b979af462dcb.png" src="../_images/487b1a71b2a1172c6641d84dbe604980412c9323578e9f71e624b979af462dcb.png" />
+<img alt="../_images/d94b7194fe857b373b045c5c09dec804e393fbf730eede82fb8b373559f2d5cc.png" src="../_images/d94b7194fe857b373b045c5c09dec804e393fbf730eede82fb8b373559f2d5cc.png" />
+</div>
+</div>
+<p>You will notice that the tips of the protrusions appear ‘squeezed together’. This is because the equiareal parameterization was of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>. If this was of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> then the protrusions would be represented much more accurately. One way to do this is to use the interpolated coordinates of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> in the area-distoration relaxation instead.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Finally we save the constructed topographic coordinates - we will use this next to map the original segmentation binary and derive a topographic surface mesh</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Save the basic parameters for replication. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">spio</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                          <span class="s1">&#39;topographic_volume_space.mat&#39;</span><span class="p">),</span> 
+             <span class="p">{</span><span class="s1">&#39;topographic_map&#39;</span><span class="p">:</span> <span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> 
+              <span class="s1">&#39;uv_map_file&#39;</span><span class="p">:</span> <span class="n">uv_file</span><span class="p">,</span> 
+              <span class="s1">&#39;N_inside&#39;</span><span class="p">:</span> <span class="n">N_in</span><span class="p">,</span> 
+              <span class="s1">&#39;N_outside&#39;</span><span class="p">:</span> <span class="n">N_out</span><span class="p">})</span> 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="we-now-proceed-to-step-6-notebook-to-obtain-the-topographic-surface-parameterization-of-the-input-surface">
+<h1>We now proceed to step 6 notebook to obtain the topographic surface parameterization of the input surface<a class="headerlink" href="#we-now-proceed-to-step-6-notebook-to-obtain-the-topographic-surface-parameterization-of-the-input-surface" title="Link to this heading">#</a></h1>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "conda-env-unwrap3D_test-py"
+        },
+        kernelOptions: {
+            name: "conda-env-unwrap3D_test-py",
+            path: "./03_basic_workflow"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'conda-env-unwrap3D_test-py'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Step4_uv_mapping_spherical_parameterization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Step6_find_topographic_surface_mesh.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 5: Building a topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space using the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterized <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-s-x-y-z-and-s-u-v-parameterization-and-create-an-analysis-save-folder">Load <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S(u,v)\)</span> parameterization and create an analysis save folder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#propagating-s-u-v-to-build-the-topographic-volume-space-v-d-u-v">Propagating <span class="math notranslate nohighlight">\(S(u,v)\)</span> to build the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-cartesian-volume-quantities-i-v-x-y-z-into-the-topographic-volume-space-v-d-u-v">Mapping Cartesian volume quantities <span class="math notranslate nohighlight">\(I(V(x,y,z))\)</span> into the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-now-proceed-to-step-6-notebook-to-obtain-the-topographic-surface-parameterization-of-the-input-surface">We now proceed to step 6 notebook to obtain the topographic surface parameterization of the input surface</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Felix Y. Zhou
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>
+Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/main/LICENSE" target="_blank">GPL3</a> unless mentioned otherwise. 
+</p>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
