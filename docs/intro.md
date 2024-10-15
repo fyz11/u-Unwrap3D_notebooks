@@ -1,19 +1,16 @@
 # u-Unwrap3D Analysis Notebooks
 
 This collection of [Python](https://www.python.org/)
-[jupyter](https://jupyter.org/) notebooks are written for Python users who are interested in 
-analyzing three dimensional images of cells, tissues, organoids and organisms acquired using modern fluorescence microscopes. 
+[jupyter](https://jupyter.org/) notebooks are written for Python users who are interested in analyzing three dimensional cell surfaces, particularly interrogating the co-fluctuation of surface morphology with other surface-associated measurements which may be but not limited to: activity of molecular markers, cell-cell interactions, cell-environment interactions etc. It uses the u-Unwrap3D package which is described in the following technical papers:
 
-## Structure of this Jupyter book
+1. u-Unwrap3D: [Surface-guided computing to analyze subcellular morphology and membrane-associated signals in 3D](https://www.biorxiv.org/content/10.1101/2023.04.12.536640v2)
 
-The chapters of this book initially cover basics in Python, image processing and image analysis. 
-Afterwards more advanced topics are covered including machine learning and statistics.
-The order of the chapters reflects typical image analysis workflows, starting at image visualization, filtering and segmentation, followed by feature extraction, tabular data wrangling, statistics, plotting and data visualization. 
-At the beginning of every chapter, basic terminology is introduced and installation instructions for the required Python libraries covered in this chapter are presented. 
-The notebooks aim to be self-contained, self-explanatory and fully reproducible. 
-Hence, the reader can download this Jupyter book and execute all notebooks as they are. 
-As a general requirement, a conda environment should be present on the reader's computer as explained in the first chapter.
+## Structure of this book
 
-## Covered Topics
+The book will first cover installation and implement the standard pipeline for performing the main analytical steps of transforming an input 3D surface and 3D image into lower-dimensional representations for analysis first described in publication 1 above. Then specific chapters are dedicated to provide more detailed explanations of the algorithms used, and how to customize and extend the standard workflow to timelapse image analysis.   
+
+The notebooks aim to be self-contained, self-explanatory and fully reproducible. Hence, the reader can download this Jupyter book and execute all notebooks as they are. 
+
+As a general requirement, a separate conda environment should be initialized on the reader's computer as explained in the first chapter.
 
 
