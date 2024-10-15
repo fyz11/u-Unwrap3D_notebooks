@@ -447,23 +447,34 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="standard-workflow-for-unwrapping-3d-surfaces">
 <h1>Standard workflow for unwrapping 3D surfaces<a class="headerlink" href="#standard-workflow-for-unwrapping-3d-surfaces" title="Link to this heading">#</a></h1>
-<p>This chapter will illustrate in code how to implement the illustrated standard workflow of mapping an input cell surface segmented from a microscopy image into other lower-dimensional representations which can be used for computing and visualization purposes. Throughout the transformation, we will map the mean curvature of the original surface denoted <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></p>
+<p>This chapter will illustrate in code how to implement the illustrated standard workflow of mapping an input cell surface segmented from a microscopy image into other lower-dimensional representations which can be used for computing and visualization purposes. Throughout the transformation, we will map the mean curvature of the original surface denoted <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>.</p>
+<p>It is assumed that we are working with the surface and image of a single cell.</p>
 <p><img alt="" src="../_images/u_unwrap3D_overview.png" /></p>
 <section id="a-note-on-mathematical-nomenclature">
 <h2>A note on mathematical nomenclature<a class="headerlink" href="#a-note-on-mathematical-nomenclature" title="Link to this heading">#</a></h2>
+<p>We use <span class="math notranslate nohighlight">\(S(\cdot)\)</span>, <span class="math notranslate nohighlight">\(V(\cdot)\)</span> to denote surfaces and their corresponding volumes respectively, where <span class="math notranslate nohighlight">\(\cdot\)</span> is the coordinate system.</p>
+<p>We use <span class="math notranslate nohighlight">\(F_i(S(\cdot))\)</span> and <span class="math notranslate nohighlight">\(F_i(V(\cdot))\)</span> to denote a functional measurement <span class="math notranslate nohighlight">\(i\)</span>  ‘displayed’ on the indicated surface or volume geometry. If not otherwise indicated, <span class="math notranslate nohighlight">\(F_i\)</span> is assumed to be measurements made of some feature of the input Cartesian surface, <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> or its volume <span class="math notranslate nohighlight">\(V(x,y,z)\)</span>.</p>
 <ul class="simple">
-<li><p>**Notation for surface geometry **</p>
+<li><p><strong>Notation for surface geometry</strong>:</p>
 <ul>
 <li><p><span class="math notranslate nohighlight">\(S(x,y,z)\)</span>: input 3D Cartesian <span class="math notranslate nohighlight">\((x,y,z)\)</span> surface</p></li>
 <li><p><span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span>: reference 3D Cartesian <span class="math notranslate nohighlight">\((x,y,z)\)</span> surface</p></li>
 <li><p><span class="math notranslate nohighlight">\(S_{\text{ref}}(r,\theta,\phi)\)</span>: 3D spherical parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p>
 <ul>
-<li><p><span class="math notranslate nohighlight">\(S_{\text{ref}^{\mathcal{Q}}}(r,\theta,\phi)\)</span>: (quasi-)conformal spherical parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(S_{\text{ref}^{\Ohm}}(r,\theta,\phi)\)</span>: (quasi-)equiareal spherical parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(S_{\text{ref}}^{\mathcal{Q}}(r,\theta,\phi)\)</span>: (quasi-)conformal spherical parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(S_{\text{ref}}^{\Omega}(r,\theta,\phi)\)</span>: (quasi-)equiareal spherical parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
 </ul>
 </li>
 <li><p><span class="math notranslate nohighlight">\(S_{\text{ref}}(u,v)\)</span>: 2D uv parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(S(d,u,v)\)</span>: 3D topographic surface of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>, relative to <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
+</ul>
+</li>
+<li><p><strong>Notation for volume geometry</strong>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(V(x,y,z)\)</span>: volume of the input 3D Cartesian <span class="math notranslate nohighlight">\((x,y,z)\)</span> surface, equivalent to the binary volume from which the surface was extracted from</p></li>
+<li><p><span class="math notranslate nohighlight">\(V_{\text{ref}}(x,y,z)\)</span>: volume of the reference 3D Cartesian <span class="math notranslate nohighlight">\((x,y,z)\)</span> surface, usually obtained from voxelization of the surface</p></li>
+<li><p><span class="math notranslate nohighlight">\(V_{\text{ref}}(r,\theta,\phi)\)</span>: volume of the 3D spherical parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(V(d,u,v)\)</span>: volume of the 3D topographic surface of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>, relative to <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span>. Note: this may not</p></li>
 </ul>
 </li>
 </ul>
