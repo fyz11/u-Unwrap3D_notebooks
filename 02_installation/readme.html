@@ -408,7 +408,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -424,6 +426,20 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-install-mini-conda">Step 1: Install Mini-conda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-download-and-install-u-unwrap3d-repository">Step 2: Download and Install u-Unwrap3D repository</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-create-conda-environment-for-u-unwrap3d">Step 3: Create Conda environment for u-Unwrap3D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-install-u-unwrap3d-from-cloned-repository">Step 4: Install u-Unwrap3D from cloned repository</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-installation-issues">Known Installation Issues</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -435,6 +451,47 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
+<p>We recommend creating a clean <em>Conda</em> environment to ensure dependencies don’t conflict with your existing Python installations. You will need to have installed or already have mini-conda and git on your system.</p>
+<section id="step-1-install-mini-conda">
+<h2>Step 1: Install Mini-conda<a class="headerlink" href="#step-1-install-mini-conda" title="Link to this heading">#</a></h2>
+<p>Download and install Conda for your operating system, following the instructions. We recommend the Conda distribution <a class="reference external" href="https://docs.anaconda.com/miniconda/">mini-conda</a>If prompted, add Conda to the PATH variable during installation.</p>
+</section>
+<section id="step-2-download-and-install-u-unwrap3d-repository">
+<h2>Step 2: Download and Install u-Unwrap3D repository<a class="headerlink" href="#step-2-download-and-install-u-unwrap3d-repository" title="Link to this heading">#</a></h2>
+<p>Clone the <a class="reference external" href="https://github.com/DanuserLab/u-unwrap3D">u-Unwrap3D repository</a> onto your system</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">DanuserLab</span><span class="o">/</span><span class="n">u</span><span class="o">-</span><span class="n">unwrap3D</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-create-conda-environment-for-u-unwrap3d">
+<h2>Step 3: Create Conda environment for u-Unwrap3D<a class="headerlink" href="#step-3-create-conda-environment-for-u-unwrap3d" title="Link to this heading">#</a></h2>
+<p>Open a terminal or command prompt in the root folder of the u-Unwrap3D repository. Create and activate a new conda environment with Python=3.9. Later versions should also work.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">u_Unwrap3D_env</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.9</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">u_Unwrap3D_env</span>
+</pre></div>
+</div>
+</section>
+<section id="step-4-install-u-unwrap3d-from-cloned-repository">
+<h2>Step 4: Install u-Unwrap3D from cloned repository<a class="headerlink" href="#step-4-install-u-unwrap3d-from-cloned-repository" title="Link to this heading">#</a></h2>
+<p>Perform <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> in the root folder of the u-Unwrap3D repository</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>alternatively, if you don’t want to clone you can use <code class="docutils literal notranslate"><span class="pre">pip</span></code> to also install the package directly without cloning from the github repository.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">u</span><span class="o">-</span><span class="n">unwrap3D</span><span class="nd">@git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">DanuserLab</span><span class="o">/</span><span class="n">u</span><span class="o">-</span><span class="n">unwrap3D</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<section id="known-installation-issues">
+<h3>Known Installation Issues<a class="headerlink" href="#known-installation-issues" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">scikit-fmm</span></code> compilation error
+The <code class="docutils literal notranslate"><span class="pre">scikit-fmm</span></code> dependency does not have pre-compiled wheels available in <code class="docutils literal notranslate"><span class="pre">pip</span></code>. This can create an error for operating systems without the necessary compilation tools installed. It is a minor dependency, therefore either remove this from the file <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>, if you have cloned the repository or install <code class="docutils literal notranslate"><span class="pre">scikit-fmm</span></code> first using <code class="docutils literal notranslate"><span class="pre">conda</span></code> using the <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code> channel:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">scikit</span><span class="o">-</span><span class="n">fmm</span>
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -491,6 +548,27 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-install-mini-conda">Step 1: Install Mini-conda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-download-and-install-u-unwrap3d-repository">Step 2: Download and Install u-Unwrap3D repository</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-create-conda-environment-for-u-unwrap3d">Step 3: Create Conda environment for u-Unwrap3D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-install-u-unwrap3d-from-cloned-repository">Step 4: Install u-Unwrap3D from cloned repository</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-installation-issues">Known Installation Issues</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
