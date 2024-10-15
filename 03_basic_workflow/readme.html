@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Basic workflow for unwrapping 3D surfaces &#8212; u-Unwrap3D Analysis Notebooks</title>
+    <title>Standard workflow for unwrapping 3D surfaces &#8212; u-Unwrap3D Analysis Notebooks</title>
   
   
   
@@ -182,7 +182,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Workflow</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Basic workflow for unwrapping 3D surfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Standard workflow for unwrapping 3D surfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="Step0_find_cell_surface_from_segmentation.html">Segmenting a single cell from a volume image</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="Step1_find_reference_surface.html">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</a></li>
@@ -410,7 +410,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -421,11 +423,19 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Basic workflow for unwrapping 3D surfaces</h1>
+    <h1>Standard workflow for unwrapping 3D surfaces</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-note-on-mathematical-nomenclature">A note on mathematical nomenclature</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -435,8 +445,29 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="basic-workflow-for-unwrapping-3d-surfaces">
-<h1>Basic workflow for unwrapping 3D surfaces<a class="headerlink" href="#basic-workflow-for-unwrapping-3d-surfaces" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="standard-workflow-for-unwrapping-3d-surfaces">
+<h1>Standard workflow for unwrapping 3D surfaces<a class="headerlink" href="#standard-workflow-for-unwrapping-3d-surfaces" title="Link to this heading">#</a></h1>
+<p>This chapter will illustrate in code how to implement the illustrated standard workflow of mapping an input cell surface segmented from a microscopy image into other lower-dimensional representations which can be used for computing and visualization purposes. Throughout the transformation, we will map the mean curvature of the original surface denoted <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></p>
+<p><img alt="" src="../_images/u_unwrap3D_overview.png" /></p>
+<section id="a-note-on-mathematical-nomenclature">
+<h2>A note on mathematical nomenclature<a class="headerlink" href="#a-note-on-mathematical-nomenclature" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>**Notation for surface geometry **</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(S(x,y,z)\)</span>: input 3D Cartesian <span class="math notranslate nohighlight">\((x,y,z)\)</span> surface</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span>: reference 3D Cartesian <span class="math notranslate nohighlight">\((x,y,z)\)</span> surface</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_{\text{ref}}(r,\theta,\phi)\)</span>: 3D spherical parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(S_{\text{ref}^{\mathcal{Q}}}(r,\theta,\phi)\)</span>: (quasi-)conformal spherical parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(S_{\text{ref}^{\Ohm}}(r,\theta,\phi)\)</span>: (quasi-)equiareal spherical parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
+</ul>
+</li>
+<li><p><span class="math notranslate nohighlight">\(S_{\text{ref}}(u,v)\)</span>: 2D uv parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(S(d,u,v)\)</span>: 3D topographic surface of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>, relative to <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -495,6 +526,21 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-note-on-mathematical-nomenclature">A note on mathematical nomenclature</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
