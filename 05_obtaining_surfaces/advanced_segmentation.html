@@ -59,11 +59,9 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '03_basic_workflow/Step0_find_cell_surface_from_segmentation';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '05_obtaining_surfaces/advanced_segmentation';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Step 1: Creating a genus-0 reference surface, \(S_{ref}(x,y,z)\) using conformalized mean curvature flow" href="Step1_find_reference_surface.html" />
-    <link rel="prev" title="Standard workflow for unwrapping 3D surfaces" href="readme.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -126,6 +124,8 @@
       
       
       
+        
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -181,21 +181,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../02_installation/readme.html">Installation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Workflow</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="readme.html">Standard workflow for unwrapping 3D surfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 0: Segmenting a single cell from a volume image</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_basic_workflow/readme.html">Standard workflow for unwrapping 3D surfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step0_find_cell_surface_from_segmentation.html">Step 0: Segmenting a single cell from a volume image</a></li>
 
-<li class="toctree-l2"><a class="reference internal" href="Step1_find_reference_surface.html">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step1_find_reference_surface.html">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</a></li>
 
-<li class="toctree-l2"><a class="reference internal" href="Step2_quasiconformal_spherical_parameterization.html">Step 2: Quasi-conformal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step2_quasiconformal_spherical_parameterization.html">Step 2: Quasi-conformal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 
-<li class="toctree-l2"><a class="reference internal" href="Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 
-<li class="toctree-l2"><a class="reference internal" href="Step4_uv_mapping_spherical_parameterization.html">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step4_uv_mapping_spherical_parameterization.html">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></a></li>
 
-<li class="toctree-l2"><a class="reference internal" href="Step5_building_topography_surface.html">Step 5: Building a topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space using the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterized <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step5_building_topography_surface.html">Step 5: Building a topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space using the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterized <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 
-<li class="toctree-l2"><a class="reference internal" href="Step6_find_topographic_surface_mesh.html">Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/Step6_find_topographic_surface_mesh.html">Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space</a></li>
 
 </ul>
 </details></li>
@@ -206,7 +206,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">In-depth Breakdown of Mapping Steps</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../05_obtaining_surfaces/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../06_find_reference_surface/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../07_uv_parameterization/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../08_building_topography_space/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
@@ -309,7 +309,7 @@
       
       
       
-      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks/issues/new?title=Issue%20on%20page%20%2F03_basic_workflow/Step0_find_cell_surface_from_segmentation.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks/issues/new?title=Issue%20on%20page%20%2F05_obtaining_surfaces/advanced_segmentation.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -339,7 +339,7 @@
       
       
       
-      <li><a href="../_sources/03_basic_workflow/Step0_find_cell_surface_from_segmentation.ipynb" target="_blank"
+      <li><a href="../_sources/05_obtaining_surfaces/advanced_segmentation.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -434,14 +434,13 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 0: Segmenting a single cell from a volume image</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-binary-segmentation-using-otsu-thresholding">Basic binary segmentation using Otsu thresholding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-segmentation-with-otsu-thresholding">Binary segmentation with Otsu thresholding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-curvature-measurement-from-binary-segmentation">Mean curvature measurement from binary segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-meshing-the-binary-segmentation-and-mapping-the-curvature-onto-the-mesh">Surface meshing the binary segmentation and mapping the curvature onto the mesh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-surface-proximal-membrane-signals-by-traversing-along-the-steepest-gradient-descent-normal-into-the-cell">Mapping surface proximal membrane signals by traversing along the steepest gradient descent normal into the cell</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-meshing-the-binary-segmentation">Surface meshing the binary segmentation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-the-mean-curvature-of-the-surface-h-s-x-y-z-and-coloring-on-the-surface-mesh">Measuring the mean curvature of the surface, <span class="math notranslate nohighlight">\((H(S(x,y,z)))\)</span> and coloring on the surface mesh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-surface-proximal-membrane-signals-by-traversing-along-the-gradient-of-a-distance-transform-into-the-cell">Map surface proximal membrane signals by traversing along the gradient of a distance transform into the cell</a></li>
-</ul>
-</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-now-proceed-to-step-1-notebook-to-run-conformalized-mean-curvature-flow-and-derive-a-genus-0-reference-shape">We now proceed to step 1 notebook to run conformalized mean curvature flow and derive a genus-0 reference shape …</a></li>
 </ul>
 
             </nav>
@@ -456,13 +455,11 @@ document.write(`
                   
   <section id="step-0-segmenting-a-single-cell-from-a-volume-image">
 <h1>Step 0: Segmenting a single cell from a volume image<a class="headerlink" href="#step-0-segmenting-a-single-cell-from-a-volume-image" title="Link to this heading">#</a></h1>
-<p>In order to remap a cell surface in u-Unwrap3D, the cell must be first segmented from the volumetric image to obtain a binary image. A surface mesh is then created from the binary image typically using the marching cubes algorithm.</p>
+<p>In order to remap a cell surface in u-Unwrap3D, the cell must be first segmented from the volumetric image and a surface mesh created.</p>
 <p>This workbook walks through this process.</p>
 <p><strong>N.B:</strong> We illustrate the most basic way to segment a cell using an automatic binary thresholding method. This fundamentally assumes you have high signal-to-noise ratio image where the single cell is very well delineated from the background. Moreover it assumes the illumination is uniform and the cell is bright. Thus it is not generally applicable. If you have a better 3D segmentation method, please use that and only follow to see how to extract a surface mesh.</p>
-<p><strong>Warning concerning segmentation</strong>:
-In order to ensure the extracted mesh truly captures the surface, it is crucial to check in this step that the binary image is indeed capturing the whole cell such that the interior cell volume is ‘filled’. An easy check is to visualize a mid-section slice of the binary, and check the interior all has the equivalent of a binary 1. If this is not true, the cell will be ‘double-meshed’ and the extracted ‘surface’ actually represents the exterior shell. Whilst u-Unwrap3D can handle these imperfect surface meshes, they do affect quantification e.g. you will measure approximately twice larger surface area, and a very small cell volume.</p>
-<section id="basic-binary-segmentation-using-otsu-thresholding">
-<h2>Basic binary segmentation using Otsu thresholding<a class="headerlink" href="#basic-binary-segmentation-using-otsu-thresholding" title="Link to this heading">#</a></h2>
+<section id="binary-segmentation-with-otsu-thresholding">
+<h2>Binary segmentation with Otsu thresholding<a class="headerlink" href="#binary-segmentation-with-otsu-thresholding" title="Link to this heading">#</a></h2>
 <p>We read in the volume image used in Fig.1 of the u-Unwrap3D paper and also create a savefolder to store the results of analysis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -474,9 +471,6 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 <span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.volume_img</span> <span class="k">as</span> <span class="nn">vol_img_viz</span> <span class="c1"># for creating a montage maximum projection</span>
 <span class="kn">import</span> <span class="nn">unwrap3D.Utility_Functions.file_io</span> <span class="k">as</span> <span class="nn">fio</span> <span class="c1"># for common IO functions</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Specifying image file location and parsing its name. </span>
-<span class="sd">&quot;&quot;&quot;</span>
 <span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;../../data/img&#39;</span>
 <span class="n">imgfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imgfolder</span><span class="p">,</span> <span class="s1">&#39;bleb_example.tif&#39;</span><span class="p">)</span>
 
@@ -516,7 +510,7 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 <img alt="../_images/72ef2458c3f13850a3329cb81942bf99038d137a55321fa95c02265280703c18.png" src="../_images/72ef2458c3f13850a3329cb81942bf99038d137a55321fa95c02265280703c18.png" />
 </div>
 </div>
-<p>The image contains a single cell. The whole of the cell is brighter than the background. Moreover the signal-to-noise (SNR) ratio is excellent, with the cell well-delineated from the background. In this case, we can segment the single cell with an intensity threshold automatically determined by <a class="reference external" href="https://en.wikipedia.org/wiki/Otsu%27s_method">Otsu’s method</a> from the scikit-image library (<a class="reference external" href="https://scikit-image.org/docs/stable/api/skimage.filters.html#skimage.filters.threshold_otsu">skimage.filters.threshold_otsu</a>).</p>
+<p>Since the signal-to-noise ratio of this is good, we segment with an intensity threshold automatically determined from Otsu’s method from the scikit-image library.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Segmentation.segmentation</span> <span class="k">as</span> <span class="nn">segmentation</span> <span class="c1"># import the segmentation submodule which wraps the Otsu method</span>
@@ -553,88 +547,21 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 <img alt="../_images/cf8f87021d6d8b9e55f6fcfa1a78035621321ea04af9f61b98d796e46c44fade.png" src="../_images/cf8f87021d6d8b9e55f6fcfa1a78035621321ea04af9f61b98d796e46c44fade.png" />
 </div>
 </div>
-<p>We see from the cross-section visualization of x-y, x-z and y-z views, that the segmentation captures the full cell, with the cell interior filled in (i.e. all white pixels). Therefore we move ahead to extract its surface using marching cubes.</p>
 </section>
-</section>
-<section id="surface-meshing-the-binary-segmentation">
-<h1>Surface meshing the binary segmentation<a class="headerlink" href="#surface-meshing-the-binary-segmentation" title="Link to this heading">#</a></h1>
-<p>We mesh the binary segmentation (0 or 1 value) using marching cubes at an isovalue of 0.5. The triangles obtained from this are very heterogeneous. Ideally, in mesh analysis, triangles should be close to regular and equilateral. This is particularly important for later steps where we need to solve differential equations on the mesh. Therefore we apply remeshing on the marching cubes output.</p>
-<p>u-Unwrap3D provides two isotropic remeshing algorithms: 1) <a class="reference external" href="https://github.com/pyvista/pyacvd">pyacvd</a> which uses voronoi clustering or 2) the incremental method of Botsch in <a class="reference external" href="https://doc.cgal.org/latest/Polygon_mesh_processing/index.html">CGAL</a> based on splitting long edge lengths and collapsing short ones to obtain uniform triangles of a desired length.</p>
-<p>We developed u-Unwrap3D initially using method 1 which does not work without requesting an output mesh with fewer vertices (typically at least &lt; 0.5x starting number of vertices). We have since found that the Botsch method is more robust, computable for output mesh with more, same and less vertices, and it better preserves ‘sharp’ high curvature features. This is now our recommended method, and is used here.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Mesh.meshtools</span> <span class="k">as</span> <span class="nn">meshtools</span> <span class="c1"># load in the meshtools submodule</span>
-
-<span class="n">img_binary_surf_mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">marching_cubes_mesh_binary</span><span class="p">(</span><span class="n">img_binary</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="c1"># The transpose is to be consistent with ImageJ rendering and Matlab convention  </span>
-                                                                <span class="n">presmooth</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="c1"># applies a presmooth</span>
-                                                                <span class="n">contourlevel</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span>
-                                                                <span class="n">remesh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                                <span class="n">remesh_method</span><span class="o">=</span><span class="s1">&#39;CGAL&#39;</span><span class="p">,</span> <span class="c1"># &#39;pyacvd&#39; = method 1, &#39;CGAL&#39; = method 2</span>
-                                                                <span class="n">remesh_samples</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="c1"># remeshing with a target #vertices. 0.5 = 50% of original vertex number</span>
-                                                                <span class="n">predecimate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># this applies quadric mesh simplication to remove very small edges before remeshing. This must be True if using method 1, &#39;pyacvd&#39;</span>
-                                                                <span class="n">min_mesh_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="c1"># enforce at least this number of vertices.</span>
-                                                                <span class="n">upsamplemethod</span><span class="o">=</span><span class="s1">&#39;inplane&#39;</span><span class="p">)</span> <span class="c1"># upsample the mesh if after the simplification and remeshing &lt; min_mesh_size  </span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">A quick way to check the genus is to get the euler number. The genus of the mesh is related to the euler number by</span>
-<span class="sd">A genus-0 mesh should have euler number = 2</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Euler characteristic of mesh is: &#39;</span><span class="p">,</span> <span class="n">img_binary_surf_mesh</span><span class="o">.</span><span class="n">euler_number</span><span class="p">)</span> <span class="c1">#should be 2 if genus is 0</span>
-
-<span class="c1"># we also provide a more comprehensive function for common mesh properties</span>
-<span class="n">mesh_property</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">measure_props_trimesh</span><span class="p">(</span><span class="n">img_binary_surf_mesh</span><span class="p">,</span> <span class="n">main_component</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
-
-<span class="nb">print</span><span class="p">(</span><span class="n">mesh_property</span><span class="p">)</span> <span class="c1"># note: if we have a proper surface mesh, &#39;volume&#39;=True, Technically the mesh should also be &#39;watertight&#39; but this is too strict a condition and often doesn&#39;t hold true for meshes of complex cell surface morphologies obtained from cell segmentation.</span>
-
-<span class="c1"># we also provide a function to check triangle quality. </span>
-<span class="n">triangle_property</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">measure_triangle_props</span><span class="p">(</span><span class="n">img_binary_surf_mesh</span><span class="p">,</span> <span class="n">clean</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">triangle_property</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Euler characteristic of mesh is:  2
-{&#39;convex&#39;: False, &#39;volume&#39;: True, &#39;watertight&#39;: True, &#39;orientability&#39;: True, &#39;euler_number&#39;: 2, &#39;genus&#39;: 0.0}
-{&#39;min_angle&#39;: 31.001835560609603, &#39;avg_angle&#39;: 60.000000000000014, &#39;max_angle&#39;: 104.81219458015215, &#39;std_dev_angle&#39;: 8.923689441212806, &#39;min_quality&#39;: 0.654771104193233, &#39;avg_quality&#39;: 0.965323078564477, &#39;max_quality&#39;: 0.9999994081997989, &#39;quality&#39;: array([0.9766652 , 0.95054543, 0.96960764, ..., 0.73999298, 0.82937982,
-       0.83884083]), &#39;angles&#39;: array([[1.05132536, 0.89254217, 1.19772513],
-       [0.80075156, 1.20338585, 1.13745524],
-       [0.91410565, 1.25104304, 0.97644396],
-       ...,
-       [1.70714756, 0.75943757, 0.67500753],
-       [1.56349544, 0.74061199, 0.83748522],
-       [1.53577656, 0.71951787, 0.88629823]])}
-</pre></div>
-</div>
-</div>
-</div>
-<section id="measuring-the-mean-curvature-of-the-surface-h-s-x-y-z-and-coloring-on-the-surface-mesh">
-<h2>Measuring the mean curvature of the surface, <span class="math notranslate nohighlight">\((H(S(x,y,z)))\)</span> and coloring on the surface mesh<a class="headerlink" href="#measuring-the-mean-curvature-of-the-surface-h-s-x-y-z-and-coloring-on-the-surface-mesh" title="Link to this heading">#</a></h2>
-<p>There are many ways to determine the mean curvature of the surface with different pros and cons.</p>
-<ol class="arabic simple">
-<li><p><strong>From surface mesh</strong></p></li>
-</ol>
-<p>Measuring surface mean curvature typically involves fitting a local plane to neighborhood vertices of a surface mesh. see: <code class="docutils literal notranslate"><span class="pre">unwrap3D.Mesh.meshtools.compute_mean_curvature</span></code>. If the surface mesh has topological errors, e.g. containing holes, this measurement is not accurate. It can also be subject to the quality of the triangle faces and choice of neighborhood radius.</p>
-<ol class="arabic simple" start="2">
-<li><p><strong>From binary segmentation</strong></p></li>
-</ol>
-<p>We find it easier and more accurate for downstream quantification to measure curvature from the continuous definition of mean curvature, <span class="math notranslate nohighlight">\(H\)</span> using the binary segmentation whereby we can easily apply morphological operations like dilation and hole-filling to fix small mesh errors.</p>
+<section id="mean-curvature-measurement-from-binary-segmentation">
+<h2>Mean curvature measurement from binary segmentation<a class="headerlink" href="#mean-curvature-measurement-from-binary-segmentation" title="Link to this heading">#</a></h2>
+<p>Measuring mean curvature from a mesh involves fitting a local plane to neighborhood vertices. As such the result is subject to the quality of the triangle faces and choice of neighborhood radius. We find it easier and more accurate for downstream quantification to apply the continuous definition of mean curvature, <span class="math notranslate nohighlight">\(H\)</span></p>
 <div class="math notranslate nohighlight">
 \[ H = {-\frac{1}{2} \nabla \cdot \hat{n}} \]</div>
 <p>where <span class="math notranslate nohighlight">\(\hat{n}\)</span> is the unit surface normal vector, and also the gradient of the signed distance function <span class="math notranslate nohighlight">\(\Phi\)</span> of the binary segmentation.</p>
 <div class="math notranslate nohighlight">
 \[ \hat{n} = {\nabla \Phi} \]</div>
-<p>The curvature at the surface is then obtained by interpolating at the surface mesh vertices.</p>
-<p>This is however typically slower.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Mesh.meshtools</span> <span class="k">as</span> <span class="nn">meshtools</span>
-
-<span class="c1"># compute the continuous mean curvature definition and smooth slightly with a Gaussian of sigma=3.  </span>
-<span class="n">surf_H</span><span class="p">,</span> <span class="p">(</span><span class="n">H_binary</span><span class="p">,</span> <span class="n">H_sdf_vol_normal</span><span class="p">,</span> <span class="n">H_sdf_vol</span><span class="p">)</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">compute_mean_curvature_from_binary</span><span class="p">(</span><span class="n">img_binary_surf_mesh</span><span class="p">,</span> 
-                                                                                    <span class="n">img_binary</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> 
-                                                                                    <span class="n">smooth_gradient</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="c1"># adjusts smoothing, plays similar role to neighborhood radius in mesh method</span>
-                                                                                    <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
-                                                                                    <span class="n">invert_H</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># set True if you want positive values to correspond to positive curvature on the surface like blebs and binary is not transposed, otherwise set False. </span>
-                                                                                    <span class="n">return_H_img</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># set return_H_img to be True, if </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute the continuous mean curvature definition and smooth slightly with a Gaussian of sigma=3.  </span>
+<span class="n">H_binary</span><span class="p">,</span> <span class="n">H_sdf_vol_normal</span><span class="p">,</span> <span class="n">H_sdf_vol</span> <span class="o">=</span> <span class="n">segmentation</span><span class="o">.</span><span class="n">mean_curvature_binary</span><span class="p">(</span><span class="n">img_binary</span><span class="p">,</span> 
+                                                                           <span class="n">smooth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
+                                                                           <span class="n">mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># if mask=True, only the curvature of a thin shell (+/-smooth) around the binary segmentation is returned. </span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
@@ -644,26 +571,69 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">H_binary</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Spectral_r&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1"># if mask=True above, the following line is necessary to enable interpolation.</span>
+<span class="n">H_binary</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">H_binary</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span> 
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/4139dc314f45bbf6ae80967ff3151000585c13c41ce2c22a03929616522d9122.png" src="../_images/4139dc314f45bbf6ae80967ff3151000585c13c41ce2c22a03929616522d9122.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\s205272\AppData\Local\Temp\ipykernel_9880\2889383254.py:8: RuntimeWarning: Mean of empty slice
+  plt.imshow(np.nanmean(H_binary,axis=0), cmap=&#39;Spectral_r&#39;); plt.grid(&#39;off&#39;); plt.axis(&#39;off&#39;)
+C:\Users\s205272\AppData\Local\Temp\ipykernel_9880\2889383254.py:10: RuntimeWarning: Mean of empty slice
+  plt.imshow(np.nanmean(H_binary,axis=1), cmap=&#39;Spectral_r&#39;); plt.grid(&#39;off&#39;); plt.axis(&#39;off&#39;)
+C:\Users\s205272\AppData\Local\Temp\ipykernel_9880\2889383254.py:12: RuntimeWarning: Mean of empty slice
+  plt.imshow(np.nanmean(H_binary,axis=2), cmap=&#39;Spectral_r&#39;); plt.grid(&#39;off&#39;); plt.axis(&#39;off&#39;)
+</pre></div>
+</div>
+<img alt="../_images/24d3334370eca71b5feb65e5ab34ada84312d7c295c2c0fb68e32e0de7e77364.png" src="../_images/24d3334370eca71b5feb65e5ab34ada84312d7c295c2c0fb68e32e0de7e77364.png" />
 </div>
 </div>
+</section>
+<section id="surface-meshing-the-binary-segmentation-and-mapping-the-curvature-onto-the-mesh">
+<h2>Surface meshing the binary segmentation and mapping the curvature onto the mesh<a class="headerlink" href="#surface-meshing-the-binary-segmentation-and-mapping-the-curvature-onto-the-mesh" title="Link to this heading">#</a></h2>
+<p>We mesh the binary segmentation with Marching Cubes at an isovalue of 0.5 and also apply remeshing to obtain regular equilateral triangle faces. We color the surface according to the mean curvature calculated above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Image_Functions.image</span> <span class="k">as</span> <span class="nn">image_fn</span> <span class="c1"># for common image processing functions</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Mesh.meshtools</span> <span class="k">as</span> <span class="nn">meshtools</span> <span class="c1"># load in the meshtools submodule</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Image_Functions.image</span> <span class="k">as</span> <span class="nn">image_fn</span> <span class="c1"># for common image processing functions</span>
 <span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.colors</span> <span class="k">as</span> <span class="nn">vol_colors</span> <span class="c1"># this is for colormapping any np.array using a color palette </span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span> <span class="c1"># this is for specifying a matplotlib color palette</span>
 
+<span class="n">img_binary_surf_mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">marching_cubes_mesh_binary</span><span class="p">(</span><span class="n">img_binary</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="c1"># The transpose is to be consistent with ImageJ rendering and Matlab convention  </span>
+                                                                <span class="n">presmooth</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="c1"># applies a presmooth</span>
+                                                                <span class="n">contourlevel</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span>
+                                                                <span class="n">remesh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                                <span class="n">remesh_method</span><span class="o">=</span><span class="s1">&#39;pyacvd&#39;</span><span class="p">,</span> 
+                                                                <span class="n">remesh_samples</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="c1"># remeshing with a target #vertices = 90% of original</span>
+                                                                <span class="n">predecimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># this applies quadric mesh simplication to remove very small edges before remeshing</span>
+                                                                <span class="n">min_mesh_size</span><span class="o">=</span><span class="mi">60000</span><span class="p">,</span>
+                                                                <span class="n">upsamplemethod</span><span class="o">=</span><span class="s1">&#39;loop&#39;</span><span class="p">)</span> <span class="c1"># upsample the mesh if after the simplification and remeshing &lt; min_mesh_size  </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A quick way to check the genus is to get the euler number. The genus of the mesh is related to the euler number by</span>
+<span class="sd">A genus-0 mesh should have euler number = 2</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Euler characteristic of mesh is: &#39;</span><span class="p">,</span> <span class="n">img_binary_surf_mesh</span><span class="o">.</span><span class="n">euler_number</span><span class="p">)</span> <span class="c1">#should be 2 if genus is 0</span>
+
+<span class="c1"># we also provide a more comprehensive function for common mesh properties</span>
+<span class="n">mesh_property</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">measure_props_trimesh</span><span class="p">(</span><span class="n">img_binary_surf_mesh</span><span class="p">,</span> <span class="n">main_component</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+
+<span class="nb">print</span><span class="p">(</span><span class="n">mesh_property</span><span class="p">)</span>
+
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">We map the curvature values to a colorscheme for display. To set the scale, we use the voxel size to convert to metric units of $\mu m^{-1}$</span>
+<span class="sd">We interpolate the mean curvature at the mesh vertex points using trilinear interpolation and convert this to a colormap to &#39;paint&#39; onto the mesh</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># interpolation </span>
+<span class="n">surf_H</span> <span class="o">=</span> <span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp3</span><span class="p">(</span><span class="n">img_binary_surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="c1"># undo the transpose to be consistent with the volume</span>
+                                            <span class="n">grid_shape</span><span class="o">=</span> <span class="n">H_binary</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> 
+                                            <span class="n">I_ref</span><span class="o">=</span> <span class="n">H_binary</span><span class="p">,</span> 
+                                            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> 
+                                            <span class="n">cast_uint8</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
 <span class="c1"># we generate colors from the mean curvature </span>
-<span class="n">voxel_size</span> <span class="o">=</span> <span class="mf">0.104</span> <span class="c1">#um</span>
-<span class="n">surf_H_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">surf_H</span><span class="o">/</span><span class="n">voxel_size</span><span class="p">,</span> <span class="c1"># 0.104 is the voxel resolution -&gt; this converts to um^-1 </span>
+<span class="n">surf_H_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">surf_H</span><span class="o">/</span><span class="mf">.104</span><span class="p">,</span> <span class="c1"># 0.104 is the voxel resolution -&gt; this converts to um^-1 </span>
                                       <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral_r</span><span class="p">,</span> 
                                       <span class="n">vmin</span><span class="o">=-</span><span class="mf">1.</span><span class="p">,</span> 
                                       <span class="n">vmax</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span> <span class="c1"># colormap H with lower and upper limit of -1, 1 um^-1. </span>
@@ -676,12 +646,18 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Euler characteristic of mesh is:  2
+{&#39;convex&#39;: False, &#39;volume&#39;: True, &#39;watertight&#39;: True, &#39;orientability&#39;: True, &#39;euler_number&#39;: 2, &#39;genus&#39;: 0.0}
+</pre></div>
 </div>
-<p>The saved surface mesh is in .obj format. These are best viewed in a dedicated mesh viewer such as <a class="reference external" href="https://www.meshlab.net/">meshlab</a>, or <a class="reference external" href="https://github.com/RBVI/ChimeraX">chimerax</a> which are opensource, free and cross-platform.</p>
-<p>Within python, we can get an idea without installing more specialized libraries such as <a class="reference external" href="https://vedo.embl.es/">vedo</a> by 3D scatter plotting and coloring the mesh vertices with matplotlib.</p>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.plotting</span> <span class="k">as</span> <span class="nn">plotting</span> <span class="c1"># we import this so we can make x,y,z axes be plotted in equal proportions. </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the mesh is best viewed in a dedicated mesh viewer such as meshlab which is opensource, free and cross-platform. We can get an idea by plotting and coloring the mesh vertices using matplotlib</span>
+
+<span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.plotting</span> <span class="k">as</span> <span class="nn">plotting</span> <span class="c1"># we import this so we can make x,y,z axes be plotted in equal proportions. </span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
@@ -689,7 +665,7 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
            <span class="n">img_binary_surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
            <span class="n">img_binary_surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
            <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
-           <span class="n">c</span><span class="o">=</span><span class="n">surf_H</span><span class="o">/</span><span class="n">voxel_size</span><span class="p">,</span> 
+           <span class="n">c</span><span class="o">=</span><span class="n">surf_H</span><span class="o">/</span><span class="mf">.104</span><span class="p">,</span> 
            <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Spectral_r&#39;</span><span class="p">,</span> 
            <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
            <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -700,16 +676,17 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/ec67222a719cf6e9129e84e28686c77b18e63dafd0a6998c56f562c507c95c8d.png" src="../_images/ec67222a719cf6e9129e84e28686c77b18e63dafd0a6998c56f562c507c95c8d.png" />
+<img alt="../_images/8bea29abca65b571af8a29d2da9aaab67a5681bdd102339b90a1c751ae226270.png" src="../_images/8bea29abca65b571af8a29d2da9aaab67a5681bdd102339b90a1c751ae226270.png" />
 </div>
 </div>
 </section>
-<section id="map-surface-proximal-membrane-signals-by-traversing-along-the-gradient-of-a-distance-transform-into-the-cell">
-<h2>Map surface proximal membrane signals by traversing along the gradient of a distance transform into the cell<a class="headerlink" href="#map-surface-proximal-membrane-signals-by-traversing-along-the-gradient-of-a-distance-transform-into-the-cell" title="Link to this heading">#</a></h2>
-<p>We can use active contour conformalized mean curvature flow, (see the u-Unwrap3D <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2023.04.12.536640v2">paper</a>) to traverse into the cell and sample the image intensity at designed step sizes <span class="math notranslate nohighlight">\(\alpha\)</span> along the gradient of a signed distance function. We can then average the sampled intensity and map this onto the cell surface. We do this for our cell up to 1 <span class="math notranslate nohighlight">\(\mu m\)</span> depth. Our image has an isotropic voxel resolution of 0.104 <span class="math notranslate nohighlight">\(\mu m\)</span>. We sample this depth in steps of 0.5 voxels. This equates to a total of 1./(0.104*0.5) steps rounded down to the nearest integer.</p>
+<section id="mapping-surface-proximal-membrane-signals-by-traversing-along-the-steepest-gradient-descent-normal-into-the-cell">
+<h2>Mapping surface proximal membrane signals by traversing along the steepest gradient descent normal into the cell<a class="headerlink" href="#mapping-surface-proximal-membrane-signals-by-traversing-along-the-steepest-gradient-descent-normal-into-the-cell" title="Link to this heading">#</a></h2>
+<p>We can use active contour conformalized mean curvature flow to traverse into the cell and sample the image intensity at designed step sizes <span class="math notranslate nohighlight">\(\alpha\)</span>. We can then average the sampled intensity and map this onto the cell surface. We do this for our cell up to 1um depth. Our image has an isotropic voxel resolution of 0.104um. We sample this depth in steps of 0.5 voxels. This equates to a total of 2/0.104 steps rounded down to the nearest integer.</p>
+<p>This sampling procedure is more precise than performing spherical nearest neighbor lookup which oversmooths the signal.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_samples</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span> <span class="n">voxel_size</span> <span class="c1"># total number of steps</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_samples</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span> <span class="mf">.104</span> <span class="c1"># total number of steps</span>
 <span class="n">stepsize</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># voxels</span>
     
 <span class="c1"># flip the mesh vertex coordinates so that it aligns with the volume size </span>
@@ -732,10 +709,10 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 19/19 [00:05&lt;00:00,  3.70it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████████████████████████████████████████████████| 19/19 [30:29&lt;00:00, 96.26s/it]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(23745, 3, 20)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(159346, 3, 20)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -743,8 +720,6 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 </div>
 </div>
 </div>
-<p><strong>Implementation Warning Note:</strong></p>
-<p>We typically use the signed distance function given by the Euclidean distance transform (EDT) as illustrated above to deform the mesh and sample the intensities, as it is fast to compute and memory-efficient. However, when sampling thin, narrow, and long protrusions. The result of the EDT will look ‘blocky’. In these cases, it is more optimal to compute the signed distance function given by solving the Poisson equation (see: <code class="docutils literal notranslate"><span class="pre">unwrap3D.Segmentation.segmentation.poisson_dist_tform_3D</span></code>). However, our current implementation uses an exact LU solver which is slow and will likely memory error. We recommend computing the distance transform on the isotropically downsampled binary segmentation (e.g. 1/8th), then resizing the result to the original size. This is valid because the distance transform is smooth.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the intensities at the sampled depth coordinates. </span>
@@ -805,10 +780,13 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/efb5fce9ccfded09ce46194464c04e66e097f8f210750d025a3634f377e0c086.png" src="../_images/efb5fce9ccfded09ce46194464c04e66e097f8f210750d025a3634f377e0c086.png" />
+<img alt="../_images/32241278364dbc3054a5502738b0ee19ad18801ed546887824999301ee08056a.png" src="../_images/32241278364dbc3054a5502738b0ee19ad18801ed546887824999301ee08056a.png" />
 </div>
 </div>
 </section>
+</section>
+<section id="we-now-proceed-to-step-1-notebook-to-run-conformalized-mean-curvature-flow-and-derive-a-genus-0-reference-shape">
+<h1>We now proceed to step 1 notebook to run conformalized mean curvature flow and derive a genus-0 reference shape …<a class="headerlink" href="#we-now-proceed-to-step-1-notebook-to-run-conformalized-mean-curvature-flow-and-derive-a-genus-0-reference-shape" title="Link to this heading">#</a></h1>
 </section>
 
     <script type="text/x-thebe-config">
@@ -824,7 +802,7 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
         },
         kernelOptions: {
             name: "python3",
-            path: "./03_basic_workflow"
+            path: "./05_obtaining_surfaces"
         },
         predefinedOutput: true
     }
@@ -841,24 +819,6 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="readme.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Standard workflow for unwrapping 3D surfaces</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="Step1_find_reference_surface.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -876,14 +836,13 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 0: Segmenting a single cell from a volume image</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-binary-segmentation-using-otsu-thresholding">Basic binary segmentation using Otsu thresholding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-segmentation-with-otsu-thresholding">Binary segmentation with Otsu thresholding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-curvature-measurement-from-binary-segmentation">Mean curvature measurement from binary segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-meshing-the-binary-segmentation-and-mapping-the-curvature-onto-the-mesh">Surface meshing the binary segmentation and mapping the curvature onto the mesh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-surface-proximal-membrane-signals-by-traversing-along-the-steepest-gradient-descent-normal-into-the-cell">Mapping surface proximal membrane signals by traversing along the steepest gradient descent normal into the cell</a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-meshing-the-binary-segmentation">Surface meshing the binary segmentation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-the-mean-curvature-of-the-surface-h-s-x-y-z-and-coloring-on-the-surface-mesh">Measuring the mean curvature of the surface, <span class="math notranslate nohighlight">\((H(S(x,y,z)))\)</span> and coloring on the surface mesh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-surface-proximal-membrane-signals-by-traversing-along-the-gradient-of-a-distance-transform-into-the-cell">Map surface proximal membrane signals by traversing along the gradient of a distance transform into the cell</a></li>
-</ul>
-</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-now-proceed-to-step-1-notebook-to-run-conformalized-mean-curvature-flow-and-derive-a-genus-0-reference-shape">We now proceed to step 1 notebook to run conformalized mean curvature flow and derive a genus-0 reference shape …</a></li>
 </ul>
 
   </nav></div>

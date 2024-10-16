@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '03_basic_workflow/readme';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Segmenting a single cell from a volume image" href="Step0_find_cell_surface_from_segmentation.html" />
+    <link rel="next" title="Step 0: Segmenting a single cell from a volume image" href="Step0_find_cell_surface_from_segmentation.html" />
     <link rel="prev" title="Installation" href="../02_installation/readme.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -183,7 +183,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Workflow</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Standard workflow for unwrapping 3D surfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="Step0_find_cell_surface_from_segmentation.html">Segmenting a single cell from a volume image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Step0_find_cell_surface_from_segmentation.html">Step 0: Segmenting a single cell from a volume image</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="Step1_find_reference_surface.html">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</a></li>
 
@@ -447,8 +447,8 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="standard-workflow-for-unwrapping-3d-surfaces">
 <h1>Standard workflow for unwrapping 3D surfaces<a class="headerlink" href="#standard-workflow-for-unwrapping-3d-surfaces" title="Link to this heading">#</a></h1>
-<p>This chapter will illustrate in code how to implement the illustrated standard workflow of mapping an input cell surface segmented from a microscopy image into other lower-dimensional representations which can be used for computing and visualization purposes. Throughout the transformation, we will map the mean curvature of the original surface denoted <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>.</p>
-<p>It is assumed that we are working with the surface and image of a single cell.</p>
+<p>This chapter will illustrate in code how to implement the illustrated standard workflow of mapping an input cell surface segmented from a microscopy image into other lower-dimensional representations which can be used for computing and visualization purposes. To illustrate the bijectivity of the transformations, we will keep track and transfer the mean curvature of the original surface <span class="math notranslate nohighlight">\((H(S(x,y,z)))\)</span>.</p>
+<p>u-Unwrap3D operates on the surface and image of a single cell. To process multiple cells from an instance segmentation, a for loop or parallel programming needs to be used for each individual cell.</p>
 <p><img alt="" src="../_images/u_unwrap3D_overview.png" /></p>
 <section id="a-note-on-mathematical-nomenclature">
 <h2>A note on mathematical nomenclature<a class="headerlink" href="#a-note-on-mathematical-nomenclature" title="Link to this heading">#</a></h2>
@@ -474,7 +474,7 @@ document.write(`
 <li><p><span class="math notranslate nohighlight">\(V(x,y,z)\)</span>: volume of the input 3D Cartesian <span class="math notranslate nohighlight">\((x,y,z)\)</span> surface, equivalent to the binary volume from which the surface was extracted from</p></li>
 <li><p><span class="math notranslate nohighlight">\(V_{\text{ref}}(x,y,z)\)</span>: volume of the reference 3D Cartesian <span class="math notranslate nohighlight">\((x,y,z)\)</span> surface, usually obtained from voxelization of the surface</p></li>
 <li><p><span class="math notranslate nohighlight">\(V_{\text{ref}}(r,\theta,\phi)\)</span>: volume of the 3D spherical parameterization of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(V(d,u,v)\)</span>: volume of the 3D topographic surface of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>, relative to <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span>. Note: this may not</p></li>
+<li><p><span class="math notranslate nohighlight">\(V(d,u,v)\)</span>: volume of the 3D topographic surface of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>, relative to <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span>. Note: this volume is typically only a shell of <span class="math notranslate nohighlight">\(V(x,y,z)\)</span>, as we often do not map the entirety of the internal cell when constructing the topographic space.</p></li>
 </ul>
 </li>
 </ul>
@@ -527,7 +527,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Segmenting a single cell from a volume image</p>
+        <p class="prev-next-title">Step 0: Segmenting a single cell from a volume image</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
