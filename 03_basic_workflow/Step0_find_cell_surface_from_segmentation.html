@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '03_basic_workflow/Step0_find_cell_surface_from_segmentation';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Step 1: Creating a genus-0 reference surface, \(S_{ref}(x,y,z)\) using conformalized mean curvature flow" href="Step1_find_reference_surface.html" />
+    <link rel="next" title="Step 1: Find and create a genus-0 reference surface, \(S_{ref}(x,y,z)\)" href="Step1_find_reference_surface.html" />
     <link rel="prev" title="Standard workflow for unwrapping 3D surfaces" href="readme.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -184,9 +184,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="readme.html">Standard workflow for unwrapping 3D surfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 0: Segmenting a single cell from a volume image</a></li>
-
-<li class="toctree-l2"><a class="reference internal" href="Step1_find_reference_surface.html">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="Step1_find_reference_surface.html">Step 1: Find and create a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step2_quasiconformal_spherical_parameterization.html">Step 2: Quasi-conformal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
@@ -433,17 +431,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 0: Segmenting a single cell from a volume image</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-binary-segmentation-using-otsu-thresholding">Basic binary segmentation using Otsu thresholding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-binary-segmentation-using-otsu-thresholding">1. Basic binary segmentation using Otsu thresholding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-meshing-the-binary-segmentation">2. Surface meshing the binary segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-the-mean-curvature-of-the-surface-h-s-x-y-z-and-coloring-on-the-surface-mesh">3. Measuring the mean curvature of the surface, <span class="math notranslate nohighlight">\((H(S(x,y,z)))\)</span> and coloring on the surface mesh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-surface-proximal-membrane-signals-by-traversing-along-the-gradient-of-a-distance-transform-into-the-cell">4. Map surface proximal membrane signals by traversing along the gradient of a distance transform into the cell</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-meshing-the-binary-segmentation">Surface meshing the binary segmentation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-the-mean-curvature-of-the-surface-h-s-x-y-z-and-coloring-on-the-surface-mesh">Measuring the mean curvature of the surface, <span class="math notranslate nohighlight">\((H(S(x,y,z)))\)</span> and coloring on the surface mesh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-surface-proximal-membrane-signals-by-traversing-along-the-gradient-of-a-distance-transform-into-the-cell">Map surface proximal membrane signals by traversing along the gradient of a distance transform into the cell</a></li>
-</ul>
-</li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -462,7 +454,7 @@ document.write(`
 <p><strong>Warning concerning segmentation</strong>:
 In order to ensure the extracted mesh truly captures the surface, it is crucial to check in this step that the binary image is indeed capturing the whole cell such that the interior cell volume is ‘filled’. An easy check is to visualize a mid-section slice of the binary, and check the interior all has the equivalent of a binary 1. If this is not true, the cell will be ‘double-meshed’ and the extracted ‘surface’ actually represents the exterior shell. Whilst u-Unwrap3D can handle these imperfect surface meshes, they do affect quantification e.g. you will measure approximately twice larger surface area, and a very small cell volume.</p>
 <section id="basic-binary-segmentation-using-otsu-thresholding">
-<h2>Basic binary segmentation using Otsu thresholding<a class="headerlink" href="#basic-binary-segmentation-using-otsu-thresholding" title="Link to this heading">#</a></h2>
+<h2>1. Basic binary segmentation using Otsu thresholding<a class="headerlink" href="#basic-binary-segmentation-using-otsu-thresholding" title="Link to this heading">#</a></h2>
 <p>We read in the volume image used in Fig.1 of the u-Unwrap3D paper and also create a savefolder to store the results of analysis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -555,9 +547,8 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 </div>
 <p>We see from the cross-section visualization of x-y, x-z and y-z views, that the segmentation captures the full cell, with the cell interior filled in (i.e. all white pixels). Therefore we move ahead to extract its surface using marching cubes.</p>
 </section>
-</section>
 <section id="surface-meshing-the-binary-segmentation">
-<h1>Surface meshing the binary segmentation<a class="headerlink" href="#surface-meshing-the-binary-segmentation" title="Link to this heading">#</a></h1>
+<h2>2. Surface meshing the binary segmentation<a class="headerlink" href="#surface-meshing-the-binary-segmentation" title="Link to this heading">#</a></h2>
 <p>We mesh the binary segmentation (0 or 1 value) using marching cubes at an isovalue of 0.5. The triangles obtained from this are very heterogeneous. Ideally, in mesh analysis, triangles should be close to regular and equilateral. This is particularly important for later steps where we need to solve differential equations on the mesh. Therefore we apply remeshing on the marching cubes output.</p>
 <p>u-Unwrap3D provides two isotropic remeshing algorithms: 1) <a class="reference external" href="https://github.com/pyvista/pyacvd">pyacvd</a> which uses voronoi clustering or 2) the incremental method of Botsch in <a class="reference external" href="https://doc.cgal.org/latest/Polygon_mesh_processing/index.html">CGAL</a> based on splitting long edge lengths and collapsing short ones to obtain uniform triangles of a desired length.</p>
 <p>We developed u-Unwrap3D initially using method 1 which does not work without requesting an output mesh with fewer vertices (typically at least &lt; 0.5x starting number of vertices). We have since found that the Botsch method is more robust, computable for output mesh with more, same and less vertices, and it better preserves ‘sharp’ high curvature features. This is now our recommended method, and is used here.</p>
@@ -606,8 +597,9 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 </div>
 </div>
 </div>
+</section>
 <section id="measuring-the-mean-curvature-of-the-surface-h-s-x-y-z-and-coloring-on-the-surface-mesh">
-<h2>Measuring the mean curvature of the surface, <span class="math notranslate nohighlight">\((H(S(x,y,z)))\)</span> and coloring on the surface mesh<a class="headerlink" href="#measuring-the-mean-curvature-of-the-surface-h-s-x-y-z-and-coloring-on-the-surface-mesh" title="Link to this heading">#</a></h2>
+<h2>3. Measuring the mean curvature of the surface, <span class="math notranslate nohighlight">\((H(S(x,y,z)))\)</span> and coloring on the surface mesh<a class="headerlink" href="#measuring-the-mean-curvature-of-the-surface-h-s-x-y-z-and-coloring-on-the-surface-mesh" title="Link to this heading">#</a></h2>
 <p>There are many ways to determine the mean curvature of the surface with different pros and cons.</p>
 <ol class="arabic simple">
 <li><p><strong>From surface mesh</strong></p></li>
@@ -705,7 +697,7 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
 </div>
 </section>
 <section id="map-surface-proximal-membrane-signals-by-traversing-along-the-gradient-of-a-distance-transform-into-the-cell">
-<h2>Map surface proximal membrane signals by traversing along the gradient of a distance transform into the cell<a class="headerlink" href="#map-surface-proximal-membrane-signals-by-traversing-along-the-gradient-of-a-distance-transform-into-the-cell" title="Link to this heading">#</a></h2>
+<h2>4. Map surface proximal membrane signals by traversing along the gradient of a distance transform into the cell<a class="headerlink" href="#map-surface-proximal-membrane-signals-by-traversing-along-the-gradient-of-a-distance-transform-into-the-cell" title="Link to this heading">#</a></h2>
 <p>We can use active contour conformalized mean curvature flow, (see the u-Unwrap3D <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2023.04.12.536640v2">paper</a>) to traverse into the cell and sample the image intensity at designed step sizes <span class="math notranslate nohighlight">\(\alpha\)</span> along the gradient of a signed distance function. We can then average the sampled intensity and map this onto the cell surface. We do this for our cell up to 1 <span class="math notranslate nohighlight">\(\mu m\)</span> depth. Our image has an isotropic voxel resolution of 0.104 <span class="math notranslate nohighlight">\(\mu m\)</span>. We sample this depth in steps of 0.5 voxels. This equates to a total of 1./(0.104*0.5) steps rounded down to the nearest integer.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -855,7 +847,7 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</p>
+        <p class="prev-next-title">Step 1: Find and create a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -875,17 +867,11 @@ In order to ensure the extracted mesh truly captures the surface, it is crucial 
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 0: Segmenting a single cell from a volume image</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-binary-segmentation-using-otsu-thresholding">Basic binary segmentation using Otsu thresholding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-binary-segmentation-using-otsu-thresholding">1. Basic binary segmentation using Otsu thresholding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-meshing-the-binary-segmentation">2. Surface meshing the binary segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-the-mean-curvature-of-the-surface-h-s-x-y-z-and-coloring-on-the-surface-mesh">3. Measuring the mean curvature of the surface, <span class="math notranslate nohighlight">\((H(S(x,y,z)))\)</span> and coloring on the surface mesh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-surface-proximal-membrane-signals-by-traversing-along-the-gradient-of-a-distance-transform-into-the-cell">4. Map surface proximal membrane signals by traversing along the gradient of a distance transform into the cell</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-meshing-the-binary-segmentation">Surface meshing the binary segmentation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measuring-the-mean-curvature-of-the-surface-h-s-x-y-z-and-coloring-on-the-surface-mesh">Measuring the mean curvature of the surface, <span class="math notranslate nohighlight">\((H(S(x,y,z)))\)</span> and coloring on the surface mesh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-surface-proximal-membrane-signals-by-traversing-along-the-gradient-of-a-distance-transform-into-the-cell">Map surface proximal membrane signals by traversing along the gradient of a distance transform into the cell</a></li>
-</ul>
-</li>
-</ul>
-
   </nav></div>
 
 </div></div>

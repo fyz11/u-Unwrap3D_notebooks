@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Step 1: Creating a genus-0 reference surface, \(S_{ref}(x,y,z)\) using conformalized mean curvature flow &#8212; u-Unwrap3D Analysis Notebooks</title>
+    <title>Step 1: Find and create a genus-0 reference surface, \(S_{ref}(x,y,z)\) &#8212; u-Unwrap3D Analysis Notebooks</title>
   
   
   
@@ -184,9 +184,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="readme.html">Standard workflow for unwrapping 3D surfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="Step0_find_cell_surface_from_segmentation.html">Step 0: Segmenting a single cell from a volume image</a></li>
-
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</a></li>
-
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 1: Find and create a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step2_quasiconformal_spherical_parameterization.html">Step 2: Quasi-conformal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
@@ -423,7 +421,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Step 1: Creating a genus-0 reference surface, S_{ref}(x,y,z) using conformalized mean curvature flow</h1>
+    <h1>Step 1: Find and create a genus-0 reference surface, S_{ref}(x,y,z)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -433,20 +431,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-cell-surface-mesh-and-create-an-analysis-save-folder">Load cell surface mesh and create an analysis save folder</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conformalized-mean-curvature-flow-cmcf">Conformalized mean curvature flow (cMCF)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-reference-surface-determination-with-gaussian-curvature">Automatic reference surface determination with Gaussian curvature</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-conformal-and-equiareal-distortion-errors-during-cmcf">Quantifying conformal and equiareal distortion errors during cMCF</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-of-s-ref-x-y-z">Quantifying and colormapping the conformal and equiareal distortion error of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remeshing-s-ref-x-y-z-to-be-genus-0-using-voxelization">Remeshing <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> to be genus-0 using voxelization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-the-geometric-similarity-between-the-intermediary-cmcf-and-the-remeshed-s-ref-x-y-z">Quantifying the geometric similarity between the intermediary cMCF and the remeshed <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-scalar-and-vectorial-quantities-to-the-remeshed-s-ref-x-y-z">Mapping scalar and vectorial quantities to the remeshed <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-surface-mesh-s-x-y-z">1. Read in surface mesh, <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-conformalized-mean-curvature-flow-cmcf-on-s-x-y-z">2. Run conformalized mean curvature flow (cMCF) on <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-reference-shape-determination-using-discrete-gaussian-curvature">3. Automatic reference shape determination using discrete Gaussian curvature</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-conformal-and-equiareal-distortion-errors-during-cmcf">4. Quantifying conformal and equiareal distortion errors during cMCF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-the-conformal-and-equiareal-distortion-error-of-s-ref-x-y-z">5. Quantifying the conformal and equiareal distortion error of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-a-genus-0-s-ref-x-y-z-surface-using-shrinkwrapping-and-voxelization">6. Constructing a genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> surface using shrinkwrapping and voxelization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-the-similarity-between-the-cmcf-and-constructed-genus-0-s-ref-x-y-z">7. Quantifying the similarity between the cMCF and constructed genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-measurements-onto-the-genus-0-s-ref-x-y-z">8. Mapping measurements onto the genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-now-proceed-to-step-2-notebook-to-run-quasi-conformal-spherical-parameterization-of-the-genus-0-reference-shape">We now proceed to step 2 notebook to run quasi-conformal spherical parameterization of the genus-0 reference shape …</a></li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -457,13 +450,45 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="step-1-creating-a-genus-0-reference-surface-s-ref-x-y-z-using-conformalized-mean-curvature-flow">
-<h1>Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow<a class="headerlink" href="#step-1-creating-a-genus-0-reference-surface-s-ref-x-y-z-using-conformalized-mean-curvature-flow" title="Link to this heading">#</a></h1>
-<p>To create a genus-0 reference surface we run conformalized mean curvature flow (cMCF) on an input surface, <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>. We monitor the discrete Gaussian curvature and choose a surface near the inflexion point where the high curvature surface protrusions is smoothed out and the flow begins to deform the smooth cell cortex. There is no strict requirement on the input surface e.g. can be genus-X and need not be watertight or closed. However cMCF may terminate early if the input mesh is particularly bad.</p>
-<p>We are working on mesh surgery and repair methods to in future guarantee the ability to run cMCF and produce a genus-0 surface.</p>
-<section id="load-cell-surface-mesh-and-create-an-analysis-save-folder">
-<h2>Load cell surface mesh and create an analysis save folder<a class="headerlink" href="#load-cell-surface-mesh-and-create-an-analysis-save-folder" title="Link to this heading">#</a></h2>
-<p>We assume the user has worked through step 0 which generates and saves a cell surface mesh to the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step0_cell_segmentation</span></code>. Moreover this cell surface has been colored by curvature or molecular intensity.</p>
+  <section id="step-1-find-and-create-a-genus-0-reference-surface-s-ref-x-y-z">
+<h1>Step 1: Find and create a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span><a class="headerlink" href="#step-1-find-and-create-a-genus-0-reference-surface-s-ref-x-y-z" title="Link to this heading">#</a></h1>
+<p>From the extracted cell surface, <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>, we will find a reference shape using curvature-minimizing flow using a free-form deformation algorithm, <a class="reference external" href="https://arxiv.org/pdf/1203.6819">conformalized mean curvature flow</a> (cMCF).</p>
+<p>Conceptually, this involves:</p>
+<ol class="arabic simple">
+<li><p>run cMCF on <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> for <span class="math notranslate nohighlight">\(N\)</span> iterations to generate <span class="math notranslate nohighlight">\(N+1\)</span> shapes (including the input)</p></li>
+<li><p>applying a selection/stopping criteria to pick the best shape for the desired reference</p>
+<ul class="simple">
+<li><p>Typically, we measure and monitor the mean absolute value <a class="reference external" href="https://www.cs.jhu.edu/~misha/Fall09/4-surfaces.pdf">discrete Gaussian curvature</a> of mesh vertices at each iteration.</p>
+<ul>
+<li><p>Discrete Gaussian curvature is a topological property of the shape that is independent of the meshing of the surface and unlike mean curvature also independent of scale.</p></li>
+<li><p>Discrete Gaussian curvature of a vertex is defined as the angle deficit between the sum of the triangle angles incident to the vertex from <span class="math notranslate nohighlight">\(360^0\)</span> (or <span class="math notranslate nohighlight">\(2\pi\)</span> radians).
+$<span class="math notranslate nohighlight">\( \text{Discrete Gaussian curvature of a vertex}, K = 2\pi - \sum(\text{incident triangle angles})\)</span>$</p></li>
+<li><p>K = 0 if surface is flat</p></li>
+<li><p>K &gt; 0 if surface has positive curvature</p></li>
+<li><p>K &lt; 0 if surface has negative curvature</p></li>
+</ul>
+</li>
+<li><p>We empirically <span class="math notranslate nohighlight">\(\langle |K| \rangle\)</span> behaves like a ‘shape state’ parameter, whereby its changepoints identify significant changes in the surface mesh corresponding to significant changes in shape.</p></li>
+<li><p>We identify changepoints in <span class="math notranslate nohighlight">\(\langle |K| \rangle\)</span> to generate (possibly multiple) candidate reference shapes</p>
+<ul>
+<li><p>for analyzing morphological motifs, we take the 1st candidate shape will be ‘closest’ appearance-wise to <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></p></li>
+</ul>
+</li>
+<li><p>There are many alternatives to define a stopping criteria for curvature-minimizing flows which we discuss in the specific chapter on finding reference e.g:</p>
+<ul>
+<li><p>rate of change in <span class="math notranslate nohighlight">\(\langle |K|\rangle\)</span> between successive iterations used in the paper</p></li>
+<li><p><a class="reference external" href="https://fwilliams.info/point-cloud-utils/sections/shape_metrics/">chamfer distance</a> between input surface and mesh at each iteration</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>genus-0 shrinkwrapping, voxelization and remeshing the discovered reference shape to construct its genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>.</p></li>
+</ol>
+<p><strong>cMCF Warning Note</strong>: cMCF will not work if your mesh is multiple-component, describing multiple independent surfaces. In this example, we will enforce single-component when reading the mesh file, see: <code class="docutils literal notranslate"><span class="pre">unwrap3D.Mesh.meshtools.read_mesh</span></code>. Otherwise, cMCF is intended for watertight meshes, but we have found it is generally robust to imperfect meshes, tolerating it not being watertight and having holes, particularly when additionally using the <a class="reference external" href="https://github.com/nmwsharp/nonmanifold-laplacian">robust Laplacian</a> instead of the standard cotangent Laplacian. However cMCF may terminate earlier than the specified <span class="math notranslate nohighlight">\(N\)</span> iterations.</p>
+<p><strong>Shrinkwrapping advice note</strong>: Shrinkwrapping is an essential step for complex surfaces to guarantee large holes, and handles are covered and made genus-0. However, it adds significant compute time. When your chosen reference shape is devoid of large holes and protrusions i.e is convex, such as the example surface here, shrinkwrapping will not add value, and any small holes should be filled by adjusting the voxelization settings.</p>
+<section id="read-in-surface-mesh-s-x-y-z">
+<h2>1. Read in surface mesh, <span class="math notranslate nohighlight">\(S(x,y,z)\)</span><a class="headerlink" href="#read-in-surface-mesh-s-x-y-z" title="Link to this heading">#</a></h2>
+<p>We assume the user has worked through step 0 which generates and saves a cell surface mesh to the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step0_cell_segmentation</span></code>. Furthermore, this cell surface has been colored by curvature and molecular intensity.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Utility_Functions.file_io</span> <span class="k">as</span> <span class="nn">fio</span>
@@ -471,9 +496,13 @@ document.write(`
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">os</span> 
 <span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">spio</span>
+<span class="kn">import</span> <span class="nn">skimage.io</span> <span class="k">as</span> <span class="nn">skio</span>
 
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Preamble: setting up the folders</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># example cell used</span>
-<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;example_data/img&#39;</span>
+<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;../../example_data/img&#39;</span>
 <span class="n">imgfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imgfolder</span><span class="p">,</span> <span class="s1">&#39;bleb_example.tif&#39;</span><span class="p">)</span>
 <span class="n">basefname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">imgfile</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get the filename with extension</span>
 
@@ -484,39 +513,46 @@ document.write(`
 <span class="n">fio</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">savefolder</span><span class="p">)</span> <span class="c1"># auto generates the specified folder structure if doesn&#39;t currently exist.</span>
 
 
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Loading results from previous step</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># load the pre-generated cell surface mesh for the cell</span>
 <span class="n">cell_surface_folder</span> <span class="o">=</span> <span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step0_cell_segmentation&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)</span>
 <span class="n">cell_surface_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cell_surface_folder</span><span class="p">,</span> 
                                 <span class="s1">&#39;curvature_binary_mesh_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">))</span> 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">cell_surface_file</span><span class="p">)</span>
 
-
 <span class="c1"># also load the molecular signal (PI3K) colored cell surface mesh for the cell for added visualization</span>
 <span class="n">cell_surface_file_PI3K</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cell_surface_folder</span><span class="p">,</span> 
                                 <span class="s1">&#39;PI3K_binary_mesh_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">))</span> 
 <span class="n">PI3K_mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">cell_surface_file_PI3K</span><span class="p">)</span>
+
+<span class="c1"># load the binary from which the cell surface mesh was derived from </span>
+<span class="n">cell_binary_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cell_surface_folder</span><span class="p">,</span>
+                                <span class="s1">&#39;bleb_example_binary_seg.tif&#39;</span><span class="p">)</span>
+<span class="n">cell_binary</span> <span class="o">=</span> <span class="n">skio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">cell_binary_file</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="conformalized-mean-curvature-flow-cmcf">
-<h2>Conformalized mean curvature flow (cMCF)<a class="headerlink" href="#conformalized-mean-curvature-flow-cmcf" title="Link to this heading">#</a></h2>
-<p>Conformalized mean curvature flow (cMCF) is a simple variant of mean curvature flow proposed by <a class="reference external" href="https://arxiv.org/abs/1203.6819">Kazhdan et al.</a> which iteratively smooth high curvature mesh features with the sphere as the convergence limit. We use it as part of u-Unwrap3D to both smoothen high curvature surface protrusions into the cell cortex as well as to close holes and handles in the input surface, <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> so we can generate an intermediary surface that can be repaired/remeshed to obtain a genus-0 reference, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>.</p>
-<p>The flow is computed using the cotangent Laplacian. If input surface has non-manifold vertices/edges, small angles etc. the user can also try running with the robust Laplacian proposed by <a class="reference external" href="https://www.cs.cmu.edu/~kmcrane/Projects/NonmanifoldLaplace/NonmanifoldLaplace.pdf">Sharpe et al.</a> by setting the appropriate input flag.</p>
+<section id="run-conformalized-mean-curvature-flow-cmcf-on-s-x-y-z">
+<h2>2. Run conformalized mean curvature flow (cMCF) on <span class="math notranslate nohighlight">\(S(x,y,z)\)</span><a class="headerlink" href="#run-conformalized-mean-curvature-flow-cmcf-on-s-x-y-z" title="Link to this heading">#</a></h2>
+<p>Conformalized mean curvature flow (cMCF) is a variant of <a class="reference external" href="https://en.wikipedia.org/wiki/Mean_curvature_flow">mean curvature flow</a> proposed by <a class="reference external" href="https://arxiv.org/abs/1203.6819">Kazhdan et al.</a>. The flow iteratively smooth high curvature surface features with the point (effectively 3D sphere) as the convergence limit. This has the property of seeking surfaces of minimial local surface area (also called <a class="reference external" href="https://en.wikipedia.org/wiki/Minimal_surface">minimal surfaces</a>).</p>
+<p>cMCF does not change the topology of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>. However, the minimal area property shrinks higher genus mesh features such as holes and handles, and improves their convexity which means we can much more efficiently apply shrinkwrapping (significantly less iterations) with voxelization to obtain a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> compared to first performing shrinkwrapping on <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> then doing cMCF.</p>
+<p><strong>cMCF Note:</strong> By default, we use the cotangent Laplacian for cMCF. If you get less iterations than specified, try re-running with the robust Laplacian proposed by <a class="reference external" href="https://www.cs.cmu.edu/~kmcrane/Projects/NonmanifoldLaplace/NonmanifoldLaplace.pdf">Sharpe et al.</a> by setting the parameter <code class="docutils literal notranslate"><span class="pre">robust_L=True</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run cMCF on the mesh for 50 iterations, delta=5e-4 using the standard cotangent Laplacian </span>
-<span class="n">Usteps_MCF</span><span class="p">,</span> <span class="n">mesh_F</span><span class="p">,</span> <span class="n">MCF_measures_dict</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">conformalized_mean_curvature_flow</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run cMCF on the mesh for 50 iterations, delta=5e-4 using the standard cotangent Laplacian</span>
+<span class="c1"># delta governs speed of flow, without adjusting the number of iterations, saving computation time. decrease delta for less smoothing, increase for more. </span>
+<span class="n">Usteps_MCF_img</span><span class="p">,</span> <span class="n">mesh_F</span><span class="p">,</span> <span class="n">MCF_measures_dict</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">conformalized_mean_curvature_flow</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> 
                                                                                     <span class="n">max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
+                                                                                    <span class="n">rescale_output</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1"># cMCF is solved in normalized coordinates, when True, the output will be rescaled to be in image coordinates.  </span>
                                                                                     <span class="n">delta</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span> 
                                                                                     <span class="n">conformalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># set this flag to run cMCF, else it will run MCF</span>
                                                                                     <span class="n">robust_L</span> <span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># if set, runs MCF/cMCF using the robust Laplacian instead of cotangent Laplacian</span>
-                                                                                    <span class="n">mollify_factor</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>  <span class="c1"># this is a parameter used in the robust Laplacian</span>
-
-<span class="c1"># cMCF is run as a free-form deformation, if we want to have the mesh represent a gradual smoothing in accordance with the physical size of the cell and the image coordinates we need to put back the correct scaling factors.</span>
-<span class="n">Usteps_MCF_img</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">recover_img_coordinate_conformal_mean_flow</span><span class="p">(</span><span class="n">Usteps_MCF</span><span class="p">,</span> <span class="n">MCF_measures_dict</span><span class="p">)</span> <span class="c1"># recovers the proper associated image coordinates </span>
-<span class="w">    </span>
+                                                                                    <span class="n">mollify_factor</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="c1"># this is a parameter used in the robust Laplacian</span>
+                                                                                    <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;pardiso&#39;</span><span class="p">)</span>  <span class="c1"># &#39;scipy&#39;: standard scipy solver, &#39;pardiso&#39; for using Intel&#39;s pardiso solver to solve in parallel. &#39;pariso&#39; is much faster. But you must use &#39;scipy&#39; if you plan to multiprocess over different cells.</span>
 
 <span class="w">    </span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -525,11 +561,10 @@ document.write(`
 <span class="c1"># save the vertex positions with face connectivity</span>
 <span class="n">spio</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
                           <span class="s1">&#39;MCF_iterations_&#39;</span><span class="o">+</span><span class="n">basefname</span><span class="o">+</span><span class="s1">&#39;.mat&#39;</span><span class="p">),</span> 
-              <span class="p">{</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="n">Usteps_MCF</span><span class="p">,</span> <span class="c1"># freeform coordinates</span>
-               <span class="s1">&#39;v_img&#39;</span><span class="p">:</span> <span class="n">Usteps_MCF_img</span><span class="p">,</span>  <span class="c1"># rescaled image coordinates</span>
+              <span class="p">{</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="n">Usteps_MCF_img</span><span class="p">,</span> <span class="c1"># rescaled image coordinates, since we ran with rescale_output=True(default)</span>
                <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="n">mesh_F</span><span class="p">})</span> <span class="c1"># face connectivity</span>
 
-<span class="c1"># save the convergence measures. We computed several but found the absolute Gaussian curvature to be most useful and well behaved.</span>
+<span class="c1"># save the convergence measures. We computed several but found the mean absolute discrete Gaussian curvature (&lt;|K|&gt;) to best serve as a &#39;shape state&#39; parameter</span>
 <span class="n">spio</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
                           <span class="s1">&#39;MCF_convergence_measures_&#39;</span><span class="o">+</span><span class="n">basefname</span> <span class="o">+</span><span class="s1">&#39;.mat&#39;</span><span class="p">),</span>
                            <span class="n">MCF_measures_dict</span><span class="p">)</span> 
@@ -537,7 +572,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████████████████████████████████████████████████| 50/50 [06:24&lt;00:00,  7.68s/it]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [00:41&lt;00:00,  1.19it/s]
 </pre></div>
 </div>
 </div>
@@ -545,7 +580,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Optional saving of intermediate surfaces during the flow</span>
+<span class="sd">Visualizing and saving (optional) of intermediate surfaces at each iteration of the flow</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.plotting</span> <span class="k">as</span> <span class="nn">plotting</span>
 <span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">plt</span> 
@@ -557,7 +592,7 @@ document.write(`
 <span class="n">save_MCF_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> <span class="s1">&#39;cMCF_flow_curvature&#39;</span><span class="p">);</span> <span class="n">fio</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">save_MCF_folder</span><span class="p">)</span>
 
 <span class="c1"># iterate over the cMCF iterations.</span>
-<span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Usteps_MCF</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[:]:</span>
+<span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Usteps_MCF_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[:]:</span>
     
     <span class="c1"># Curvature mesh</span>
     <span class="n">MCF_mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">create_mesh</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">ii</span><span class="p">],</span> 
@@ -590,93 +625,101 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/26d14fbaf1376dcc8851eb44b4470041df693afe35e122aa6ff240a0e45cef1a.png" src="../_images/26d14fbaf1376dcc8851eb44b4470041df693afe35e122aa6ff240a0e45cef1a.png" />
-<img alt="../_images/2ad96cdd2a8d294eb5613d6a4118e21e1f5596c2dc89fccccec7796ca589e180.png" src="../_images/2ad96cdd2a8d294eb5613d6a4118e21e1f5596c2dc89fccccec7796ca589e180.png" />
-<img alt="../_images/fdd2d4abd271406f40dfbcf272fe892a2ee5a5ec576cd9960842498aeb415fc4.png" src="../_images/fdd2d4abd271406f40dfbcf272fe892a2ee5a5ec576cd9960842498aeb415fc4.png" />
-<img alt="../_images/52c740a2df69ded5245e861efd622f730b2dcd4a7d487d87dcd20c5cb3bbae12.png" src="../_images/52c740a2df69ded5245e861efd622f730b2dcd4a7d487d87dcd20c5cb3bbae12.png" />
-<img alt="../_images/0400cf6c2d3e1c12f7cdf084a104b4a720af2e93ac609dbfcdc8b66341972fcb.png" src="../_images/0400cf6c2d3e1c12f7cdf084a104b4a720af2e93ac609dbfcdc8b66341972fcb.png" />
-<img alt="../_images/cb347e5f22cb4acfadf178e4797eeedd5115a800f16c27fdb2b89cbe1d0e7ae2.png" src="../_images/cb347e5f22cb4acfadf178e4797eeedd5115a800f16c27fdb2b89cbe1d0e7ae2.png" />
-<img alt="../_images/cec882db4a3766bb921f03fa56b9fcb4d86f4b0887c83935d1544b70b3c3293f.png" src="../_images/cec882db4a3766bb921f03fa56b9fcb4d86f4b0887c83935d1544b70b3c3293f.png" />
-<img alt="../_images/73ac1de5f57c51a638997991a1ea934f2593894e712bd7566239fc7be42e43fd.png" src="../_images/73ac1de5f57c51a638997991a1ea934f2593894e712bd7566239fc7be42e43fd.png" />
-<img alt="../_images/97a94d51485c997dcf6a4b0eddd027b91a8b82101d73c3ee73df2b6f9d443ca1.png" src="../_images/97a94d51485c997dcf6a4b0eddd027b91a8b82101d73c3ee73df2b6f9d443ca1.png" />
-<img alt="../_images/1b5c33048ce3a57b4397b2b04cda176a97f709faa624d9dde9a91d2c3e857b32.png" src="../_images/1b5c33048ce3a57b4397b2b04cda176a97f709faa624d9dde9a91d2c3e857b32.png" />
-<img alt="../_images/51c8333bff6c10a4202979c5df135769372b9eb53b9351d48401c6cbe5af1fa8.png" src="../_images/51c8333bff6c10a4202979c5df135769372b9eb53b9351d48401c6cbe5af1fa8.png" />
-<img alt="../_images/e6cf5ef658e879a17b19b114d3053d280512674f407e8c684384192c06039fa6.png" src="../_images/e6cf5ef658e879a17b19b114d3053d280512674f407e8c684384192c06039fa6.png" />
-<img alt="../_images/f60efe1cb7bd82317a2ce09242dcbfe8b74c27d1409fc3fcaf8b161e88fd2b20.png" src="../_images/f60efe1cb7bd82317a2ce09242dcbfe8b74c27d1409fc3fcaf8b161e88fd2b20.png" />
-<img alt="../_images/b65eb00d06d6cda3fa835b96e63949b2d3e346fe834ac0b00690bb20eeab6c50.png" src="../_images/b65eb00d06d6cda3fa835b96e63949b2d3e346fe834ac0b00690bb20eeab6c50.png" />
-<img alt="../_images/c9d60bf95a48c1d84be20bab6c6c79ca32730705d04278ff0023c5b1ccd59be4.png" src="../_images/c9d60bf95a48c1d84be20bab6c6c79ca32730705d04278ff0023c5b1ccd59be4.png" />
-<img alt="../_images/d9d3a846543d291d5a4f2c1df481cd2983918cd88a4664ee99a6410b427bccfe.png" src="../_images/d9d3a846543d291d5a4f2c1df481cd2983918cd88a4664ee99a6410b427bccfe.png" />
-<img alt="../_images/2935acf412d9cb53c3d940723c4eed7506c2e69277f60ca163a7cf4591bbfd3b.png" src="../_images/2935acf412d9cb53c3d940723c4eed7506c2e69277f60ca163a7cf4591bbfd3b.png" />
-<img alt="../_images/0898b789a64ae9ea5aa6af65f993196062b33ef350c7df28ef08116dd3898896.png" src="../_images/0898b789a64ae9ea5aa6af65f993196062b33ef350c7df28ef08116dd3898896.png" />
-<img alt="../_images/80e399d323f13b5b84a8982c678b94eb77eabaaa95faee75422e0638d0661d2a.png" src="../_images/80e399d323f13b5b84a8982c678b94eb77eabaaa95faee75422e0638d0661d2a.png" />
-<img alt="../_images/c984a9a22bc287af5aa4153319f652556d5794d6b5df11e12ff5b7c113c76243.png" src="../_images/c984a9a22bc287af5aa4153319f652556d5794d6b5df11e12ff5b7c113c76243.png" />
-<img alt="../_images/34f49ae7e07aab511826d8158cab99c73e239c3f7e9fab02525fb17f16f5eae4.png" src="../_images/34f49ae7e07aab511826d8158cab99c73e239c3f7e9fab02525fb17f16f5eae4.png" />
-<img alt="../_images/69cca6380bf89c387b21ed80f5c38da6e72405fdb09366be5808c4d6bc88c8ff.png" src="../_images/69cca6380bf89c387b21ed80f5c38da6e72405fdb09366be5808c4d6bc88c8ff.png" />
-<img alt="../_images/b5934536e342d9d77baed51a9c802ad657371b39c8ad39ae12a67be2e2b1c1d0.png" src="../_images/b5934536e342d9d77baed51a9c802ad657371b39c8ad39ae12a67be2e2b1c1d0.png" />
-<img alt="../_images/cc7bceaddab5a6b36ac74420d4a5a9ce0e9fa017b7323ac28f227143e4122179.png" src="../_images/cc7bceaddab5a6b36ac74420d4a5a9ce0e9fa017b7323ac28f227143e4122179.png" />
-<img alt="../_images/6a5ba9c20ea6a673b621c0cfba9c4b4614c51dc10ebb19e5d21eb806316b1851.png" src="../_images/6a5ba9c20ea6a673b621c0cfba9c4b4614c51dc10ebb19e5d21eb806316b1851.png" />
-<img alt="../_images/812c278d65dae8506932eb878861161ee047736452955300b92cc2a9f9256f51.png" src="../_images/812c278d65dae8506932eb878861161ee047736452955300b92cc2a9f9256f51.png" />
-<img alt="../_images/31bf6f7893d272719354cf8a09a9992e41d0870096bafc001b53fce72f944ef9.png" src="../_images/31bf6f7893d272719354cf8a09a9992e41d0870096bafc001b53fce72f944ef9.png" />
-<img alt="../_images/c5152bdcd0ba4447da87559d4f01250af03ad562a28b60d90a3d0a33b7c33d0c.png" src="../_images/c5152bdcd0ba4447da87559d4f01250af03ad562a28b60d90a3d0a33b7c33d0c.png" />
-<img alt="../_images/a9c8d2e0048295f808acf3be72290013d67119b6acbd49ac354e722cf481b682.png" src="../_images/a9c8d2e0048295f808acf3be72290013d67119b6acbd49ac354e722cf481b682.png" />
-<img alt="../_images/b140dbe4c3c9cc60311b81604fff2560ca34d0ce14c943f7797073d91d5b0a25.png" src="../_images/b140dbe4c3c9cc60311b81604fff2560ca34d0ce14c943f7797073d91d5b0a25.png" />
-<img alt="../_images/1362e7527b978f9ebe3242c408807726becea70479d68133540c18351379130f.png" src="../_images/1362e7527b978f9ebe3242c408807726becea70479d68133540c18351379130f.png" />
-<img alt="../_images/282768fc688a69cdfca22ab8f983e2c72f53528caa8fb824f041af782243278b.png" src="../_images/282768fc688a69cdfca22ab8f983e2c72f53528caa8fb824f041af782243278b.png" />
-<img alt="../_images/e079157b7e37341faac8e2d3a9aac880574db4764792b36f185539c018569fb6.png" src="../_images/e079157b7e37341faac8e2d3a9aac880574db4764792b36f185539c018569fb6.png" />
-<img alt="../_images/2232fb9d81a83ad171eb1c6e3019fe88d234108f75e5a092005463259e75713e.png" src="../_images/2232fb9d81a83ad171eb1c6e3019fe88d234108f75e5a092005463259e75713e.png" />
-<img alt="../_images/b24c7b3125a116955cea463e7f7cf66a2605e6645bb2f6ca7aa515cd74e46564.png" src="../_images/b24c7b3125a116955cea463e7f7cf66a2605e6645bb2f6ca7aa515cd74e46564.png" />
-<img alt="../_images/38e108b1ecaf954ccf121cbf499ce2f11e1bf9d8966280fbf45edabdb1dc6eb7.png" src="../_images/38e108b1ecaf954ccf121cbf499ce2f11e1bf9d8966280fbf45edabdb1dc6eb7.png" />
-<img alt="../_images/0d317b88c6457e3bea074041fe3c964f70b9c5a1886c5187a4343c64783eef52.png" src="../_images/0d317b88c6457e3bea074041fe3c964f70b9c5a1886c5187a4343c64783eef52.png" />
-<img alt="../_images/50ad557fcb04763b6ff79fcad22ef069b34b8614f450513bbf118b9b2f990810.png" src="../_images/50ad557fcb04763b6ff79fcad22ef069b34b8614f450513bbf118b9b2f990810.png" />
-<img alt="../_images/cc919b81df4cc27277063049f17383535de912092b45114774180f26ffa6975e.png" src="../_images/cc919b81df4cc27277063049f17383535de912092b45114774180f26ffa6975e.png" />
-<img alt="../_images/dd8782af04c3ae89317a6614afc34120f4ed7ad60ab78fa5af7673430445dcb7.png" src="../_images/dd8782af04c3ae89317a6614afc34120f4ed7ad60ab78fa5af7673430445dcb7.png" />
-<img alt="../_images/2691a20b00a5a0f19db9a399c36b63dcb69f4dbc5d26d6f32f87612f10212e84.png" src="../_images/2691a20b00a5a0f19db9a399c36b63dcb69f4dbc5d26d6f32f87612f10212e84.png" />
-<img alt="../_images/4d91763ee027302dee0e8437e4ea82591a04fff808189c1bdb4445290815aefd.png" src="../_images/4d91763ee027302dee0e8437e4ea82591a04fff808189c1bdb4445290815aefd.png" />
-<img alt="../_images/2294e0d2df83c4a6b05322a8125a55ef41a50191e2cbce5b3a8838c403aadd07.png" src="../_images/2294e0d2df83c4a6b05322a8125a55ef41a50191e2cbce5b3a8838c403aadd07.png" />
-<img alt="../_images/2059501b7fcf83761d31f5383a4efb344d913947201003749bf6b8fe9d8f6430.png" src="../_images/2059501b7fcf83761d31f5383a4efb344d913947201003749bf6b8fe9d8f6430.png" />
-<img alt="../_images/5206c05de18ea0a46b58ccf58c0e5ffed560331677128993ef376b96f283e8bc.png" src="../_images/5206c05de18ea0a46b58ccf58c0e5ffed560331677128993ef376b96f283e8bc.png" />
-<img alt="../_images/af93ca1d7d7c3ffce4ac457e26ecce68c09a482c6fa701c99e63fd59db578404.png" src="../_images/af93ca1d7d7c3ffce4ac457e26ecce68c09a482c6fa701c99e63fd59db578404.png" />
-<img alt="../_images/15547d00088a0241a8f46e21856aea44d7e4159d2d3ecb35bfe3706aa27300dd.png" src="../_images/15547d00088a0241a8f46e21856aea44d7e4159d2d3ecb35bfe3706aa27300dd.png" />
-<img alt="../_images/f581dbe8e89998da33b9fcc344983a45125f32e0b3b84986d48b558adedd782a.png" src="../_images/f581dbe8e89998da33b9fcc344983a45125f32e0b3b84986d48b558adedd782a.png" />
-<img alt="../_images/9562bfaa00debc973612eb60a82420379be6a8444b1cd9550f8cf541405a97f3.png" src="../_images/9562bfaa00debc973612eb60a82420379be6a8444b1cd9550f8cf541405a97f3.png" />
-<img alt="../_images/81da8c117c24ad5d63255777fea3beb1a16f1eafaf9bdd9063520f2590e68ac2.png" src="../_images/81da8c117c24ad5d63255777fea3beb1a16f1eafaf9bdd9063520f2590e68ac2.png" />
-<img alt="../_images/6e00ff3ef504b7f39324a8773e14edd93f38e3f742e5531a4ca21131e985395f.png" src="../_images/6e00ff3ef504b7f39324a8773e14edd93f38e3f742e5531a4ca21131e985395f.png" />
+<img alt="../_images/e2158abb0c35743a22828cdc5b4b5e661c22462f3d3ea61746faf5dc354b4aa7.png" src="../_images/e2158abb0c35743a22828cdc5b4b5e661c22462f3d3ea61746faf5dc354b4aa7.png" />
+<img alt="../_images/59478346187e77e53d3f34359770c1db55f3f9497fc73d95047a06e513bc6a9f.png" src="../_images/59478346187e77e53d3f34359770c1db55f3f9497fc73d95047a06e513bc6a9f.png" />
+<img alt="../_images/6c13ff0969c48aa12dff831e792a487605b28167d8e21507ea81a2570d92b2fa.png" src="../_images/6c13ff0969c48aa12dff831e792a487605b28167d8e21507ea81a2570d92b2fa.png" />
+<img alt="../_images/f0d7c3587f0a3376eb43daddb143cf03c16bc717a4f23ce1202a5edf9b0e3e98.png" src="../_images/f0d7c3587f0a3376eb43daddb143cf03c16bc717a4f23ce1202a5edf9b0e3e98.png" />
+<img alt="../_images/7eb5c04c5d31599751283ef082ae7be9eb9c9d4d001203298211cd1cc6791330.png" src="../_images/7eb5c04c5d31599751283ef082ae7be9eb9c9d4d001203298211cd1cc6791330.png" />
+<img alt="../_images/01dfa84e413253c7c32ff69660f89463f8115e3c9501e0a093c0c601f6291518.png" src="../_images/01dfa84e413253c7c32ff69660f89463f8115e3c9501e0a093c0c601f6291518.png" />
+<img alt="../_images/11183f8aaf6014aae626f229a461ad979180974667798b661b4fb97ff13dc36a.png" src="../_images/11183f8aaf6014aae626f229a461ad979180974667798b661b4fb97ff13dc36a.png" />
+<img alt="../_images/c11bed581e2dce8bc950d22986ee890e6c25d9a2f35d812f06a4af7a6a000555.png" src="../_images/c11bed581e2dce8bc950d22986ee890e6c25d9a2f35d812f06a4af7a6a000555.png" />
+<img alt="../_images/90f95a49ead1965e0fafa38c1df4ba3f3008269e12cbe2b61769c243db4efd57.png" src="../_images/90f95a49ead1965e0fafa38c1df4ba3f3008269e12cbe2b61769c243db4efd57.png" />
+<img alt="../_images/f25282f695b5f3de1973bbc2419442bf77f5bd7b3ff892197825c706635626de.png" src="../_images/f25282f695b5f3de1973bbc2419442bf77f5bd7b3ff892197825c706635626de.png" />
+<img alt="../_images/4f569a724eb1e29a81028ec4a0e5b56c6d671cde0c7ac1e4d347efd5b01b2f0b.png" src="../_images/4f569a724eb1e29a81028ec4a0e5b56c6d671cde0c7ac1e4d347efd5b01b2f0b.png" />
+<img alt="../_images/27a7a4f64564d4f4eec944dc8e38e47e683081ced98bbd5750f6ea47c4c28ab1.png" src="../_images/27a7a4f64564d4f4eec944dc8e38e47e683081ced98bbd5750f6ea47c4c28ab1.png" />
+<img alt="../_images/02e9e8afec2e5cd7378fd09b339d81db3a94722b9293225c087eaabfed143e72.png" src="../_images/02e9e8afec2e5cd7378fd09b339d81db3a94722b9293225c087eaabfed143e72.png" />
+<img alt="../_images/a5c38657bb61eb50541df7f79175968f34a9c12d9b2b9507601adde6c5ea309b.png" src="../_images/a5c38657bb61eb50541df7f79175968f34a9c12d9b2b9507601adde6c5ea309b.png" />
+<img alt="../_images/77cb22862cb7c4c0a690a4993f2615f2b1a7c20983caff9987d141682b22136a.png" src="../_images/77cb22862cb7c4c0a690a4993f2615f2b1a7c20983caff9987d141682b22136a.png" />
+<img alt="../_images/c0eeedee64064d38b3b5abed7062251118adfac85890a7b846e48687ec617988.png" src="../_images/c0eeedee64064d38b3b5abed7062251118adfac85890a7b846e48687ec617988.png" />
+<img alt="../_images/04b4374e698843df61923ff0d6f3c312b46dac5298f5c8a6bf5920530ffd35db.png" src="../_images/04b4374e698843df61923ff0d6f3c312b46dac5298f5c8a6bf5920530ffd35db.png" />
+<img alt="../_images/5aeb21dab0632f20a1b5b9df26e7c4bff65faa4bb49c06d1642919a7465b50fa.png" src="../_images/5aeb21dab0632f20a1b5b9df26e7c4bff65faa4bb49c06d1642919a7465b50fa.png" />
+<img alt="../_images/058cfc1a0cffcd7ca5aa7fac5b5a55421d65aeb64b647a24eeea64a1b9c3223d.png" src="../_images/058cfc1a0cffcd7ca5aa7fac5b5a55421d65aeb64b647a24eeea64a1b9c3223d.png" />
+<img alt="../_images/9aa28770ef7b9f008f803d385ae3ab3877d6af0605732bcbb18a1ac9ed53094c.png" src="../_images/9aa28770ef7b9f008f803d385ae3ab3877d6af0605732bcbb18a1ac9ed53094c.png" />
+<img alt="../_images/e719a3de2eb320178c9b90d3584e90ca4196806244aec9978b633a0dc7c762e0.png" src="../_images/e719a3de2eb320178c9b90d3584e90ca4196806244aec9978b633a0dc7c762e0.png" />
+<img alt="../_images/9d57b930ca84c035106c35d242bbe58585982ebd88684be2952fccce4869b241.png" src="../_images/9d57b930ca84c035106c35d242bbe58585982ebd88684be2952fccce4869b241.png" />
+<img alt="../_images/5976ea4d1aa9c9402d9b02d4c5d01038ba1f47cfe6b9f51200297bf7c6d82b44.png" src="../_images/5976ea4d1aa9c9402d9b02d4c5d01038ba1f47cfe6b9f51200297bf7c6d82b44.png" />
+<img alt="../_images/9fa279b49446b9e0593ceb958869af01a02da2ec715688ea17e7d78a7b5a6cb0.png" src="../_images/9fa279b49446b9e0593ceb958869af01a02da2ec715688ea17e7d78a7b5a6cb0.png" />
+<img alt="../_images/59b0bd98832ba09a01a87adf3c83e5ddb8d970b09c9af034bcec0251d6b0231f.png" src="../_images/59b0bd98832ba09a01a87adf3c83e5ddb8d970b09c9af034bcec0251d6b0231f.png" />
+<img alt="../_images/9821406d678728afb52e7ef0da25b1fa76e31ffd5df1512288d35ed6e21234f1.png" src="../_images/9821406d678728afb52e7ef0da25b1fa76e31ffd5df1512288d35ed6e21234f1.png" />
+<img alt="../_images/3a7d7826d5afd71b03431cac5442c406fb6bb84f4645da1c778d196ced49b8f1.png" src="../_images/3a7d7826d5afd71b03431cac5442c406fb6bb84f4645da1c778d196ced49b8f1.png" />
+<img alt="../_images/6ddab319eceeb31a2d891cb27a447688ff807c5f1403775ff5afd417ae240bee.png" src="../_images/6ddab319eceeb31a2d891cb27a447688ff807c5f1403775ff5afd417ae240bee.png" />
+<img alt="../_images/e79f1fb3f358851da799a38d881f74674d35965d9df0ee278a3ead82ef0af851.png" src="../_images/e79f1fb3f358851da799a38d881f74674d35965d9df0ee278a3ead82ef0af851.png" />
+<img alt="../_images/753b84b3aae7261f71ea813f54c534c787d4012836180945a6166395539b1654.png" src="../_images/753b84b3aae7261f71ea813f54c534c787d4012836180945a6166395539b1654.png" />
+<img alt="../_images/b1a2048382fa5074b99d72265220b55dc8b83ce2a787b9a4a39b764efdf3e4f7.png" src="../_images/b1a2048382fa5074b99d72265220b55dc8b83ce2a787b9a4a39b764efdf3e4f7.png" />
+<img alt="../_images/d2723cf7b869982270e142009b9c1fdbf4cc494b5564dc275f0e50402a197085.png" src="../_images/d2723cf7b869982270e142009b9c1fdbf4cc494b5564dc275f0e50402a197085.png" />
+<img alt="../_images/ccb3ca8ae15b23c9c9111039b732cb08e6a0c09910eeadc7efb70dd8c8c789f5.png" src="../_images/ccb3ca8ae15b23c9c9111039b732cb08e6a0c09910eeadc7efb70dd8c8c789f5.png" />
+<img alt="../_images/61ad0e8e78c513a25a772089730b626b3948e3c725bd9fb09361f69f5146bfd7.png" src="../_images/61ad0e8e78c513a25a772089730b626b3948e3c725bd9fb09361f69f5146bfd7.png" />
+<img alt="../_images/d1152d55a5f05171f50d8272f63b8967ad16d19427064879b17e8c2c9de877ce.png" src="../_images/d1152d55a5f05171f50d8272f63b8967ad16d19427064879b17e8c2c9de877ce.png" />
+<img alt="../_images/bc98ab2186ce7062063a0dd0584f6018e1f7e197e07d4f5a908e21aefc0563aa.png" src="../_images/bc98ab2186ce7062063a0dd0584f6018e1f7e197e07d4f5a908e21aefc0563aa.png" />
+<img alt="../_images/4bee2e9d79ad092aa222ccbcc25c772883454d5269469e2578b3688e50bceaff.png" src="../_images/4bee2e9d79ad092aa222ccbcc25c772883454d5269469e2578b3688e50bceaff.png" />
+<img alt="../_images/0f863bfe2ff7269d6b0760e02aaf439465f66fcbaff522cd2a9b0536c254fbb9.png" src="../_images/0f863bfe2ff7269d6b0760e02aaf439465f66fcbaff522cd2a9b0536c254fbb9.png" />
+<img alt="../_images/44f20745e5981eb572fa351e03a02b4929a416e41b20df774d6339719a736bfc.png" src="../_images/44f20745e5981eb572fa351e03a02b4929a416e41b20df774d6339719a736bfc.png" />
+<img alt="../_images/34e045bf1ae3a59ea6d58ae4805b48ffd30f0c68860ce115f86b72d6ea2fb7c5.png" src="../_images/34e045bf1ae3a59ea6d58ae4805b48ffd30f0c68860ce115f86b72d6ea2fb7c5.png" />
+<img alt="../_images/007107ffc3db816e33ce1dc95b8bde008e6599a00f2e2318536370c36625a84b.png" src="../_images/007107ffc3db816e33ce1dc95b8bde008e6599a00f2e2318536370c36625a84b.png" />
+<img alt="../_images/ad4b27a077a253ecd876a58583de25087b8f3b3899da84abf613b3b7a026b384.png" src="../_images/ad4b27a077a253ecd876a58583de25087b8f3b3899da84abf613b3b7a026b384.png" />
+<img alt="../_images/859d9377723d6237ad4f527fff3d8c541b4bc658f918a5dba614dd0bce699749.png" src="../_images/859d9377723d6237ad4f527fff3d8c541b4bc658f918a5dba614dd0bce699749.png" />
+<img alt="../_images/74d305353e7549daeb5c7642033871f117e67fe8c3e1ad0154bc66cc676c6c89.png" src="../_images/74d305353e7549daeb5c7642033871f117e67fe8c3e1ad0154bc66cc676c6c89.png" />
+<img alt="../_images/a9a948c544287fafbb97c3c993d6afe428fdcf92b2de8ce90a1f36b34c96a6a8.png" src="../_images/a9a948c544287fafbb97c3c993d6afe428fdcf92b2de8ce90a1f36b34c96a6a8.png" />
+<img alt="../_images/2baa3a563780eb970a593bb628e28ca9331e656312e3fbba52840bb873a5ad7c.png" src="../_images/2baa3a563780eb970a593bb628e28ca9331e656312e3fbba52840bb873a5ad7c.png" />
+<img alt="../_images/18bc05688ca289c0dfa232e0abb9ccc8a3805fe2fae46e48fd8bc4fb026bc7c5.png" src="../_images/18bc05688ca289c0dfa232e0abb9ccc8a3805fe2fae46e48fd8bc4fb026bc7c5.png" />
+<img alt="../_images/b8cdf231437a37d53bdc6caa68880d0fcc2435415910461a75252eb93c2637df.png" src="../_images/b8cdf231437a37d53bdc6caa68880d0fcc2435415910461a75252eb93c2637df.png" />
+<img alt="../_images/86b48f426545de5c3050e571836523b1765dc556bd514a40d31e446848175031.png" src="../_images/86b48f426545de5c3050e571836523b1765dc556bd514a40d31e446848175031.png" />
+<img alt="../_images/7d44eae6924b32c7d4b685fa2534838ec3c17942abef3a4f73fd20d16a9f6764.png" src="../_images/7d44eae6924b32c7d4b685fa2534838ec3c17942abef3a4f73fd20d16a9f6764.png" />
+<img alt="../_images/63798ed2dd26003021c6561d0db0a91826b19b56d40197a4f73b217c67982389.png" src="../_images/63798ed2dd26003021c6561d0db0a91826b19b56d40197a4f73b217c67982389.png" />
 </div>
 </div>
 </section>
-<section id="automatic-reference-surface-determination-with-gaussian-curvature">
-<h2>Automatic reference surface determination with Gaussian curvature<a class="headerlink" href="#automatic-reference-surface-determination-with-gaussian-curvature" title="Link to this heading">#</a></h2>
-<p>We monitor the decay in absolute Gaussian curvature to determine the surface at which iteration number of cMCF should be used as a reference. In particular we would like to select a surface which is close in shape to the input <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> but with surface protrusions smoothed out. We thus try to seek out the first inflexion point in the decay curve. This is done by thresholding on the rate of change.</p>
+<section id="automatic-reference-shape-determination-using-discrete-gaussian-curvature">
+<h2>3. Automatic reference shape determination using discrete Gaussian curvature<a class="headerlink" href="#automatic-reference-shape-determination-using-discrete-gaussian-curvature" title="Link to this heading">#</a></h2>
+<p>We would like to select a shape which is closest to the input <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> with surface protrusions smoothed out, in this case the blebs. We do this by finding potential changepoints in the curve of the mean absolute discrete Gaussian curvature. The changepoint algorithm we use is to detect peaks after subtracting the curve from its baseline inferred by moving window average. This may generate one or multiple shape candidates. For the closest fit, we select the first candidate.</p>
+<p><strong>Comment:</strong>
+In the paper, we initially described monitoring the rate of change in mean absolute vertex discrete Gaussian curvature to determine the iteration number of cMCF. The cutoff however is difficult to set for different protrusion types, the rate of change behaves weirdly (does not necessarily decay) when surface mesh is not watertight and manifolder, and does not give the closest surface to <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> without surface protrusions. We used this initially because we had not developed shrinkwrapping and needed to run more iterations to find a shape that could be made genus-0 with voxelization only.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the mean absolute Gaussian curvature at vertices at each iteration of the cMCF</span>
 <span class="n">gauss_curve_MCF</span> <span class="o">=</span> <span class="n">MCF_measures_dict</span><span class="p">[</span><span class="s1">&#39;gauss_curvature_iter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
+<span class="c1"># find changepoints in the curve, generally default is fine.</span>
+<span class="n">inds</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">find_all_curvature_cutoff_index</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">,</span> 
+                                                 <span class="n">avg_fnc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">,</span> <span class="c1"># use moving means </span>
+                                                 <span class="n">absval</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># absolute value after subtracting baseline </span>
+                                                 <span class="n">winsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="c1"># window size for moving means, larger tends to slightly bias the found iteration number to later </span>
+                                                 <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="c1"># minimum peak height</span>
+                                                 <span class="n">min_peak_distance</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># minimal distance between detected peaks. </span>
 
-<span class="n">threshold_cMCF</span> <span class="o">=</span> <span class="mf">5e-7</span>
-<span class="c1"># determine the cut off iteration number such that the change between the previous iteration drops below 5e-7</span>
-<span class="n">ind</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">find_curvature_cutoff_index</span><span class="p">(</span> <span class="n">gauss_curve_MCF</span><span class="p">,</span> 
-                                              <span class="n">thresh</span><span class="o">=</span><span class="n">threshold_cMCF</span><span class="p">,</span>  <span class="c1"># cutoff on the rate of change.</span>
-                                              <span class="n">absval</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;possible iteration numbers for reference shape:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inds</span><span class="p">)</span>
 
-<span class="c1"># add the determined index to the MCF_measures_dict and resave. </span>
-<span class="n">MCF_measures_dict</span><span class="p">[</span><span class="s1">&#39;cMCF_ind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind</span>
-<span class="n">MCF_measures_dict</span><span class="p">[</span><span class="s1">&#39;threshold_cMCF&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">threshold_cMCF</span>
-<span class="n">spio</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
-                          <span class="s1">&#39;MCF_convergence_measures_&#39;</span><span class="o">+</span><span class="n">basefname</span> <span class="o">+</span><span class="s1">&#39;.mat&#39;</span><span class="p">),</span>
-                           <span class="n">MCF_measures_dict</span><span class="p">)</span>
+<span class="c1"># # Alternative, rate-of-change: (used in the paper for validation, now deprecated, not recommended)</span>
+<span class="c1"># threshold_cMCF = 5e-7</span>
+<span class="c1"># # determine the cut off iteration number such that the change between the previous iteration drops below 5e-7</span>
+<span class="c1"># ind = meshtools.find_curvature_cutoff_index( gauss_curve_MCF, </span>
+<span class="c1">#                                               thresh=threshold_cMCF,  # cutoff on the rate of change.</span>
+<span class="c1">#                                               absval=True) </span>
 
+<span class="c1"># plot the found inds onto the curve</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">plot the evolution of the curve and mark the chosen iteration number</span>
+<span class="sd">plot the evolution of the curve and mark all found iteration numbers</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">plt</span> 
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> 
           <span class="n">gauss_curve_MCF</span><span class="p">,</span> <span class="s1">&#39;.-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> 
-            <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">),</span> 
-            <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">inds</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> 
+                <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">),</span> 
+                <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
@@ -686,18 +729,64 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
                           <span class="s1">&#39;MCF_iterations_&#39;</span><span class="o">+</span><span class="n">basefname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">,</span> <span class="s1">&#39;.svg&#39;</span><span class="p">)),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">plot the vertices of the shape at all found iteration numbers </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">n_inds</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inds</span><span class="p">)</span>
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span> <span class="n">n_inds</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="c1"># generate subplots</span>
+<span class="k">for</span> <span class="n">ind_ii</span><span class="p">,</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inds</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">inds</span><span class="p">),</span> <span class="n">ind_ii</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;cMCF Iteration &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">ind</span><span class="p">][::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+               <span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">ind</span><span class="p">][::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+               <span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">ind</span><span class="p">][::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+               <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+               <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cMCF&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">][::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+               <span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">][::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+               <span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">][::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+               <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+               <span class="n">c</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;original&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># choose the first as the closest shape</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inds</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">inds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># add the determined index to the MCF_measures_dict and resave. </span>
+<span class="n">MCF_measures_dict</span><span class="p">[</span><span class="s1">&#39;cMCF_ind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind</span>
+<span class="n">MCF_measures_dict</span><span class="p">[</span><span class="s1">&#39;cMCF_all_inds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inds</span>
+<span class="n">spio</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                          <span class="s1">&#39;MCF_convergence_measures_&#39;</span><span class="o">+</span><span class="n">basefname</span> <span class="o">+</span><span class="s1">&#39;.mat&#39;</span><span class="p">),</span>
+                           <span class="n">MCF_measures_dict</span><span class="p">)</span>
     
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/ac9e52a247ced14d5eaccce380f825c9b18c198212ffdf60e233a066fcb52cc3.png" src="../_images/ac9e52a247ced14d5eaccce380f825c9b18c198212ffdf60e233a066fcb52cc3.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>possible iteration numbers for reference shape:
+[4]
+</pre></div>
+</div>
+<img alt="../_images/9fe18cba85cc2d8dfffc3de2ff77a2b3d630fa39394791aef995ea0499cd34c1.png" src="../_images/9fe18cba85cc2d8dfffc3de2ff77a2b3d630fa39394791aef995ea0499cd34c1.png" />
+<img alt="../_images/cc95c532196b4ffab55e62c48517271d5ee5ee3699f1afc0d9c3abf01b54a97a.png" src="../_images/cc95c532196b4ffab55e62c48517271d5ee5ee3699f1afc0d9c3abf01b54a97a.png" />
 </div>
 </div>
 </section>
 <section id="quantifying-conformal-and-equiareal-distortion-errors-during-cmcf">
-<h2>Quantifying conformal and equiareal distortion errors during cMCF<a class="headerlink" href="#quantifying-conformal-and-equiareal-distortion-errors-during-cmcf" title="Link to this heading">#</a></h2>
-<p>We can measure the conformal and equiareal distortion error at each cMCF iteration relative to the initial surface <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>. This is somewhat slow.</p>
+<h2>4. Quantifying conformal and equiareal distortion errors during cMCF<a class="headerlink" href="#quantifying-conformal-and-equiareal-distortion-errors-during-cmcf" title="Link to this heading">#</a></h2>
+<p>We can measure the conformal and equiareal distortion error at each cMCF iteration relative to the initial surface <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>.</p>
+<p><strong>Note:</strong> This is slow, and we don’t do this normally. It is here for completeness, demonstrating how to compute these measures with u-Unwrap3D if we wish and to show that these flows distorts local surface area, and to a less extent the aspect ratio of triangles.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conformal_error_flow</span> <span class="o">=</span> <span class="p">[</span><span class="n">meshtools</span><span class="o">.</span><span class="n">quasi_conformal_error</span><span class="p">(</span><span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">steps</span><span class="p">],</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span> <span class="k">for</span> <span class="n">steps</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Usteps_MCF_img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
@@ -719,7 +808,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>We can now plot the mean conformal and equiareal distortion errors as a function of the cMCF iteration number.</p>
+<p>Plot the mean conformal (left axis) and equiareal distortion (right axis) errors as a function of the cMCF iteration number.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_conformal_error_curve</span> <span class="o">=</span> <span class="n">conformal_error_flow_arrays</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -749,12 +838,13 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/273ee097801ee69ccf0c67d8084afc4c789c4964d5f1fd834bf1928c4d23fa02.png" src="../_images/273ee097801ee69ccf0c67d8084afc4c789c4964d5f1fd834bf1928c4d23fa02.png" />
+<img alt="../_images/84f73963fa150647695e1ce5279aa3c392560ee2a279cd99b2c5c5e26f143c59.png" src="../_images/84f73963fa150647695e1ce5279aa3c392560ee2a279cd99b2c5c5e26f143c59.png" />
 </div>
 </div>
 </section>
-<section id="quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-of-s-ref-x-y-z">
-<h2>Quantifying and colormapping the conformal and equiareal distortion error of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span><a class="headerlink" href="#quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-of-s-ref-x-y-z" title="Link to this heading">#</a></h2>
+<section id="quantifying-the-conformal-and-equiareal-distortion-error-of-s-ref-x-y-z">
+<h2>5. Quantifying the conformal and equiareal distortion error of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span><a class="headerlink" href="#quantifying-the-conformal-and-equiareal-distortion-error-of-s-ref-x-y-z" title="Link to this heading">#</a></h2>
+<p>In practice, we do not need to compute the errors for every cMCF iteration. We are mostly interested in the error for the chosen shape, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>. The code below demonstrates the computation, then colormapping of the values to display on the surface mesh of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.colors</span> <span class="k">as</span> <span class="nn">vol_colors</span>
@@ -784,6 +874,7 @@ document.write(`
 <span class="n">area_distortion_error</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">area_distortion_measure</span><span class="p">(</span><span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="c1"># original</span>
                                                           <span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">ind</span><span class="p">],</span> <span class="c1"># cMCF</span>
                                                           <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span>
+
 <span class="c1"># color mapping S(x,y,z) the -log(area fraction) using a -3 to 3 scale in reverse coolwarm so that negative means the original surface has been compressed whilst a positive value means the original surface has been expanded.</span>
 <span class="n">area_distortion_error_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">area_distortion_error</span><span class="p">),</span> 
                                                       <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm_r</span><span class="p">,</span> 
@@ -804,10 +895,29 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="remeshing-s-ref-x-y-z-to-be-genus-0-using-voxelization">
-<h2>Remeshing <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> to be genus-0 using voxelization<a class="headerlink" href="#remeshing-s-ref-x-y-z-to-be-genus-0-using-voxelization" title="Link to this heading">#</a></h2>
-<p>We demonstrate how to voxelize the mesh i.e. convert it to a binary volume image to take advantage of binary morphological operations to close small holes and handles and then conduct a meshing of the fixed binary volume to get a genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>.</p>
-<p><strong>NOTE</strong>: In this example, we don’t actually need to voxelize and remesh to get a genus-0 shape. This is because the original mesh was both already genus-0 and has been isotropically remeshed. An isotropic remesh is important since it means we can do area distortion relaxation later.</p>
+<section id="constructing-a-genus-0-s-ref-x-y-z-surface-using-shrinkwrapping-and-voxelization">
+<h2>6. Constructing a genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> surface using shrinkwrapping and voxelization<a class="headerlink" href="#constructing-a-genus-0-s-ref-x-y-z-surface-using-shrinkwrapping-and-voxelization" title="Link to this heading">#</a></h2>
+<p>If the <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> from cMCF is not genus-0, we cannot map it to a sphere. Practically, area-distortion relaxation will fail due to numerical instability if any protrusive features of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> is sharp (high curvature, point-like) or its shape has very thin ‘necks’ even if it genus-0.</p>
+<p>Shrinkwrapping guarantees the construction of a genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> surface, whilst voxelization allows the use of morphological operations, particularly dilation to remove sharp points and thin necks that would later prevent obtaining an equiareal spherical parameterization after step 4 of the u-Unwrap3D standard workflow.</p>
+<p><strong>Shrinkwrapping</strong></p>
+<p>As the name suggests, we shrinkwrap an initial genus-0 surface (i.e. without cutting, tearing etc) to obtain a genus-0 equivalent of the target shape. This is an iterative procedure involving the following steps:</p>
+<ol class="arabic simple">
+<li><p>Compute a good initial genus-0 surface using <a class="reference external" href="https://doc.cgal.org/latest/Alpha_wrap_3/index.html">alphawrap</a> and interval bisection, <code class="docutils literal notranslate"><span class="pre">see</span> <span class="pre">unwrap3D.Mesh.meshtools.alphawrap_genus0</span></code>.</p></li>
+<li><p>Compute the <a class="reference external" href="https://en.wikipedia.org/wiki/Gradient_vector_flow">gradient vector field</a> of input surface and deform the initial genus-0 surface using active contours to refine to input surface for a number of epochs.</p></li>
+<li><p>Detect local areas where shrinkwrapping has yet to converge because flow is hindered by large concavities and triangle quality has become poor c.f. <a class="reference external" href="https://en.wikipedia.org/wiki/Gradient_vector_flow">gradient vector flow convergence</a>. Remove triangles in these regions, stitch the gap and remesh whilst remaining genus-0. Repeat 2 above to refine again. Repeat 3 and 2 as needed until convergence. For challenging morphologies with long and narrow concavities, this might be 4, 5 times.</p></li>
+</ol>
+<p><strong>N.B:</strong> Whilst the shrinkwrapping approach we developed in u-Unwrap3D is accurate, it is also slow because it runs on an image grid, therefore we wouldn’t perform if the cMCF <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> was already genus-0 or has only small holes and handles that can be readily fixed by voxelization and morphological operations. Similarly if the initial genus-0 surface is already sufficient (true for largely-convex shapes), skip steps 2,3 in the shrinkwrapping. You can also significantly boost speed, if you downsize the mesh so that vertices correspond to a smaller image volume.</p>
+<p><strong>Voxelization</strong></p>
+<p>Voxelizing the mesh i.e. convert it to a binary volume image enables us to use binary morphological operations to easily close small holes and handles, fill in internal volume and dilate to remove sharp protrusive features and widen narrow necks. Voxelization in u-Unwrap3D works by:</p>
+<ol class="arabic simple">
+<li><p>upsampling the input mesh to have minimum edge length &lt; 2 voxels and rasterization onto a image grid.</p></li>
+<li><p>dilating the binary by <span class="math notranslate nohighlight">\(k_{\text{dilate}}\)</span> voxels,</p></li>
+<li><p>binary infill holes</p></li>
+<li><p>eroding by <span class="math notranslate nohighlight">\(k_{\text{erode}}\)</span> voxels.</p></li>
+</ol>
+<p>The steps above are made available in a single function, <code class="docutils literal notranslate"><span class="pre">unwrap3D.Mesh.meshtools.voxelize_image_mesh_pts</span></code>.</p>
+<p>After these operations, we re-extract the surface mesh of the binary volume to get a genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> suitable for spherical parameterization.</p>
+<p><strong>NOTE</strong>: In this example, both shrinkwrapping and voxelization is extraneous steps. The original mesh is already genus-0, isotropically meshed and its cMCF <span class="math notranslate nohighlight">\(S_\text{ref}\)</span> is effectively convex, devoid of any concavities.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># first explicitly make a mesh of the intermediate S_ref(x,y,z) obtained direct from cMCF.  </span>
@@ -821,27 +931,278 @@ document.write(`
 
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Part 1:</span>
+
+<span class="sd">Shrinkwrapping of mesh (steps 1 and 2 only, 3 is commented out and included only for completeness)</span>
+<span class="sd">    - shrinkwrapping steps 1 and 2 are provided in one single function</span>
+<span class="sd">    - shrinkwrapping step 3 is dependent on the input and is carried out in a loop. [ we currently have not tested automatic criteria to determine when it is necessary]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># perform shrinkwrap 1 and 2 in one function call (most common usage for cMCF Sref)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># the number of epochs = total_shrinkwrap_iters / remesh_iters. total_shrinkwrap_iters = 200  is good for most shapes, For simple shapes, reduce this number by multiple of remesh_iters. </span>
+<span class="c1"># remesh_iters = 10 is good for most, does not require changing.</span>
+<span class="c1"># make_manifold = True manipulates the input mesh to be watertight first. It results in a less tight shrinkwrap</span>
+<span class="c1"># decay_rate adjusts the learning rate each epoch by this fraction [the algorithm cycles learning rate to avoid local minima] </span>
+<span class="c1"># min_lr ensures learing rate does not decrease beyond this. </span>
+
+<span class="n">total_shrinkwrap_iters</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># we can lower number when the shape is simple, as here, or let it be higher to see if we can get better wrap than initial</span>
+<span class="n">decay_rate</span> <span class="o">=</span> <span class="mf">0.75</span>
+<span class="n">min_lr</span> <span class="o">=</span> <span class="mf">0.24</span> <span class="c1"># for decay_rate 0.5, this would mean lowest is 0.25.</span>
+
+<span class="n">n_punchout_refinements</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Set this &gt;0 to run shrinkwrapping step 3 - step 2 loop n times for complex shapes with nasty concavities. Not needed here.</span>
+
+<span class="c1"># one round is largely sufficient for most cMCF Sref shapes as by definition they should have concavities largely removed. </span>
+<span class="n">mesh_shrinkwrap</span><span class="p">,</span> <span class="n">mesh_watertight_in</span><span class="p">,</span> <span class="n">mesh_genus0</span><span class="p">,</span> <span class="n">iter_stats</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">shrinkwrap_genus0_basic</span><span class="p">(</span><span class="n">cMCF_Sref</span><span class="p">,</span> 
+                                                                                                <span class="n">use_GVF</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                                                                <span class="n">GVF_mu</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> 
+                                                                                                <span class="n">GVF_iterations</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
+                                                                                                <span class="n">voxelize_padsize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                                                                                                <span class="n">voxelize_dilate_ksize</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="c1"># make dilate_ksize &gt; erode_ksize if your mesh doesn&#39;t form a complete volume or there is quite a bit of holes.</span>
+                                                                                                <span class="n">voxelize_erode_ksize</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>  
+                                                                                                <span class="n">extra_pad</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+                                                                                                <span class="n">genus0_alpha_frac</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> <span class="c1"># default</span>
+                                                                                                <span class="n">genus0_alpha_auto</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                                                                                                <span class="n">genus0_tol</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span> 
+                                                                                                <span class="n">total_shrinkwrap_iters</span> <span class="o">=</span> <span class="n">total_shrinkwrap_iters</span><span class="p">,</span>
+                                                                                                <span class="n">decay_rate</span> <span class="o">=</span> <span class="n">decay_rate</span><span class="p">,</span>  
+                                                                                                <span class="n">remesh_iters</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                                                                                <span class="n">conformalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># use active contours - recommended </span>
+                                                                                                <span class="n">min_size</span><span class="o">=</span><span class="mf">40e3</span><span class="p">,</span> <span class="c1"># minimum mesh vertices, increase might better cover smaller cavities but greatly increase computational time!</span>
+                                                                                                <span class="n">upsample</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                                                                                                <span class="n">min_lr</span><span class="o">=</span><span class="n">min_lr</span><span class="p">,</span> <span class="c1"># minimum step_size dropping from 1.</span>
+                                                                                                <span class="n">make_manifold</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="c1"># run this. </span>
+                                                                                                <span class="n">watertight_fraction</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                                                                                <span class="n">deltaL</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span>
+                                                                                                <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="c1"># controls stiffness</span>
+                                                                                                <span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="c1"># controls torsion</span>
+                                                                                                <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;pardiso&#39;</span><span class="p">,</span>
+                                                                                                <span class="n">curvature_weighting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                                                                                                <span class="n">debugviz</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># leave on if you want to see the state of the mesh, otherwise off. </span>
+        
+<span class="c1"># save out the output for visualization and checking </span>
+<span class="n">tmp</span><span class="o">=</span><span class="n">mesh_shrinkwrap</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                                        <span class="s1">&#39;shrinkwrap_</span><span class="si">%s</span><span class="s1">_cMCF-Sref.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span> <span class="c1"># this should be same as the last iteration mesh.</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                               <span class="s1">&#39;input_Sref_to_shrinkwrapping_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">mesh_genus0</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                                      <span class="s1">&#39;initial_genus0_shrinkwrap_Sref_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="p">(</span><span class="n">iter_stats</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                              <span class="s1">&#39;shrinkwrap_final-iter_</span><span class="si">%s</span><span class="s1">_cMCF-Sref.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+
+<span class="c1"># setup save variables ready for step 3 processing. [those stats will append to these]</span>
+<span class="n">chamfer_dists</span> <span class="o">=</span> <span class="n">iter_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">all_meshes_iter_genus0</span> <span class="o">=</span> <span class="n">iter_stats</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># this completes the euler number for each iteration - you can check this is 2.</span>
+<span class="n">all_meshes_iter</span> <span class="o">=</span> <span class="n">iter_stats</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    
+<span class="c1"># step 3 shrinkwrap code, executed only if n_punchout_refinements&gt;0</span>
+<span class="n">mesh_wrap</span> <span class="o">=</span> <span class="n">mesh_shrinkwrap</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># run this a few times. </span>
+<span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_punchout_refinements</span><span class="p">):</span> <span class="c1"># use more iterations until happy </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    1. detect nonconverged. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mesh_wrap</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">remove_nonshrinkwrap_triangles</span><span class="p">(</span><span class="n">mesh_wrap</span><span class="p">,</span>
+                                                        <span class="n">mesh</span><span class="p">,</span>
+                                                        <span class="n">q_thresh</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                                        <span class="n">max_dist_cutoff</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span> <span class="c1"># this controls the fidelity... </span>
+                                                        <span class="n">sigma_dist_cutoff</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
+                                                        <span class="n">sigma_area_cutoff</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="c1"># this ? </span>
+                                                        <span class="n">nearest_k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                                        <span class="n">dilate_voxels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="c1"># cut more away ? </span>
+                                                        <span class="n">erode_voxels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                                        <span class="n">minsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    2. re-prop surface. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mesh_shrinkwrap</span><span class="p">,</span> <span class="n">mesh_watertight_in</span><span class="p">,</span> <span class="n">mesh_genus0</span><span class="p">,</span> <span class="n">iter_stats</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">attract_surface_mesh</span><span class="p">(</span><span class="n">mesh_in</span><span class="o">=</span><span class="n">mesh_wrap</span><span class="p">,</span>
+                                                                                                        <span class="n">mesh_ref</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span> 
+                                                                                                        <span class="n">use_GVF</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                                                                                        <span class="n">GVF_mu</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="c1"># this large, introduces noise </span>
+                                                                                                        <span class="n">GVF_iterations</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                                                                                                    <span class="n">voxelize_padsize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="c1"># this is just leave enough padding space </span>
+                                                                                                    <span class="n">voxelize_dilate_ksize</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> 
+                                                                                                    <span class="n">voxelize_erode_ksize</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1">## was this cos of 3? </span>
+                                                                                                    <span class="n">extra_pad</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+                                                                                                    <span class="n">tightest_genus0_initial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                                                                    <span class="n">genus0_alpha_frac</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+                                                                                                    <span class="n">genus0_alpha_auto</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                                                                                                    <span class="n">genus0_offset</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+                                                                                                    <span class="n">genus0_tol</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> 
+                                                                                                    <span class="n">total_shrinkwrap_iters</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="c1"># master number of iterations.</span>
+                                                                                                    <span class="n">decay_rate</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="c1"># no decay. </span>
+                                                                                                    <span class="n">remesh_iters</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                                                                                    <span class="n">conformalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># use active contours</span>
+                                                                                                    <span class="n">min_size</span><span class="o">=</span><span class="mi">80000</span><span class="p">,</span> <span class="c1"># minimum mesh vertices</span>
+                                                                                                    <span class="n">upsample</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                                                                                                    <span class="n">min_lr</span><span class="o">=</span><span class="n">min_lr</span><span class="p">,</span> <span class="c1"># minimum step_size dropping from 1.</span>
+                                                                                                    <span class="n">make_manifold</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="c1"># ah.. its prob this too. </span>
+                                                                                                    <span class="n">watertight_fraction</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                                                                                    <span class="n">deltaL</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span>
+                                                                                                    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="c1"># more stiff here and we can break through? </span>
+                                                                                                    <span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="c1"># what if we reduce the bending? </span>
+                                                                                                    <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;pardiso&#39;</span><span class="p">,</span>
+                                                                                                    <span class="n">curvature_weighting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                                                                                                    <span class="n">debugviz</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="n">all_meshes_iter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iter_stats</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">all_meshes_iter_genus0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iter_stats</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">chamfer_dists</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iter_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    insert save if you want to check </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># here, i&#39;m going to rewrite the previous final iteration shrinkwrap. checking how good this is, is a good general indicator if we need more refinement iterations i.e. increase the number of loops</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">mesh_shrinkwrap</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                              <span class="s1">&#39;shrinkwrap_final-iter_</span><span class="si">%s</span><span class="s1">_cMCF-Sref.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+    
+    <span class="n">mesh_wrap</span> <span class="o">=</span> <span class="n">mesh_shrinkwrap</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+
+<span class="c1"># flatten all of it </span>
+<span class="k">if</span> <span class="n">n_punchout_refinements</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+    <span class="n">all_meshes_iter_flat</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">all_meshes_iter_item</span> <span class="ow">in</span> <span class="n">all_meshes_iter</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">all_meshes_iter_item</span><span class="p">]</span>
+    <span class="n">all_meshes_iter_genus0_flat</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">all_meshes_iter_item</span> <span class="ow">in</span> <span class="n">all_meshes_iter_genus0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">all_meshes_iter_item</span><span class="p">]</span>
+    <span class="n">all_chamfer_dists</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">chamfer_dists</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">all_meshes_iter_flat</span> <span class="o">=</span> <span class="n">all_meshes_iter</span>
+    <span class="n">all_meshes_iter_genus0_flat</span> <span class="o">=</span> <span class="n">all_meshes_iter_genus0</span>
+    <span class="n">all_chamfer_dists</span> <span class="o">=</span> <span class="n">chamfer_dists</span>
+
+
+<span class="c1"># plot the chamfer distance to input surface to guide whats the best mesh to use.</span>
+<span class="c1"># save this out </span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">all_chamfer_dists</span><span class="p">,</span> <span class="s1">&#39;o-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">all_meshes_iter_genus0</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch Number&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Liberation Sans&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Chamfer distance&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Liberation Sans&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                            <span class="s1">&#39;Chamfer-distance_shrinkwrap_to_input_per_iteration.pdf&#39;</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1"># we take the mesh with lowest chamfer distance to the input surface as the genus-0 $S_\text{ref}$</span>
+<span class="n">final_mesh</span> <span class="o">=</span> <span class="n">all_meshes_iter_flat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">all_chamfer_dists</span><span class="p">)]</span>
+
+<span class="c1"># we isotropically remesh this output to ensure good triangle quality [optional if running voxelization after]</span>
+<span class="n">final_mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">incremental_isotropic_remesh</span><span class="p">(</span><span class="n">final_mesh</span><span class="p">)</span>
+
+<span class="c1"># save the final mesh</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">final_mesh</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                     <span class="s1">&#39;final_shrinkwrap_</span><span class="si">%s</span><span class="s1">_cMCF_Sref.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+<span class="c1"># we can save all the meshes </span>
+<span class="n">save_shrinkwrap_meshes_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                             <span class="s1">&#39;shrinkwrap_meshes&#39;</span><span class="p">)</span>
+<span class="n">fio</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">save_shrinkwrap_meshes_folder</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ttt</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_meshes_iter_flat</span><span class="p">)):</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">all_meshes_iter_flat</span><span class="p">[</span><span class="n">ttt</span><span class="p">]</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_shrinkwrap_meshes_folder</span><span class="p">,</span> 
+                                                        <span class="s1">&#39;shrinkwrap_iter_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ttt</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial: 2
+initial_watertight: 2
+</pre></div>
+</div>
+<img alt="../_images/bab5dcec22b4018c731e8d5fb10c7d53fc4f9dd1bebbe20c30bdcc057aec7218.png" src="../_images/bab5dcec22b4018c731e8d5fb10c7d53fc4f9dd1bebbe20c30bdcc057aec7218.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initiating a genus-0 mesh automatically with interval:  [3.0164365292638387, 3.0170245751500513]
+</pre></div>
+</div>
+<img alt="../_images/6ce2d5a4776f21e59e75ec87c15c1b9d70cf90a21210da83a5dec3b82966a03f.png" src="../_images/6ce2d5a4776f21e59e75ec87c15c1b9d70cf90a21210da83a5dec3b82966a03f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GVF iter: 15/15(80754, 3)
+</pre></div>
+</div>
+<img alt="../_images/d566eacc9e6f96472e6efaea1c500e109b02eb6d02bfed58b17c7183f0eed77c.png" src="../_images/d566eacc9e6f96472e6efaea1c500e109b02eb6d02bfed58b17c7183f0eed77c.png" />
+<img alt="../_images/0d82082852682cfe746c671f26dfda4efe218fb82f9018dc6a7be6c4322eb2ea.png" src="../_images/0d82082852682cfe746c671f26dfda4efe218fb82f9018dc6a7be6c4322eb2ea.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+0 4.159202728906411 changing lr:  0.75
+0 4.159202728906411
+1
+==========================
+2
+--------------------------
+1 3.9332972708740392
+2
+==========================
+2
+--------------------------
+2 3.9295720674250187
+3
+==========================
+2
+--------------------------
+3 3.932135719122728 changing lr:  0.5625
+3 3.932135719122728
+4
+==========================
+2
+--------------------------
+4 3.7160885223334383
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+findfont: Font family &#39;Liberation Sans&#39; not found.
+</pre></div>
+</div>
+<img alt="../_images/b442fadb07c4cb478327c34c17e93304f918db0902046971ff66412d3d9bf0f2.png" src="../_images/b442fadb07c4cb478327c34c17e93304f918db0902046971ff66412d3d9bf0f2.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let&#39;s first rename the final mesh from the shrinkwrapping </span>
+<span class="n">shrinkwrap_mesh</span> <span class="o">=</span> <span class="n">final_mesh</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Voxelization of mesh </span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># vol_shape allows us when available to use the volume grid size of the original image. -&gt; the advantage is that no postcorrection is required to maintain image coordinates.</span>
 <span class="c1"># If not available the maximum extent of the vertices are used to determine a bounding box which is then padded</span>
-<span class="n">smooth_img_binary</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">voxelize_image_mesh_pts</span><span class="p">(</span><span class="n">cMCF_Sref</span><span class="p">,</span> <span class="c1"># might be best here to use barycenter </span>
+<span class="n">smooth_img_binary</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">voxelize_image_mesh_pts</span><span class="p">(</span><span class="n">shrinkwrap_mesh</span><span class="p">,</span> <span class="c1"># might be best here to use barycenter </span>
                                                       <span class="n">pad</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
                                                       <span class="n">dilate_ksize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># this is the size of the ball kernel to plug holes and handles. </span>
                                                       <span class="n">erode_ksize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># this undoes the dilation to keep the remesh close to the original surface.</span>
-                                                      <span class="n">vol_shape</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="c1"># erode to make smaller.</span>
+                                                      <span class="n">vol_shape</span><span class="o">=</span><span class="n">cell_binary</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># If you know your image shape, specify the vol_shape for better speed, otherwise use None The ::-1, is because S(x,y,z) was extracted from a transposed version of the cell binary</span>
+<span class="c1"># HINT: if you have sharp protrusive features in Sref, set erode_ksize at least 2 less than dilate_ksize to help later area-distortion relaxation.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">remesh at isovalue of 0.5</span>
+<span class="sd">Re-extraction of surface mesh to obtain the final genus-0 $S_{\text{ref}(x,y,z)} for spherical parameterization </span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">cMCF_Sref_remesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">marching_cubes_mesh_binary</span><span class="p">(</span><span class="n">smooth_img_binary</span><span class="p">,</span> 
                                                             <span class="n">presmooth</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> 
                                                             <span class="n">contourlevel</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> 
                                                             <span class="n">remesh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
-                                                            <span class="n">remesh_method</span><span class="o">=</span><span class="s1">&#39;pyacvd&#39;</span><span class="p">,</span> 
-                                                            <span class="n">remesh_samples</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="c1"># lower downsampling will give a smoother mesh, see below on voxelization artifacts.</span>
-                                                            <span class="n">predecimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
-                                                            <span class="n">min_mesh_size</span><span class="o">=</span><span class="mi">60000</span><span class="p">)</span>  
+                                                            <span class="n">remesh_method</span><span class="o">=</span><span class="s1">&#39;CGAL&#39;</span><span class="p">,</span> 
+                                                            <span class="n">remesh_samples</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="c1"># lower downsampling will give a coarser mesh, which is easier to get equiareal spherical parameterization but may lose accuracy in representing high-curvature protrusive features (if present).</span>
+                                                            <span class="n">predecimate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># only essential if remesh_method=&#39;pyacvd </span>
+                                                            <span class="n">min_mesh_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>  
 
 <span class="n">save_smooth_remesh_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
                                      <span class="s1">&#39;unwrap_cMCF_Sref_mesh.obj&#39;</span><span class="p">)</span>
@@ -860,37 +1221,10 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">optional additional smoothing to remove voxelization &#39;aliasing&#39; artifacts. [SLOW]</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="c1"># one issue with voxelizing onto a discrete voxel grid is that smoothness is lost and the surface becomes &#39;blocky&#39;. </span>
-<span class="c1"># This is partially mitigated above by isotropic remeshing to a lower fraction of the number of vertices of the initial Marching Cubes mesh.</span>
-<span class="c1"># A more effective method is to use Laplacian smoothing with volume constraint</span>
-
-<span class="kn">from</span> <span class="nn">trimesh.smoothing</span> <span class="kn">import</span> <span class="n">filter_laplacian</span><span class="p">,</span> <span class="n">laplacian_calculation</span>
-
-<span class="c1"># this function filters the mesh in-place so we first make a copy.</span>
-<span class="n">cMCF_Sref_remesh_lap_smooth</span> <span class="o">=</span> <span class="n">cMCF_Sref_remesh</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">cMCF_Sref_remesh_lap_smooth</span> <span class="o">=</span> <span class="n">filter_laplacian</span><span class="p">(</span><span class="n">cMCF_Sref_remesh_lap_smooth</span><span class="p">,</span>
-                                              <span class="n">lamb</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="c1"># keep this small, else the coordinates shift</span>
-                                              <span class="n">iterations</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="c1"># beyond this, seems to give coordinate shift</span>
-                                              <span class="n">implicit_time_integration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                              <span class="n">volume_constraint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
-                                              <span class="n">laplacian_operator</span><span class="o">=</span><span class="n">laplacian_calculation</span><span class="p">(</span><span class="n">cMCF_Sref_remesh</span><span class="p">,</span> <span class="n">equal_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span> <span class="c1"># this is required to set the cotangent laplacian.</span>
-
-<span class="n">save_smooth_remesh_lap_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
-                                     <span class="s1">&#39;unwrap_cMCF_Sref_mesh_lap-smooth_15iter.obj&#39;</span><span class="p">)</span>
-<span class="n">tmp</span> <span class="o">=</span> <span class="n">cMCF_Sref_remesh_lap_smooth</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">save_smooth_remesh_lap_file</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
 </section>
-<section id="quantifying-the-geometric-similarity-between-the-intermediary-cmcf-and-the-remeshed-s-ref-x-y-z">
-<h2>Quantifying the geometric similarity between the intermediary cMCF and the remeshed <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span><a class="headerlink" href="#quantifying-the-geometric-similarity-between-the-intermediary-cmcf-and-the-remeshed-s-ref-x-y-z" title="Link to this heading">#</a></h2>
-<p>The remeshing changes the parameterization of the two surfaces i.e. the particular mesh coordinates, but should not change the bijectivity of the surfaces i.e. they map to the same underlying shape.</p>
+<section id="quantifying-the-similarity-between-the-cmcf-and-constructed-genus-0-s-ref-x-y-z">
+<h2>7. Quantifying the similarity between the cMCF and constructed genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span><a class="headerlink" href="#quantifying-the-similarity-between-the-cmcf-and-constructed-genus-0-s-ref-x-y-z" title="Link to this heading">#</a></h2>
+<p>The previous operations of shrinkwrapping and remeshing through voxelization changes the parameterization of the two surfaces i.e. they are not the same meshes with different number of vertices and faces. However it should not greatly change the bijectivity of the surfaces i.e. they describe or 1-to-1 to the same underlying shape (albeit the genus-0 may be slightly dilated / smoother e.g. to avoid shape features).</p>
 <p>To check:</p>
 <ol class="arabic simple">
 <li><p>we can plot the vertices of the original and remeshed surface to check geometric similarity.</p></li>
@@ -945,8 +1279,8 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/4652d4e2432bf5637a549447c7565a552563bc1a6dccfbede3f78f18f6594dcb.png" src="../_images/4652d4e2432bf5637a549447c7565a552563bc1a6dccfbede3f78f18f6594dcb.png" />
-<img alt="../_images/78d5d2010023c768a0e60471a104f1c3a223f701aa1008039e84e56470989451.png" src="../_images/78d5d2010023c768a0e60471a104f1c3a223f701aa1008039e84e56470989451.png" />
+<img alt="../_images/796f268cfcc73b1b27bacb71d1e6625158348aa2dddc72d1163a0fa7bfa62188.png" src="../_images/796f268cfcc73b1b27bacb71d1e6625158348aa2dddc72d1163a0fa7bfa62188.png" />
+<img alt="../_images/956c01b5e00bb88b4aa1ecfd5abdb427c2341ac02fd5a555ae5c2fbb303185d2.png" src="../_images/956c01b5e00bb88b4aa1ecfd5abdb427c2341ac02fd5a555ae5c2fbb303185d2.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -956,9 +1290,9 @@ document.write(`
 
 <span class="c1"># 1. mean squared error or Chamfer distance</span>
 <span class="n">mse</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">chamfer_distance_point_cloud</span><span class="p">(</span><span class="n">cMCF_Sref</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">cMCF_Sref_remesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mean squared error: &#39;</span><span class="p">,</span> <span class="n">mse</span><span class="p">)</span> <span class="c1"># in terms of pixels </span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mean squared error (chamfer distance): &#39;</span><span class="p">,</span> <span class="n">mse</span><span class="p">)</span> <span class="c1"># in terms of pixels </span>
 
-<span class="c1"># 3. diff surface area</span>
+<span class="c1"># 2. diff surface area</span>
 <span class="n">diff_A</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">diff_area_trimesh_trimesh</span><span class="p">(</span><span class="n">cMCF_Sref</span><span class="p">,</span> <span class="n">cMCF_Sref_remesh</span><span class="p">)</span>
 <span class="n">fraction_A</span> <span class="o">=</span> <span class="n">diff_A</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">igl</span><span class="o">.</span><span class="n">doublearea</span><span class="p">(</span><span class="n">cMCF_Sref</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">cMCF_Sref</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span> <span class="o">/</span><span class="mf">2.</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fraction total surface area change: &#39;</span><span class="p">,</span> <span class="n">fraction_A</span><span class="p">)</span> 
@@ -966,54 +1300,82 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean squared error:  1.361148
-fraction total surface area change:  -0.026158574820214095
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean squared error (chamfer distance):  1.7769792
+fraction total surface area change:  -0.02273273641995371
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="mapping-scalar-and-vectorial-quantities-to-the-remeshed-s-ref-x-y-z">
-<h2>Mapping scalar and vectorial quantities to the remeshed <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span><a class="headerlink" href="#mapping-scalar-and-vectorial-quantities-to-the-remeshed-s-ref-x-y-z" title="Link to this heading">#</a></h2>
-<p>Since <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> is a smooth and star-convex shape we can now do mesh matching to put the cMCF and remeshed <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> meshes into 1-1 correspondence. Since cMCF is bijective to the original surface, <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> we can also transfer the original surface onto the remeshed <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> like any other signal.</p>
+<section id="mapping-measurements-onto-the-genus-0-s-ref-x-y-z">
+<h2>8. Mapping measurements onto the genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span><a class="headerlink" href="#mapping-measurements-onto-the-genus-0-s-ref-x-y-z" title="Link to this heading">#</a></h2>
+<p>The genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> is the tightest approximation of cMCF <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>. Therefore we can establish a 1-1 correspondence by performing mesh matching. This involves finding for every vertex of the genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>, the face in cMCF <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> it will intersect with if we shoot a normal ray to the surface. Where they ray hits can be described by local barycentric coordinates, allowing us to interpolate any measurements of cMCF <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> by interpolation.</p>
+<p>Since cMCF is bijective to the original surface (by virtue of recording the deformation history), <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> vertices coordinates can be transfered as measurements onto the genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> like any other signal such as curvature.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Do mesh matching to establish correspondence between S_ref before and after remesh.</span>
+<span class="sd"># u-Unwrap3D provides a single convenience function to perform mesh matching between two meshes and then if provided, barycentric interpolation to transfer numerical + label-based measurements</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">match_params</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">match_and_interpolate_uv_surface_to_mesh</span><span class="p">(</span><span class="n">cMCF_Sref_remesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="c1"># the mesh to map to (target) </span>
-                                                                   <span class="n">cMCF_Sref</span><span class="p">,</span> <span class="c1"># the mesh mapping from (source)</span>
-                                                                   <span class="n">match_method</span><span class="o">=</span><span class="s1">&#39;cross&#39;</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># Example 1: Reinterpolating the surface mean curvature of S(x,y,z) and/or its coloring</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Load the curvature values computed from Step 0</span>
+<span class="n">curvature_stats_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cell_surface_folder</span><span class="p">,</span> 
+                                    <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_surface_curvature_intensity_stats&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">))</span> 
+<span class="n">surf_H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">spio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">curvature_stats_file</span><span class="p">)[</span><span class="s2">&quot;surf_H&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+<span class="c1"># Get the colors used in S(x,y,z) for curvature and cast to float32 for interpolation</span>
+<span class="n">surf_H_colors</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> 
+
+<span class="c1"># performing the matching + transfer</span>
+<span class="c1"># u-Unwrap3D provides a one-function call for transferring these numerical measurements + label-based measurements </span>
+
+<span class="c1"># concatenate all numerical together, so that number of columns = number of measurements</span>
+<span class="n">source_numerical</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">surf_H</span><span class="p">[:,</span><span class="kc">None</span><span class="p">],</span> 
+                              <span class="n">surf_H_colors</span><span class="p">])</span>
+
+<span class="c1"># transferring cMCF_Sref to cMCF_Sref_remesh</span>
+<span class="n">match_params</span><span class="p">,</span> <span class="n">transferred_numerical</span><span class="p">,</span> <span class="n">transferred_labels</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">transfer_mesh_measurements</span><span class="p">(</span><span class="n">cMCF_Sref</span><span class="p">,</span> 
+                                                                                               <span class="n">cMCF_Sref_remesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> 
+                                                                                                <span class="n">source_mesh_vertex_scalars</span><span class="o">=</span><span class="n">source_numerical</span><span class="p">,</span>
+                                                                                                <span class="n">source_mesh_vertex_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="c1"># we don&#39;t have any label measurements</span>
+
+<span class="n">remesh_S_ref_H</span> <span class="o">=</span> <span class="n">transferred_numerical</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">remesh_S_ref_H_color_interp</span> <span class="o">=</span> <span class="n">transferred_numerical</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>For recoloring the genus-0 <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span> we can either apply a colormap to the reinterpolated mean curvature values, or use the interpolated colors directly.</p>
+<p>Option 1 is the more accurate, as the generation of the original colormap likely involved clipping the raw values, but involves extra lines of code. Since it is for visualization, option 2 is quicker.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd"># Given the matching we can reinterpolate any quantity using barycentric interpolation.</span>
+<span class="sd"># Option 1: reapply a colormap based on the reinterpolated curvature values, </span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="c1"># Example 1: Reinterpolating the surface mean curvature of S(x,y,z) </span>
-
-<span class="c1"># we can&#39;t interpolate colors, therefore we need to load in previously computed surface curvature values.</span>
-<span class="n">curvature_stats_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cell_surface_folder</span><span class="p">,</span> 
-                                    <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_surface_curvature_intensity_stats&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">))</span> 
-<span class="n">surf_H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">spio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">curvature_stats_file</span><span class="p">)[</span><span class="s2">&quot;surf_H&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-<span class="n">remesh_S_ref_H</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">mesh_vertex_interpolate_scalar</span><span class="p">(</span><span class="n">cMCF_Sref</span><span class="p">,</span> 
-                                                              <span class="n">match_params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
-                                                              <span class="n">match_params</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
-                                                              <span class="n">surf_H</span><span class="p">[:,</span><span class="kc">None</span><span class="p">])[:,</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">remesh_S_ref_H_color</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">remesh_S_ref_H</span><span class="o">/</span><span class="mf">.104</span><span class="p">,</span> 
+<span class="n">remesh_S_ref_H_color</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">remesh_S_ref_H</span><span class="o">/</span><span class="mf">.104</span><span class="p">,</span> <span class="c1"># .104 is the voxel_size </span>
                                              <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral_r</span><span class="p">,</span> 
                                              <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> 
-                                             <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                                             <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># this gives output in 0-1</span>
+<span class="n">remesh_S_ref_H_color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mf">255.</span><span class="o">*</span><span class="n">remesh_S_ref_H_color</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">])</span>
 
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># Option 2: use interpolated colors</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">remesh_S_ref_H_color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">remesh_S_ref_H_color_interp</span><span class="p">)</span> <span class="c1"># cast back to uint8</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">add the colors to the cMCF_Sref_remesh and export out a .obj mesh file for visualization</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># we now add this color to the remeshed S_ref</span>
-<span class="n">cMCF_Sref_remesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mi">255</span><span class="o">*</span><span class="n">remesh_S_ref_H_color</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">cMCF_Sref_remesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span> <span class="o">=</span> <span class="n">remesh_S_ref_H_color</span>
+
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">cMCF_Sref_remesh</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
                                      <span class="s1">&#39;unwrap_cMCF_Sref_mesh_H_color.obj&#39;</span><span class="p">))</span>
 
-<span class="c1"># we will also save this remapped curvature value as we need it for all downstream visualizations !</span>
+<span class="c1"># we can also save this remapped curvature value for use in downstream computations e.g. for optimizing the unwrapping axis after spherical parameterization</span>
 <span class="n">spio</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
                          <span class="s1">&#39;unwrap_cMCF_remapped_surf_H.mat&#39;</span><span class="p">),</span> 
                         <span class="p">{</span><span class="s1">&#39;surf_H&#39;</span> <span class="p">:</span> <span class="n">remesh_S_ref_H</span><span class="p">})</span>
@@ -1021,17 +1383,21 @@ fraction total surface area change:  -0.026158574820214095
 </div>
 </div>
 </div>
+<p>We show a second example, interpolating the vertex coordinates of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> as a 3-dimensional signal on the genus-0 <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> mesh. <strong>Note:</strong> this is in fact a form of parameterization !</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example 2: Reinterpolating the coordinates of S(x,y,z) onto the remeshed S_ref(x,y,z) treating it as scalar signals. </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># Example 2: Reinterpolating the coordinates of S(x,y,z) onto the genus-0 S_ref(x,y,z) by treating it as scalar signals. </span>
+<span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c1"># load the input mesh and map its coordinates as a signal to remeshed S_ref(x,y,z)</span>
+<span class="c1"># since in the previous, we performed transfer of the curvature, we can reuse the match_params</span>
 <span class="n">remesh_S_ref_input_xyz</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">mesh_vertex_interpolate_scalar</span><span class="p">(</span><span class="n">cMCF_Sref</span><span class="p">,</span> 
                                                                    <span class="n">match_params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
                                                                    <span class="n">match_params</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
                                                                    <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">remesh_S_ref_input_xyz</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;number of vertices on genus-0 S_ref geometry: &#39;</span><span class="p">,</span> <span class="n">remesh_S_ref_input_xyz</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;number of vertices in original surface: &#39;</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
 
 <span class="c1"># Visualize the colocalization of points. The original mesh will be quasi-conformally mapped.</span>
@@ -1060,20 +1426,35 @@ fraction total surface area change:  -0.026158574820214095
 <span class="n">cMCF_Sref_input_remesh</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">remesh_S_ref_input_xyz</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">cMCF_Sref_input_remesh</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
                                              <span class="s1">&#39;remapped_input_surface_onto_cMCF_Sref_mesh_H_color.obj&#39;</span><span class="p">))</span>
+
+
+<span class="c1"># we can quantify the similarity between the transferred coordinates and the actual input surface</span>
+
+<span class="c1"># 1. mean squared error or Chamfer distance</span>
+<span class="n">mse</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">chamfer_distance_point_cloud</span><span class="p">(</span><span class="n">remesh_S_ref_input_xyz</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mean squared error (chamfer distance): &#39;</span><span class="p">,</span> <span class="n">mse</span><span class="p">)</span> <span class="c1"># in terms of pixels </span>
+
+<span class="c1"># 2. diff surface area</span>
+<span class="n">diff_A</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">diff_area_trimesh_trimesh</span><span class="p">(</span><span class="n">cMCF_Sref_input_remesh</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
+<span class="n">fraction_A</span> <span class="o">=</span> <span class="n">diff_A</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">igl</span><span class="o">.</span><span class="n">doublearea</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span> <span class="o">/</span><span class="mf">2.</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fraction total surface area change: &#39;</span><span class="p">,</span> <span class="n">fraction_A</span><span class="p">)</span> 
+  
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(113666, 3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>number of vertices on genus-0 S_ref geometry:  (18314, 3)
+number of vertices in original surface:  (23745, 3)
 </pre></div>
 </div>
-<img alt="../_images/85643bc1cdac2865222a02ffe8b646589d4194f10dedfd8e6feda00c7bd8ddc2.png" src="../_images/85643bc1cdac2865222a02ffe8b646589d4194f10dedfd8e6feda00c7bd8ddc2.png" />
+<img alt="../_images/44f246e09590e4c3c575bc50f48967b27125d30538fb00db87ea2d4762ad1960.png" src="../_images/44f246e09590e4c3c575bc50f48967b27125d30538fb00db87ea2d4762ad1960.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean squared error (chamfer distance):  1.4498198
+fraction total surface area change:  -0.020492047006579837
+</pre></div>
+</div>
 </div>
 </div>
 </section>
-</section>
-<section id="we-now-proceed-to-step-2-notebook-to-run-quasi-conformal-spherical-parameterization-of-the-genus-0-reference-shape">
-<h1>We now proceed to step 2 notebook to run quasi-conformal spherical parameterization of the genus-0 reference shape …<a class="headerlink" href="#we-now-proceed-to-step-2-notebook-to-run-quasi-conformal-spherical-parameterization-of-the-genus-0-reference-shape" title="Link to this heading">#</a></h1>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1085,16 +1466,16 @@ fraction total surface area change:  -0.026158574820214095
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "conda-env-unwrap3D_test-py"
+            mode: "python"
         },
         kernelOptions: {
-            name: "conda-env-unwrap3D_test-py",
+            name: "python3",
             path: "./03_basic_workflow"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'conda-env-unwrap3D_test-py'</script>
+    <script>kernelName = 'python3'</script>
 
                 </article>
               
@@ -1140,20 +1521,15 @@ fraction total surface area change:  -0.026158574820214095
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 1: Creating a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using conformalized mean curvature flow</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-cell-surface-mesh-and-create-an-analysis-save-folder">Load cell surface mesh and create an analysis save folder</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conformalized-mean-curvature-flow-cmcf">Conformalized mean curvature flow (cMCF)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-reference-surface-determination-with-gaussian-curvature">Automatic reference surface determination with Gaussian curvature</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-conformal-and-equiareal-distortion-errors-during-cmcf">Quantifying conformal and equiareal distortion errors during cMCF</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-of-s-ref-x-y-z">Quantifying and colormapping the conformal and equiareal distortion error of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remeshing-s-ref-x-y-z-to-be-genus-0-using-voxelization">Remeshing <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> to be genus-0 using voxelization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-the-geometric-similarity-between-the-intermediary-cmcf-and-the-remeshed-s-ref-x-y-z">Quantifying the geometric similarity between the intermediary cMCF and the remeshed <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-scalar-and-vectorial-quantities-to-the-remeshed-s-ref-x-y-z">Mapping scalar and vectorial quantities to the remeshed <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-surface-mesh-s-x-y-z">1. Read in surface mesh, <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-conformalized-mean-curvature-flow-cmcf-on-s-x-y-z">2. Run conformalized mean curvature flow (cMCF) on <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-reference-shape-determination-using-discrete-gaussian-curvature">3. Automatic reference shape determination using discrete Gaussian curvature</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-conformal-and-equiareal-distortion-errors-during-cmcf">4. Quantifying conformal and equiareal distortion errors during cMCF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-the-conformal-and-equiareal-distortion-error-of-s-ref-x-y-z">5. Quantifying the conformal and equiareal distortion error of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-a-genus-0-s-ref-x-y-z-surface-using-shrinkwrapping-and-voxelization">6. Constructing a genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> surface using shrinkwrapping and voxelization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-the-similarity-between-the-cmcf-and-constructed-genus-0-s-ref-x-y-z">7. Quantifying the similarity between the cMCF and constructed genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-measurements-onto-the-genus-0-s-ref-x-y-z">8. Mapping measurements onto the genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-now-proceed-to-step-2-notebook-to-run-quasi-conformal-spherical-parameterization-of-the-genus-0-reference-shape">We now proceed to step 2 notebook to run quasi-conformal spherical parameterization of the genus-0 reference shape …</a></li>
-</ul>
-
   </nav></div>
 
 </div></div>
