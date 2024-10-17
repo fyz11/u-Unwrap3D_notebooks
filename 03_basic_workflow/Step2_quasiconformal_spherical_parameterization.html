@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '03_basic_workflow/Step2_quasiconformal_spherical_parameterization';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, \(S_{ref}(x,y,z)\)" href="Step3_equiareal_spherical_parameterization.html" />
+    <link rel="next" title="Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, \(S_{\text{ref}}(x,y,z)\)" href="Step3_equiareal_spherical_parameterization.html" />
     <link rel="prev" title="Step 1: Find and create a genus-0 reference surface, \(S_{ref}(x,y,z)\)" href="Step1_find_reference_surface.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -186,8 +186,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Step0_find_cell_surface_from_segmentation.html">Step 0: Segmenting a single cell from a volume image</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step1_find_reference_surface.html">Step 1: Find and create a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 2: Quasi-conformal spherical parameterization of the genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step4_uv_mapping_spherical_parameterization.html">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="Step5_building_topography_surface.html">Step 5: Building a topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space using the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterized <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
@@ -486,9 +485,9 @@ document.write(`
 <section id="conformal-mapping-of-s-ref-x-y-z-onto-the-3d-unit-sphere-to-get-s-text-ref-mathcal-q-x-y-z">
 <h2>2. Conformal mapping of  <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> onto the 3D unit sphere to get <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\mathcal{Q}}(x,y,z)\)</span><a class="headerlink" href="#conformal-mapping-of-s-ref-x-y-z-onto-the-3d-unit-sphere-to-get-s-text-ref-mathcal-q-x-y-z" title="Link to this heading">#</a></h2>
 <p>We will perform the spherical mapping using the i) recommended iterative approach and ii) the quasiconformal mapping of <a class="reference external" href="https://arxiv.org/abs/1203.6819">Choi et al.</a> to show the difference in timing and in the deformation errors.</p>
-<p>i) Iterative conformal spherical map (preferred if performing equiareal parameterization, and large meshes)</p>
+<p><strong>i) Iterative conformal spherical map (preferred if performing equiareal parameterization, and large meshes)</strong></p>
 <p>This method first directly projects the mesh onto the unit sphere by normalizing the vertex displacement relative to the mesh centroid <span class="math notranslate nohighlight">\((v-c)\)</span>, i.e. <span class="math notranslate nohighlight">\(v\leftarrow \frac{v-c}{|v-c|}\)</span>. We then apply cMCF iteratively to ‘untangle’ the mesh directly on the sphere using the uniform Laplacian, and the mass matrix from the robust Laplacian construction. The result is always a spherical map. A valid bijective spherical map is one with no foldovers i.e no inverted faces. For most shapes, we get fast convergence within 5 iterations.</p>
-<p>ii) Direct quasiconformal spherical map of <a class="reference external" href="https://arxiv.org/abs/1203.6819">Choi et al.</a></p>
+<p><strong>ii) Direct quasiconformal spherical map of <a class="reference external" href="https://arxiv.org/abs/1203.6819">Choi et al.</a></strong></p>
 <p>This method leverages stereographic projection and attempts to find a quasiconformal map by solving the Beltrami equation. Not robust for triangle quality. Will error for non genus-0 input, is memory-intensive and slow. Result can be more challenging to apply area-distortion relaxation to (more parameter tuning). Use for simpler or more downsamples meshes, or when the objective is to get a lower quasiconformal error.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -779,7 +778,7 @@ mean equiareal error of direct method: 1.5422257877799368
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></p>
+        <p class="prev-next-title">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
