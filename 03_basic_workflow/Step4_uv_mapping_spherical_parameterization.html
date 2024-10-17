@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Step 4: UV mapping \(S_{ref}(x,y,z)\) using its equiareal spherical parameterization, \(S_{\Omega}(x,y,z)\) &#8212; u-Unwrap3D Analysis Notebooks</title>
+    <title>Step 4: UV mapping \(S_{ref}(x,y,z)\) into 2D using its spherical parameterization, \(S_{\text{ref}}^{\Omega}(x,y,z)\) &#8212; u-Unwrap3D Analysis Notebooks</title>
   
   
   
@@ -187,8 +187,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Step1_find_reference_surface.html">Step 1: Find and create a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step2_quasiconformal_spherical_parameterization.html">Step 2: Quasi-conformal spherical parameterization of the genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></a></li>
-
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> into 2D using its spherical parameterization, <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\Omega}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step5_building_topography_surface.html">Step 5: Building a topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space using the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterized <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="Step6_find_topographic_surface_mesh.html">Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space</a></li>
@@ -419,7 +418,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Step 4: UV mapping S_{ref}(x,y,z) using its equiareal spherical parameterization, S_{\Omega}(x,y,z)</h1>
+    <h1>Step 4: UV mapping S_{ref}(x,y,z) into 2D using its spherical parameterization, S_{\text{ref}}^{\Omega}(x,y,z)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -429,16 +428,24 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-s-ref-x-y-z-and-s-omega-x-y-z-meshes-and-create-an-analysis-save-folder">Load <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span> meshes and create an analysis save folder</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-the-rectangular-uv-grid">Setting up the rectangular UV grid</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-automatic-determination-of-optimal-uv-unwrapping-axis"><strong>Optional</strong>: Automatic determination of optimal uv-unwrapping axis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uv-unwrapping-by-pullback">UV-unwrapping by ‘pullback’</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-s-ref-x-y-z-and-s-text-ref-omega-x-y-z-meshes">1. Load <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\Omega}(x,y,z)\)</span> meshes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-the-rectangular-uv-grid">2. Setting up the rectangular UV grid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-of-uv-unwrapping-axis-optional-but-highly-recommended">3. Optimization of uv-unwrapping axis (optional, but <em>highly recommended</em>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-optimize-unwrap-for-the-curvature-of-s-text-ref-x-y-z">Example 1: Optimize unwrap for the curvature of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-optimize-unwrap-for-the-curvature-of-s-x-y-z">Example 2: Optimize unwrap for the curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-optimize-unwrap-for-both-curvature-of-s-x-y-z-and-s-text-ref-x-y-z">Example 3: Optimize unwrap for both curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-now-proceed-to-step-5-notebook-to-build-topographic-coordinates-from-the-uv-parameterization">We now proceed to step 5 notebook to build topographic coordinates from the uv parameterization …</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uv-unwrapping-with-pullback">4. UV-unwrapping with ‘pullback’</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-uv-unwrap-rotated-spherical-parameterization-for-the-curvature-of-s-text-ref-x-y-z">Example 1: uv-unwrap rotated spherical parameterization for the curvature of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-uv-unwrap-rotated-spherical-parameterization-for-the-curvature-of-s-x-y-z">Example 2: uv-unwrap rotated spherical parameterization for the curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-uv-unwrap-rotated-spherical-parameterization-for-the-positive-protrusions-of-s-x-y-z-and-s-text-ref-x-y-z">Example 3: uv-unwrap rotated spherical parameterization for the positive protrusions of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-examples-1-2-3">5. Comparing Examples 1,2,3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#user-modifying-the-inferred-optimal-rotation">6. User modifying the inferred optimal rotation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-the-aspect-ratio-of-the-uv-unwrap">7. Optimizing the aspect ratio of the uv-unwrap</a></li>
+</ul>
             </nav>
         </div>
     </div>
@@ -449,12 +456,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="step-4-uv-mapping-s-ref-x-y-z-using-its-equiareal-spherical-parameterization-s-omega-x-y-z">
-<h1>Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span><a class="headerlink" href="#step-4-uv-mapping-s-ref-x-y-z-using-its-equiareal-spherical-parameterization-s-omega-x-y-z" title="Link to this heading">#</a></h1>
-<p>The spherical parameterization is a mesh which is an unstructured data format such that the mesh vertices randomly sample the 3D sphere in a manner that is not correspondent to the 2D plane. This workbook works through how to do the resampling to get 1-1 correspondence and map the 3D sphere to the 2D plane.</p>
-<section id="load-s-ref-x-y-z-and-s-omega-x-y-z-meshes-and-create-an-analysis-save-folder">
-<h2>Load <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span> meshes and create an analysis save folder<a class="headerlink" href="#load-s-ref-x-y-z-and-s-omega-x-y-z-meshes-and-create-an-analysis-save-folder" title="Link to this heading">#</a></h2>
-<p>We assume the user has worked through step 3 which generates and saves the equiareal parameterization <span class="math notranslate nohighlight">\(S_{\mathcal{\Omega}}(x,y,z)\)</span> of the genus-0 reference surface for an input cell surface mesh to the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step3_equiareal_sphere_param</span></code>. We also need the reference surface from step 1 saved to the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step1_cMCF_reference</span></code>. Moreover these surface has been colored by curvature or molecular intensity.</p>
+  <section id="step-4-uv-mapping-s-ref-x-y-z-into-2d-using-its-spherical-parameterization-s-text-ref-omega-x-y-z">
+<h1>Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> into 2D using its spherical parameterization, <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\Omega}(x,y,z)\)</span><a class="headerlink" href="#step-4-uv-mapping-s-ref-x-y-z-into-2d-using-its-spherical-parameterization-s-text-ref-omega-x-y-z" title="Link to this heading">#</a></h1>
+<p>The spherical parameterization can be mapped into 2D, by using spherical coordinate transformations to get 1-1 correspondence enabling <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span> to be parameterized by 2D <span class="math notranslate nohighlight">\((u,v)\)</span> coordinate system, where <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> is the columns and rows of the 2D grid respectively.</p>
+<section id="load-s-ref-x-y-z-and-s-text-ref-omega-x-y-z-meshes">
+<h2>1. Load <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\Omega}(x,y,z)\)</span> meshes<a class="headerlink" href="#load-s-ref-x-y-z-and-s-text-ref-omega-x-y-z-meshes" title="Link to this heading">#</a></h2>
+<p>We assume the user has worked through step 3 which generates and saves the equiareal parameterization <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\mathcal{\Omega}}(x,y,z)\)</span> of the genus-0 reference surface <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> of an input cell surface mesh to the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step3_equiareal_sphere_param</span></code>. We also need the actual reference surface mesh from step 1 saved in the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step1_cMCF_reference</span></code>. Moreover these surface has been colored by curvature.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Utility_Functions.file_io</span> <span class="k">as</span> <span class="nn">fio</span>
@@ -464,7 +471,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">spio</span>
 
 <span class="c1"># example cell used</span>
-<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;example_data/img&#39;</span>
+<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;../../example_data/img&#39;</span>
 <span class="n">imgfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imgfolder</span><span class="p">,</span> <span class="s1">&#39;bleb_example.tif&#39;</span><span class="p">)</span>
 <span class="n">basefname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">imgfile</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get the filename with extension</span>
 
@@ -492,16 +499,17 @@ document.write(`
 </div>
 </section>
 <section id="setting-up-the-rectangular-uv-grid">
-<h2>Setting up the rectangular UV grid<a class="headerlink" href="#setting-up-the-rectangular-uv-grid" title="Link to this heading">#</a></h2>
-<p>Our spherical parameterization is in the form of a mesh whose vertices are not those of points on a rectangular grid after converting to spherical coordinates with radius=1.</p>
-<p>In order to unwrap we need to resample the spherical parameterization at those points on the rectangular grid after converting to their spherical coordinates with radius=1.</p>
+<h2>2. Setting up the rectangular UV grid<a class="headerlink" href="#setting-up-the-rectangular-uv-grid" title="Link to this heading">#</a></h2>
+<p>The spherical parameterization is a mesh whose vertices do not correspond to the grid points of a rectangular grid after transforming to spherical coordinates with radius=1.</p>
+<p>Consequently, in order for every grid point of the UV grid to map to a point on the sphere, we need to resample the spherical parameterization at the points on the rectangular grid after transforming to their spherical coordinates with radius=1. This is called pullback.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Geometry.geometry</span> <span class="k">as</span> <span class="nn">geometry</span>
 
-<span class="n">size</span> <span class="o">=</span> <span class="mi">256</span> <span class="c1"># the larger the more hi-res but at the expense of computational cost and memory efficiency</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">256</span> <span class="c1"># the larger the more hi-res but at the expense of computational cost and memory efficiency, 256 x 512 grid = 131,072 points already!</span>
 
-<span class="c1"># set up a Nx2N uv grid by specifying the azimuthal and polar angles</span>
+<span class="c1"># set up a Nx2N uv grid by specifying the azimuthal and polar angles. </span>
+<span class="c1"># This aspect ratio is chosen to produce an isometric map that preserves the ratio of the arc length from north to south pole vs the equator arc length</span>
 <span class="n">ang_grid</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">img_2_angles</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">size</span><span class="p">)</span>  
 <span class="n">unit_sphere_xyz</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">sphere_from_img_angles</span><span class="p">(</span><span class="n">ang_grid</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">ang_grid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 <span class="n">unit_sphere_xyz</span> <span class="o">=</span> <span class="n">unit_sphere_xyz</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">size</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">size</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
@@ -509,36 +517,66 @@ document.write(`
 </div>
 </div>
 </div>
-<p>we can visualise the grid to see how the 2D grid maps onto the standard unit sphere. We can do this easily by uv texture mapping. Specifically we will define a colormap from the top-left to the bottom-right of the uv grid and visualize this on the corresponding 3D (x,y,z).</p>
+<p>We can visualise the grid to see how this 2D grid maps onto the standard unit sphere without foldover. We to this by uv texture mapping. Specifically we construct a 2D colormap from the top-left to the bottom-right of the uv grid and visualize this with the corresponding 3D (x,y,z) transformed coordinates.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.colors</span> <span class="k">as</span> <span class="nn">vol_colors</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
 <span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">plt</span> 
 
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">1. Visualize the latitude lines first</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># colormap the uv grid with a continuous gradient colorscheme of the latitude lines </span>
 <span class="n">unit_sphere_uv_labelgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([</span><span class="n">size</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">size</span><span class="p">]))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">size</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span> 
 <span class="n">unit_sphere_uv_colormap</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">unit_sphere_uv_labelgrid</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral</span><span class="p">)</span>
 
 <span class="c1"># visualize the uv texture colormap</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv texture map&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv texture map latitude&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">unit_sphere_uv_colormap</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="c1"># visualize the uv texture colormap wrapped onto the coordinates specified by unit_sphere_xyz</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv texture map wrapped onto the 3D sphere&#39;</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv texture map mapped on sphere&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
                 <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
                 <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
                 <span class="n">facecolors</span><span class="o">=</span><span class="n">unit_sphere_uv_colormap</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv texture map mapped on sphere&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+                <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+                <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+                <span class="n">facecolors</span><span class="o">=</span><span class="n">unit_sphere_uv_colormap</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">2. Visualize the longitude lines second</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># colormap the uv grid with a continuous gradient colorscheme of the latitude lines </span>
+<span class="n">unit_sphere_uv_labelgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([</span><span class="n">size</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">size</span><span class="p">]))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">size</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span> 
+<span class="n">unit_sphere_uv_colormap</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">unit_sphere_uv_labelgrid</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral</span><span class="p">)</span>
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv texture map wrapped onto the 3D sphere&#39;</span><span class="p">)</span>
+<span class="c1"># visualize the uv texture colormap</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv texture map latitude&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">unit_sphere_uv_colormap</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># visualize the uv texture colormap wrapped onto the coordinates specified by unit_sphere_xyz</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv texture map mapped on sphere&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+                <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+                <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+                <span class="n">facecolors</span><span class="o">=</span><span class="n">unit_sphere_uv_colormap</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv texture map mapped on sphere&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
                 <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
                 <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
@@ -549,16 +587,25 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/652228888dea46ef2e642882b5b1bdb1370e7f2bed79ed5ea17e679fdf6877e0.png" src="../_images/652228888dea46ef2e642882b5b1bdb1370e7f2bed79ed5ea17e679fdf6877e0.png" />
-<img alt="../_images/549d5a46997ddd741fac3a99d4c6575a421f0368006fe5835cb633ccad0e960c.png" src="../_images/549d5a46997ddd741fac3a99d4c6575a421f0368006fe5835cb633ccad0e960c.png" />
-<img alt="../_images/90330cb21d12b6a9794d4f17239b45ca9cb8a7d0dac8614a5066a3791ec07a94.png" src="../_images/90330cb21d12b6a9794d4f17239b45ca9cb8a7d0dac8614a5066a3791ec07a94.png" />
+<img alt="../_images/85afb277b94b1730ccbe3e5d980ed7fbe52c13f4f9f65c2c39d9f729cee5478f.png" src="../_images/85afb277b94b1730ccbe3e5d980ed7fbe52c13f4f9f65c2c39d9f729cee5478f.png" />
+<img alt="../_images/54f1d6f12a9770317f54d31a2a054d09f2f1d39e9f1aa5fbb05ade06536f1dc0.png" src="../_images/54f1d6f12a9770317f54d31a2a054d09f2f1d39e9f1aa5fbb05ade06536f1dc0.png" />
+<img alt="../_images/18dd34cd79279b67b7b8e7d9c3eb31ae6938dae1a3d1316c8f33e7409c2af9fc.png" src="../_images/18dd34cd79279b67b7b8e7d9c3eb31ae6938dae1a3d1316c8f33e7409c2af9fc.png" />
+<img alt="../_images/f21b019b28ee0e3cde536867a7a6bbc9489b309fb997d4631b1fc543491e9ee4.png" src="../_images/f21b019b28ee0e3cde536867a7a6bbc9489b309fb997d4631b1fc543491e9ee4.png" />
 </div>
 </div>
 </section>
-<section id="optional-automatic-determination-of-optimal-uv-unwrapping-axis">
-<h2><strong>Optional</strong>: Automatic determination of optimal uv-unwrapping axis<a class="headerlink" href="#optional-automatic-determination-of-optimal-uv-unwrapping-axis" title="Link to this heading">#</a></h2>
-<p>By default, the spherical grid as defined will uv-unwrap <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> in its native north-south axis. UV-unwrapping introduces greatest distortion near the poles. This might not be desirable if one wishes to do analysis of the surface protrusions where ideally all protrusions are unwrapped with minimal areal distortion.</p>
-<p>We can find a ‘rotation’ of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> through <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span> to map protrusions with minimal areal distortion using weighted principal components analysis where we assign a weight of importance to every point on the mesh.</p>
+<section id="optimization-of-uv-unwrapping-axis-optional-but-highly-recommended">
+<h2>3. Optimization of uv-unwrapping axis (optional, but <em>highly recommended</em>)<a class="headerlink" href="#optimization-of-uv-unwrapping-axis-optional-but-highly-recommended" title="Link to this heading">#</a></h2>
+<p>By default, the spherical grid as defined will uv-unwrap the spherical parameterization of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> in its native north-south axis i.e. the orientation the shape is when acquired. UV-unwrapping introduces greatest metric distortion at the poles. See this <a class="reference external" href="https://observablehq.com/&#64;d3/orthographic-to-equirectangular">animation</a> on the D3.js website. This is why areas on maps of the Earth do not reflect its actual geographical area! This can be undesirable for visualization or if it is desired to perform downstream analysis of the surface protrusions. Another reason is that unwrapping breaks the symmetry of the sphere. An unoptimal unwrapping axis may ‘cut’ through more protrusions than desired. Thus ideally all protrusions are unwrapped with minimal distortion with minimal cuts.</p>
+<p>u-Unwrap3D allows finding an optimal ‘rotation’ of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> through its spherical parameterization so that the desired surface features are mapped in the uv-unwrap with minimal distortion. The optimal rotation is found by solving a weighted eigendecomposition whereby the weighting is specified by the user to reflect the extent a vertex ‘expresses’ characteristics of the desired surface feature e.g. for surface protrusions weightings derived from curvature is a natural choice.</p>
+<p>We show two examples of this:</p>
+<section id="example-1-optimize-unwrap-for-the-curvature-of-s-text-ref-x-y-z">
+<h3>Example 1: Optimize unwrap for the curvature of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span><a class="headerlink" href="#example-1-optimize-unwrap-for-the-curvature-of-s-text-ref-x-y-z" title="Link to this heading">#</a></h3>
+<p>The reference is non spherical and has two ‘ends’. The blebs appear to concentrate at both of these ends, and present less elsewhere. We would like therefore to unwrap placing the two ‘ends’ equatorially in the uv-unwrap. We will:</p>
+<ol class="arabic simple">
+<li><p>compute and use the absolute value of mean curvature of <span class="math notranslate nohighlight">\(S_\)</span> as vertex weights</p></li>
+<li><p>apply weighted eigendecomposition to optimize the orientation of the spherical parameterization</p></li>
+</ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -567,153 +614,238 @@ document.write(`
 <span class="kn">import</span> <span class="nn">igl</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
 
-<span class="c1"># instead of computing from a volume binary, which would involve mesh voxelization etc. we are going to compute mean curvature directly from the mesh using the definition that it is the mean of the 2 principal curvatures</span>
-<span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">principal_curvature</span><span class="p">(</span><span class="n">S_ref_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span>
-                                         <span class="n">S_ref_mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span>
-<span class="n">H_Sref</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">k1</span><span class="o">+</span><span class="n">k2</span><span class="p">)</span> <span class="c1"># we need to multiply this by -1 to get the intuitive idea that a round protrusion = positive curvature</span>
+<span class="c1"># Compute mean curvature of S_ref </span>
+<span class="n">H_Sref</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">compute_mean_curvature</span><span class="p">(</span><span class="n">S_ref_mesh</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 
-<span class="c1"># define weights</span>
+<span class="c1"># define weights as the absolute value of curvature</span>
 <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">H_Sref</span><span class="p">)</span>
+<span class="n">weights_proj</span> <span class="o">=</span> <span class="n">H_Sref</span> <span class="c1"># this is a signed i.e. has +/- values to resolve the ambiguity of putting the </span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Weighted PCA to solve for the optimal rotation </span>
+<span class="sd">Weighted Eigendecomposition to solve for the optimal rotation </span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="c1"># solve the weighted PCA to get the eigenvalues (w_axis) and eigenvectors (v_axis). Result is sorted in terms of increasing eigenvalue</span>
-<span class="n">w_axis</span><span class="p">,</span> <span class="n">v_axis</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">find_principal_axes_surface_heterogeneity_mesh</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> 
-                                                                          <span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span>
-                                                                          <span class="n">weights</span><span class="p">)</span>
-<span class="c1"># PCA solution yields orthonormal matrices with determinants of +/-1, only +1 is a proper rotations</span>
-<span class="n">v_axis</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">fix_improper_rot_matrix_3D</span><span class="p">(</span><span class="n">v_axis</span><span class="p">)</span> <span class="c1"># make the outcome a proper rotation</span>
-<span class="n">v_axis</span> <span class="o">=</span> <span class="n">v_axis</span><span class="p">[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># flipping so that the smallest eigenvector corresponds to the sphere&#39;s North-South axis i.e. z-coordinate in our system.</span>
+<span class="n">rot_matrix</span><span class="p">,</span> <span class="n">extra_rotate_bool</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">optimize_sphere_rotation_from_weights</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="p">,</span> 
+                                                                                <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> 
+                                                                                <span class="n">signed_weights_to_orient</span><span class="o">=</span><span class="n">weights_proj</span><span class="p">)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Optimal rotation matrix is given by the matrix inverse (which is the transpose for orthonormal matrices) of the eigenvector matrix. </span>
+<span class="sd">Apply optimized rotation matrix to equiareal_sphere_mesh</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="c1"># this is the optimal rotation we need to apply to equiareal_sphere_mesh.</span>
-<span class="c1"># note we do not need to do anything to S_ref_mesh, as its points are in bijection !</span>
-<span class="n">rot_matrix</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">rotmatrix3D_to_4D</span><span class="p">(</span><span class="n">v_axis</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> 
+<span class="n">equiareal_sphere_mesh_rot</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">apply_optimized_sphere_rotation_from_weights</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="p">,</span> 
+                                                                                    <span class="n">rot_matrix</span><span class="p">,</span> 
+                                                                                    <span class="n">extra_rotate_bool</span><span class="p">,</span>
+                                                                                    <span class="n">additional_rotation_angle_degrees</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">apply rotation matrix to equiareal_sphere_mesh</span>
+<span class="sd">visualize the rotation</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">equiareal_sphere_mesh_rot</span> <span class="o">=</span> <span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">equiareal_sphere_mesh_rot</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">rot_pts_xyz</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> 
-                                                        <span class="n">rot_matrix</span><span class="p">,</span> 
-                                                        <span class="n">mean_pts</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span> <span class="c1"># supply a rotation center, which is just the origin </span>
-                                                        <span class="n">demean_pts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We visualize the effect of the rotation in matplotlib, overlaying the unit sphere uv grid onto S_ref with and without the rotation. As can be seen, it has shifted a large protrusion that was near the pole away. The effect is more apparent once we uv-unwrap.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.plotting</span> <span class="k">as</span> <span class="nn">plotting</span> 
+<span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.plotting</span> <span class="k">as</span> <span class="nn">plotting</span> 
 <span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">plt</span> 
 
-<span class="n">sampling</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;S_ref and unit sphere grid&#39;</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;unrotated S_ref&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
            <span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
            <span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
-           <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+           <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
            <span class="n">c</span><span class="o">=</span><span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot_wireframe</span><span class="p">(</span><span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
-                  <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
-                  <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
-                  <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-                 <span class="n">rstride</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">45</span><span class="p">,</span><span class="mi">90</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;rotated S_ref and unit sphere grid&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;rotated S_ref&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">equiareal_sphere_mesh_rot</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
            <span class="n">equiareal_sphere_mesh_rot</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
            <span class="n">equiareal_sphere_mesh_rot</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
-           <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+           <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
            <span class="n">c</span><span class="o">=</span><span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot_wireframe</span><span class="p">(</span><span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
-                <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
-                <span class="n">unit_sphere_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
-                <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-                 <span class="n">rstride</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">45</span><span class="p">,</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/5d3c9e468f57db0dafcd049842a997b8bff71564a88f5e6a6e690af71583f3f4.png" src="../_images/5d3c9e468f57db0dafcd049842a997b8bff71564a88f5e6a6e690af71583f3f4.png" />
-<img alt="../_images/062ab9e93c6207ff8aabf6fe199a5f731e315a0404717648d08a3c10fc5969a7.png" src="../_images/062ab9e93c6207ff8aabf6fe199a5f731e315a0404717648d08a3c10fc5969a7.png" />
+<img alt="../_images/5b3a6bb4376d17c73e802f7db6a732e7476f6a52b7632f5b3952d56f3e7b44e2.png" src="../_images/5b3a6bb4376d17c73e802f7db6a732e7476f6a52b7632f5b3952d56f3e7b44e2.png" />
 </div>
 </div>
 </section>
-<section id="uv-unwrapping-by-pullback">
-<h2>UV-unwrapping by ‘pullback’<a class="headerlink" href="#uv-unwrapping-by-pullback" title="Link to this heading">#</a></h2>
-<p>To unwrap, we match the equiareal parameterization (rotated or nonrotated) to the standard uv-sphere grid defined at the start. We can then map <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> into the uv-space and any other scalar quantity by barycentric interpolation.</p>
+<section id="example-2-optimize-unwrap-for-the-curvature-of-s-x-y-z">
+<h3>Example 2: Optimize unwrap for the curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span><a class="headerlink" href="#example-2-optimize-unwrap-for-the-curvature-of-s-x-y-z" title="Link to this heading">#</a></h3>
+<p>The weights of Example 1 doesn’t explicitly capture the curvature of the input surface. To explicitly capture we can instead use the mean curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> that has been transferred through matching of the cMCF and genus-0 <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span>.</p>
+<ol class="arabic simple">
+<li><p>Use the absolute value of mean curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> transferred to the reference genus-0 <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> as vertex weights</p></li>
+<li><p>apply weighted eigendecomposition to optimize the orientation of the spherical parameterization</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the mean curvature of S(x,y,z) we previously transferred in Step 1</span>
+<span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">spio</span> 
+
+<span class="n">curvature_stats_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">S_ref_folder</span><span class="p">,</span> 
+                            <span class="s1">&#39;unwrap_cMCF_remapped_surf_H.mat&#39;</span><span class="p">)</span> 
+<span class="n">curvature_stats_obj</span> <span class="o">=</span> <span class="n">spio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">curvature_stats_file</span><span class="p">)</span>
+
+<span class="n">H_S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">curvature_stats_obj</span><span class="p">[</span><span class="s1">&#39;surf_H&#39;</span><span class="p">])</span>
+
+<span class="c1"># define weights as the absolute value of curvature</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">H_S</span><span class="p">)</span>
+<span class="n">weights_proj</span> <span class="o">=</span> <span class="n">H_S</span> <span class="c1"># this is a signed i.e. has +/- values to resolve the ambiguity of putting the </span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Weighted Eigendecomposition to solve for the optimal rotation </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">rot_matrix</span><span class="p">,</span> <span class="n">extra_rotate_bool</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">optimize_sphere_rotation_from_weights</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="p">,</span> 
+                                                                                <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> 
+                                                                                <span class="n">signed_weights_to_orient</span><span class="o">=</span><span class="n">weights_proj</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Apply optimized rotation matrix to equiareal_sphere_mesh</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">equiareal_sphere_mesh_rot_H_S</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">apply_optimized_sphere_rotation_from_weights</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="p">,</span> 
+                                                                                    <span class="n">rot_matrix</span><span class="p">,</span> 
+                                                                                    <span class="n">extra_rotate_bool</span><span class="p">,</span>
+                                                                                    <span class="n">additional_rotation_angle_degrees</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">visualize the rotation</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;unrotated S_ref&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+           <span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+           <span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+           <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+           <span class="n">c</span><span class="o">=</span><span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;rotated S_ref&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">equiareal_sphere_mesh_rot_H_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+           <span class="n">equiareal_sphere_mesh_rot_H_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+           <span class="n">equiareal_sphere_mesh_rot_H_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+           <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+           <span class="n">c</span><span class="o">=</span><span class="n">equiareal_sphere_mesh_rot_H_S</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e613c9143ad4702fe3b9d8bdeea16170b2e223701b6f8d75d8dd002c58c0e904.png" src="../_images/e613c9143ad4702fe3b9d8bdeea16170b2e223701b6f8d75d8dd002c58c0e904.png" />
+</div>
+</div>
+</section>
+<section id="example-3-optimize-unwrap-for-both-curvature-of-s-x-y-z-and-s-text-ref-x-y-z">
+<h3>Example 3: Optimize unwrap for both curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span><a class="headerlink" href="#example-3-optimize-unwrap-for-both-curvature-of-s-x-y-z-and-s-text-ref-x-y-z" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The weights of Example 1 doesn’t explicitly capture the curvature of the input surface.</p></li>
+<li><p>The weights of Example 2 doesn’t explicitly capture the curvature of the reference surface.</p></li>
+</ul>
+<p>In this example we will segment the positive protrusions on both input and reference and construct a weights using a weighted sum of the two binary segmentations to try to jointly account for the geometry of both.</p>
+<p>To create the segmentation we choose a curvature threshold value 0.05</p>
+<ol class="arabic simple">
+<li><p>Combine the positive curvature protrusions of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> as vertex weights</p></li>
+<li><p>apply weighted eigendecomposition to optimize the orientation of the spherical parameterization</p></li>
+</ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Matching equiareal to unit sphere</span>
+<span class="sd">Create weight from combining binary segmentation</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">uv_Sref_equiareal_match</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">match_and_interpolate_uv_surface_to_mesh</span><span class="p">(</span><span class="n">unit_sphere_xyz</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> 
-                                                                             <span class="n">equiareal_sphere_mesh</span><span class="p">,</span> 
-                                                                             <span class="n">match_method</span><span class="o">=</span><span class="s1">&#39;cross&#39;</span><span class="p">)</span>
+<span class="n">binary_H_Sref</span> <span class="o">=</span> <span class="n">H_Sref</span> <span class="o">&gt;</span> <span class="mf">0.05</span>
+<span class="n">binary_H_S</span> <span class="o">=</span> <span class="n">H_S</span> <span class="o">&gt;</span> <span class="mf">0.05</span>
+
+<span class="c1"># define weights as the absolute value of curvature</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">binary_H_Sref</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">binary_H_S</span>
+<span class="n">weights_proj</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># this is a signed i.e. has +/- values to resolve the ambiguity of putting the </span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Matching equiareal rotated to unit sphere</span>
+<span class="sd">Weighted Eigendecomposition to solve for the optimal rotation </span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">uv_Sref_equiareal_match_rot</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">match_and_interpolate_uv_surface_to_mesh</span><span class="p">(</span><span class="n">unit_sphere_xyz</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> 
-                                                                             <span class="n">equiareal_sphere_mesh_rot</span><span class="p">,</span> 
-                                                                             <span class="n">match_method</span><span class="o">=</span><span class="s1">&#39;cross&#39;</span><span class="p">)</span>
+<span class="n">rot_matrix</span><span class="p">,</span> <span class="n">extra_rotate_bool</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">optimize_sphere_rotation_from_weights</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="p">,</span> 
+                                                                                <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> 
+                                                                                <span class="n">signed_weights_to_orient</span><span class="o">=</span><span class="n">weights_proj</span><span class="p">)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Barycentric interpolation to pull down S_ref with matching equiareal</span>
+<span class="sd">Apply optimized rotation matrix to equiareal_sphere_mesh</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">S_uv</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">mesh_vertex_interpolate_scalar</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="p">,</span> 
-                                                <span class="n">uv_Sref_equiareal_match</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
-                                                <span class="n">uv_Sref_equiareal_match</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
-                                                <span class="n">S_ref_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
-<span class="n">S_uv</span> <span class="o">=</span> <span class="n">S_uv</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">size</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">size</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> 
+<span class="n">equiareal_sphere_mesh_rot_combined</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">apply_optimized_sphere_rotation_from_weights</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="p">,</span> 
+                                                                                    <span class="n">rot_matrix</span><span class="p">,</span> 
+                                                                                    <span class="n">extra_rotate_bool</span><span class="p">,</span>
+                                                                                    <span class="n">additional_rotation_angle_degrees</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Barycentric interpolation to pull down S_ref with matching equiareal rotated </span>
+<span class="sd">visualize the rotation</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">S_uv_rot</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">mesh_vertex_interpolate_scalar</span><span class="p">(</span><span class="n">equiareal_sphere_mesh_rot</span><span class="p">,</span> 
-                                                    <span class="n">uv_Sref_equiareal_match_rot</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
-                                                    <span class="n">uv_Sref_equiareal_match_rot</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
-                                                    <span class="n">S_ref_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
-<span class="n">S_uv_rot</span> <span class="o">=</span> <span class="n">S_uv_rot</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">size</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">size</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> 
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;unrotated S_ref&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+           <span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+           <span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+           <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+           <span class="n">c</span><span class="o">=</span><span class="n">equiareal_sphere_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;rotated S_ref&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">equiareal_sphere_mesh_rot_combined</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+           <span class="n">equiareal_sphere_mesh_rot_combined</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+           <span class="n">equiareal_sphere_mesh_rot_combined</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+           <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+           <span class="n">c</span><span class="o">=</span><span class="n">equiareal_sphere_mesh_rot_combined</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/10202ebe48ce5c39f972398d750d65d1a3c563da50a9d728790f41be5e21cfea.png" src="../_images/10202ebe48ce5c39f972398d750d65d1a3c563da50a9d728790f41be5e21cfea.png" />
 </div>
-<p>We can visualize the change in the uv parameterized shape. By rotating the equiareal spherical parameterization we were able to uv grid <span class="math notranslate nohighlight">\(S_{ref}\)</span> without ever rotating it!</p>
+</div>
+<p>The effect of the rotation will be more apparent once we uv-unwrap.</p>
+</section>
+</section>
+<section id="uv-unwrapping-with-pullback">
+<h2>4. UV-unwrapping with ‘pullback’<a class="headerlink" href="#uv-unwrapping-with-pullback" title="Link to this heading">#</a></h2>
+<p>To unwrap, we match the (unrotated or rotated) spherical parameterization to the uv grid we have showed how to set up. The coordinates of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> (or any other numerical quantity associated with the geometry) can then be mapped into the uv-space by barycentric interpolation.</p>
+<p>u-Unwrap3D provides a single function call to setup the grid and to uv-unwrap the input spherical mesh.</p>
+<section id="example-1-uv-unwrap-rotated-spherical-parameterization-for-the-curvature-of-s-text-ref-x-y-z">
+<h3>Example 1: uv-unwrap rotated spherical parameterization for the curvature of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span><a class="headerlink" href="#example-1-uv-unwrap-rotated-spherical-parameterization-for-the-curvature-of-s-text-ref-x-y-z" title="Link to this heading">#</a></h3>
+<p>We map the rotated spherical parameterization, to unwrap <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> and map the curvature colors for visualization.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;S_uv&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot_wireframe</span><span class="p">(</span><span class="n">S_uv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
-                  <span class="n">S_uv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
-                  <span class="n">S_uv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
-                  <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-                 <span class="n">rstride</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Unzipping.unzip</span> <span class="k">as</span> <span class="nn">uzip</span>
+
+<span class="c1"># this function sets up the uv grid internally and has options for optimizing its aspect ratio for geometry, i.e. not just N x 2N. </span>
+<span class="c1"># we did not have to setup the grid upfront. The above was to show how uv grid maps to the sphere.</span>
+<span class="n">S_uv_opt</span><span class="p">,</span> <span class="n">uv_Sref_equiareal_match_rot</span><span class="p">,</span> <span class="n">h_opt</span><span class="p">,</span> <span class="n">H_color</span><span class="p">,</span> <span class="n">uv_surface_measurements_labels</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">uv_map_sphere_surface_parameterization</span><span class="p">(</span><span class="n">sphere_mesh</span><span class="o">=</span><span class="n">equiareal_sphere_mesh_rot</span><span class="p">,</span> 
+                                                                                                                        <span class="n">surface_mesh</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="p">,</span>
+                                                                                                                        <span class="n">surface_measurements_scalars</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mf">1.</span><span class="p">,</span> <span class="c1"># make sure its float.</span>
+                                                                                                                        <span class="n">surface_measurements_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                                                                                                        <span class="n">uv_grid_size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> 
+                                                                                                                        <span class="n">optimize_aspect_ratio</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># Set true if you want to optimize the number of columns  </span>
+                                                                                                                        <span class="n">aspect_ratio_method</span><span class="o">=</span><span class="s1">&#39;length_ratio&#39;</span><span class="p">,</span> <span class="c1"># method for optimizing aspect ratio.</span>
+                                                                                                                        <span class="n">length_ratio_avg_fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">,</span>
+                                                                                                                        <span class="n">h_opt</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">H_color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">H_color</span><span class="p">)</span> <span class="c1"># convert back to uint8 for visualization</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv mapped curvature color&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">H_color</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
+<span class="c1"># show the uv parameterization with wireframe.</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;S_uv with optimal unwrapping axis&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot_wireframe</span><span class="p">(</span><span class="n">S_uv_rot</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
-                  <span class="n">S_uv_rot</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
-                  <span class="n">S_uv_rot</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;S_uv with curvature S_ref&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot_wireframe</span><span class="p">(</span><span class="n">S_uv_opt</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+                  <span class="n">S_uv_opt</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+                  <span class="n">S_uv_opt</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
                   <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
                  <span class="n">rstride</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
@@ -722,85 +854,266 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/0d16e62a029b76c69ec567f6dd547c65d23dc1463a5af5ac90f0f52d91f366fd.png" src="../_images/0d16e62a029b76c69ec567f6dd547c65d23dc1463a5af5ac90f0f52d91f366fd.png" />
-<img alt="../_images/022e49c6d3c8c85a5ad2077c6d695ae6e247ddb44020ec32b09ae1e92830b45f.png" src="../_images/022e49c6d3c8c85a5ad2077c6d695ae6e247ddb44020ec32b09ae1e92830b45f.png" />
+<img alt="../_images/93457d9b82241952eca3fa229492a54e26bef05b5c779b3db85635f3431a780f.png" src="../_images/93457d9b82241952eca3fa229492a54e26bef05b5c779b3db85635f3431a780f.png" />
+<img alt="../_images/e48c92ee5ba1a87063fd81f928f3dd7b0b43060bdd8596a33f5f0b3b8f66663e.png" src="../_images/e48c92ee5ba1a87063fd81f928f3dd7b0b43060bdd8596a33f5f0b3b8f66663e.png" />
 </div>
 </div>
-<p>We can see more clearly the effect of this on the uv-unwrap by mapping now the curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> into the two different (u,v) parameterizations</p>
+</section>
+<section id="example-2-uv-unwrap-rotated-spherical-parameterization-for-the-curvature-of-s-x-y-z">
+<h3>Example 2: uv-unwrap rotated spherical parameterization for the curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span><a class="headerlink" href="#example-2-uv-unwrap-rotated-spherical-parameterization-for-the-curvature-of-s-x-y-z" title="Link to this heading">#</a></h3>
+<p>We map the rotated spherical parameterization, to unwrap <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> and map the curvature colors for visualization.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, we can&#39;t interpolate colors, therefore we need to load in previously computed surface curvature values.</span>
-<span class="n">curvature_stats_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">S_ref_folder</span><span class="p">,</span> 
-                                     <span class="s1">&#39;unwrap_cMCF_remapped_surf_H.mat&#39;</span><span class="p">)</span> 
-<span class="n">surf_H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">spio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">curvature_stats_file</span><span class="p">)[</span><span class="s2">&quot;surf_H&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Unzipping.unzip</span> <span class="k">as</span> <span class="nn">uzip</span>
 
-
-<span class="c1"># &quot;&quot;&quot;</span>
-<span class="c1"># 1. Barycentric interpolation of S(x,y,z) curvature mapped onto remeshed S_ref, into S_uv </span>
-<span class="c1"># &quot;&quot;&quot;</span>
-<span class="n">Sref_uv_H</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">mesh_vertex_interpolate_scalar</span><span class="p">(</span><span class="n">S_ref_mesh</span><span class="p">,</span> 
-                                                      <span class="n">uv_Sref_equiareal_match</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
-                                                      <span class="n">uv_Sref_equiareal_match</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
-                                                      <span class="n">surf_H</span><span class="p">[:,</span><span class="kc">None</span><span class="p">])[:,</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">Sref_uv_H</span> <span class="o">=</span> <span class="n">Sref_uv_H</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">size</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">size</span><span class="p">))</span> <span class="c1"># reshape into image. </span>
-<span class="n">Sref_uv_H_color</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">Sref_uv_H</span><span class="o">/</span><span class="mf">.104</span><span class="p">,</span> 
-                                         <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral_r</span><span class="p">,</span> 
-                                         <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> 
-                                         <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># this function sets up the uv grid internally and has options for optimizing its aspect ratio for geometry, i.e. not just N x 2N. </span>
+<span class="c1"># we did not have to setup the grid upfront. The above was to show how uv grid maps to the sphere.</span>
+<span class="n">S_uv_opt_H_S</span><span class="p">,</span> <span class="n">uv_Sref_equiareal_match_rot_H_S</span><span class="p">,</span> <span class="n">h_opt_H_S</span><span class="p">,</span> <span class="n">H_color_H_S</span><span class="p">,</span> <span class="n">uv_surface_measurements_labels_H_S</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">uv_map_sphere_surface_parameterization</span><span class="p">(</span><span class="n">sphere_mesh</span><span class="o">=</span><span class="n">equiareal_sphere_mesh_rot_H_S</span><span class="p">,</span> 
+                                                                                                                        <span class="n">surface_mesh</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="p">,</span>
+                                                                                                                        <span class="n">surface_measurements_scalars</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mf">1.</span><span class="p">,</span> <span class="c1"># make sure its float.</span>
+                                                                                                                        <span class="n">surface_measurements_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                                                                                                        <span class="n">uv_grid_size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> 
+                                                                                                                        <span class="n">optimize_aspect_ratio</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># Set true if you want to optimize the number of columns  </span>
+                                                                                                                        <span class="n">aspect_ratio_method</span><span class="o">=</span><span class="s1">&#39;length_ratio&#39;</span><span class="p">,</span> <span class="c1"># method for optimizing aspect ratio.</span>
+                                                                                                                        <span class="n">length_ratio_avg_fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">,</span>
+                                                                                                                        <span class="n">h_opt</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">H_color_H_S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">H_color_H_S</span><span class="p">)</span> <span class="c1"># convert back to uint8 for visualization</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv-mapping without optimizing rotation&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Sref_uv_H_color</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv mapped curvature color&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">H_color_H_S</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-
-<span class="c1"># &quot;&quot;&quot;</span>
-<span class="c1"># 2. Barycentric interpolation of S(x,y,z) curvature mapped onto remeshed S_ref, into S_uv_rot </span>
-<span class="c1"># &quot;&quot;&quot;</span>
-<span class="n">Sref_uv_H_rot</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">mesh_vertex_interpolate_scalar</span><span class="p">(</span><span class="n">S_ref_mesh</span><span class="p">,</span> 
-                                                      <span class="n">uv_Sref_equiareal_match_rot</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
-                                                      <span class="n">uv_Sref_equiareal_match_rot</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
-                                                      <span class="n">surf_H</span><span class="p">[:,</span><span class="kc">None</span><span class="p">])[:,</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">Sref_uv_H_rot</span> <span class="o">=</span> <span class="n">Sref_uv_H_rot</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">size</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">size</span><span class="p">))</span> <span class="c1"># reshape into image. </span>
-<span class="n">Sref_uv_H_rot_color</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">Sref_uv_H_rot</span><span class="o">/</span><span class="mf">.104</span><span class="p">,</span> 
-                                         <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral_r</span><span class="p">,</span> 
-                                         <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> 
-                                         <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Rotation optimized uv-mapping&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Sref_uv_H_rot_color</span><span class="p">)</span>
+<span class="c1"># show the uv parameterization with wireframe.</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;S_uv with curvature S&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot_wireframe</span><span class="p">(</span><span class="n">S_uv_opt_H_S</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+                  <span class="n">S_uv_opt_H_S</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+                  <span class="n">S_uv_opt_H_S</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+                  <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+                 <span class="n">rstride</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/41a5ce950a51d5ff9dd05ac20464e2be0ffb5149f301bb013665ff6abe13238d.png" src="../_images/41a5ce950a51d5ff9dd05ac20464e2be0ffb5149f301bb013665ff6abe13238d.png" />
-<img alt="../_images/43b6e8d768e73b639bab336733042cf0e59081879959020b6f13e9130df30a7d.png" src="../_images/43b6e8d768e73b639bab336733042cf0e59081879959020b6f13e9130df30a7d.png" />
+<img alt="../_images/73cd0c71c73548c4ccc792c3006f157d51b87aa6a05a171803a376206e38aa63.png" src="../_images/73cd0c71c73548c4ccc792c3006f157d51b87aa6a05a171803a376206e38aa63.png" />
+<img alt="../_images/f4d2b249ed656bbb276198bb580be9e97150ca3018268e1652387cbbacd1dd3b.png" src="../_images/f4d2b249ed656bbb276198bb580be9e97150ca3018268e1652387cbbacd1dd3b.png" />
+</div>
+</div>
+</section>
+<section id="example-3-uv-unwrap-rotated-spherical-parameterization-for-the-positive-protrusions-of-s-x-y-z-and-s-text-ref-x-y-z">
+<h3>Example 3: uv-unwrap rotated spherical parameterization for the positive protrusions of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span><a class="headerlink" href="#example-3-uv-unwrap-rotated-spherical-parameterization-for-the-positive-protrusions-of-s-x-y-z-and-s-text-ref-x-y-z" title="Link to this heading">#</a></h3>
+<p>We map the rotated spherical parameterization, to unwrap <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> and map the curvature colors for visualization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Unzipping.unzip</span> <span class="k">as</span> <span class="nn">uzip</span>
+
+<span class="c1"># this function sets up the uv grid internally and has options for optimizing its aspect ratio for geometry, i.e. not just N x 2N. </span>
+<span class="c1"># we did not have to setup the grid upfront. The above was to show how uv grid maps to the sphere.</span>
+<span class="n">S_uv_opt_combined</span><span class="p">,</span> <span class="n">uv_Sref_equiareal_match_rot_combined</span><span class="p">,</span> <span class="n">h_opt_combined</span><span class="p">,</span> <span class="n">H_color_combined</span><span class="p">,</span> <span class="n">uv_surface_measurements_labels_combined</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">uv_map_sphere_surface_parameterization</span><span class="p">(</span><span class="n">sphere_mesh</span><span class="o">=</span><span class="n">equiareal_sphere_mesh_rot_combined</span><span class="p">,</span> 
+                                                                                                                        <span class="n">surface_mesh</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="p">,</span>
+                                                                                                                        <span class="n">surface_measurements_scalars</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mf">1.</span><span class="p">,</span> <span class="c1"># make sure its float.</span>
+                                                                                                                        <span class="n">surface_measurements_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                                                                                                        <span class="n">uv_grid_size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> 
+                                                                                                                        <span class="n">optimize_aspect_ratio</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># Set true if you want to optimize the number of columns  </span>
+                                                                                                                        <span class="n">aspect_ratio_method</span><span class="o">=</span><span class="s1">&#39;length_ratio&#39;</span><span class="p">,</span> <span class="c1"># method for optimizing aspect ratio.</span>
+                                                                                                                        <span class="n">length_ratio_avg_fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">,</span>
+                                                                                                                        <span class="n">h_opt</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">H_color_combined</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">H_color_combined</span><span class="p">)</span> <span class="c1"># convert back to uint8 for visualization</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv mapped curvature color&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">H_color_combined</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># show the uv parameterization with wireframe.</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;S_uv with combined positive protrusion&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot_wireframe</span><span class="p">(</span><span class="n">S_uv_opt_combined</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+                  <span class="n">S_uv_opt_combined</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+                  <span class="n">S_uv_opt_combined</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+                  <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+                 <span class="n">rstride</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ab7e9d6b33c168a6bd114851aebe083b76b3e3addeb111b1f8e60259b6e259ad.png" src="../_images/ab7e9d6b33c168a6bd114851aebe083b76b3e3addeb111b1f8e60259b6e259ad.png" />
+<img alt="../_images/3350855ce063292ff73c286a51c53c2fc61b335b9fe8364fb28bdac6a137c01f.png" src="../_images/3350855ce063292ff73c286a51c53c2fc61b335b9fe8364fb28bdac6a137c01f.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="comparing-examples-1-2-3">
+<h2>5. Comparing Examples 1,2,3<a class="headerlink" href="#comparing-examples-1-2-3" title="Link to this heading">#</a></h2>
+<p>We can visualize the uv mapped curvature color side by side for better comparison</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Example 1: S_ref curvature&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">H_color</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Example 2: S curvature&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">H_color_H_S</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Example 3: combined&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">H_color_combined</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f5cfa91acb795a63c1b2949ff39ca918219dcc6a286c0df4edc64e017ccd4dc8.png" src="../_images/f5cfa91acb795a63c1b2949ff39ca918219dcc6a286c0df4edc64e017ccd4dc8.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save the uv mapped coordinates corresponding to the rotated version so we can build topographic coordinates.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save the uv mapped coordinates corresponding to the rotation of the combined (last version) to build topographic coordinates.</span>
 <span class="n">spio</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
                           <span class="s1">&#39;uv_mapping_params.mat&#39;</span><span class="p">),</span>
-             <span class="p">{</span><span class="s1">&#39;uv_map&#39;</span> <span class="p">:</span> <span class="n">S_uv_rot</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
-              <span class="s1">&#39;uv_mesh_match_tri_inds&#39;</span><span class="p">:</span> <span class="n">uv_Sref_equiareal_match_rot</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-              <span class="s1">&#39;uv_mesh_match_barycenter_weights&#39;</span><span class="p">:</span> <span class="n">uv_Sref_equiareal_match_rot</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+             <span class="p">{</span><span class="s1">&#39;uv_map&#39;</span> <span class="p">:</span> <span class="n">S_uv_opt_combined</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+              <span class="s1">&#39;uv_mesh_match_tri_inds&#39;</span><span class="p">:</span> <span class="n">uv_Sref_equiareal_match_rot_combined</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="s1">&#39;uv_mesh_match_barycenter_weights&#39;</span><span class="p">:</span> <span class="n">uv_Sref_equiareal_match_rot_combined</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
               <span class="s1">&#39;rot_matrix&#39;</span><span class="p">:</span> <span class="n">rot_matrix</span><span class="p">,</span> 
-              <span class="s1">&#39;sphere_ang_grid&#39;</span><span class="p">:</span> <span class="n">ang_grid</span><span class="p">,</span> 
-              <span class="s1">&#39;unit_sphere_xyz&#39;</span><span class="p">:</span> <span class="n">unit_sphere_xyz</span><span class="p">,</span>
+              <span class="s1">&#39;extra_rotate_bool&#39;</span><span class="p">:</span> <span class="n">extra_rotate_bool</span><span class="p">,</span>
               <span class="s1">&#39;S_ref_file&#39;</span><span class="p">:</span> <span class="n">S_ref_file</span><span class="p">,</span> 
               <span class="s1">&#39;equiareal_file&#39;</span><span class="p">:</span> <span class="n">equiareal_file</span><span class="p">,</span>
-              <span class="s1">&#39;weights&#39;</span> <span class="p">:</span> <span class="n">weights</span><span class="p">})</span>
+              <span class="s1">&#39;weights&#39;</span> <span class="p">:</span> <span class="n">weights</span><span class="p">,</span>
+              <span class="s1">&#39;weights_proj&#39;</span><span class="p">:</span> <span class="n">weights_proj</span><span class="p">})</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
+<section id="user-modifying-the-inferred-optimal-rotation">
+<h2>6. User modifying the inferred optimal rotation<a class="headerlink" href="#user-modifying-the-inferred-optimal-rotation" title="Link to this heading">#</a></h2>
+<p>You can see currently from the uv-unwraps that the rotation optimization aims to place both ‘ends’ of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> in view. You might however after obtaining the result wish to put the ‘end’ with denser blebs into the center of the uv-unwrap.</p>
+<p>We can adjust the inferred rotation by specifying an additional rotation <code class="docutils literal notranslate"><span class="pre">additional_rotation_angle_degrees</span></code> in degrees to the optimal rotation inference function <code class="docutils literal notranslate"><span class="pre">unwrap3D.Mesh.meshtools.apply_optimized_sphere_rotation_from_weights</span></code>. What this does is to effectively translate the uv-unwrap. The entire image columns represent <span class="math notranslate nohighlight">\(360^0\)</span>. Therefore doing <span class="math notranslate nohighlight">\(90^0\)</span> means translating the image sideways to the right by 1/4 its columns size with periodic boundary conditions. We do this now for the combined objective of Example 3.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Create weight from combining binary segmentation</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">binary_H_Sref</span> <span class="o">=</span> <span class="n">H_Sref</span> <span class="o">&gt;</span> <span class="mf">0.05</span>
+<span class="n">binary_H_S</span> <span class="o">=</span> <span class="n">H_S</span> <span class="o">&gt;</span> <span class="mf">0.05</span>
+
+<span class="c1"># define weights as the absolute value of curvature</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">binary_H_Sref</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">binary_H_S</span>
+<span class="n">weights_proj</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># this is a signed i.e. has +/- values to resolve the ambiguity of putting the </span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Weighted Eigendecomposition to solve for the optimal rotation </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">rot_matrix</span><span class="p">,</span> <span class="n">extra_rotate_bool</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">optimize_sphere_rotation_from_weights</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="p">,</span> 
+                                                                                <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> 
+                                                                                <span class="n">signed_weights_to_orient</span><span class="o">=</span><span class="n">weights_proj</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Apply optimized rotation matrix to equiareal_sphere_mesh</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">equiareal_sphere_mesh_rot_combined</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">apply_optimized_sphere_rotation_from_weights</span><span class="p">(</span><span class="n">equiareal_sphere_mesh</span><span class="p">,</span> 
+                                                                                    <span class="n">rot_matrix</span><span class="p">,</span> 
+                                                                                    <span class="n">extra_rotate_bool</span><span class="p">,</span>
+                                                                                    <span class="n">additional_rotation_angle_degrees</span><span class="o">=-</span><span class="mi">90</span><span class="p">)</span> <span class="c1"># negative to translate left</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">uv unwrap, the result should be the same as Example 3 but now translated to the left by 90 to emphasize the end with densest blebs more.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">S_uv_opt_combined</span><span class="p">,</span> <span class="n">uv_Sref_equiareal_match_rot_combined</span><span class="p">,</span> <span class="n">h_opt_combined</span><span class="p">,</span> <span class="n">H_color_combined</span><span class="p">,</span> <span class="n">uv_surface_measurements_labels_combined</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">uv_map_sphere_surface_parameterization</span><span class="p">(</span><span class="n">sphere_mesh</span><span class="o">=</span><span class="n">equiareal_sphere_mesh_rot_combined</span><span class="p">,</span> 
+                                                                                                                        <span class="n">surface_mesh</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="p">,</span>
+                                                                                                                        <span class="n">surface_measurements_scalars</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mf">1.</span><span class="p">,</span> <span class="c1"># make sure its float.</span>
+                                                                                                                        <span class="n">surface_measurements_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                                                                                                        <span class="n">uv_grid_size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> 
+                                                                                                                        <span class="n">optimize_aspect_ratio</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># Set true if you want to optimize the number of columns  </span>
+                                                                                                                        <span class="n">aspect_ratio_method</span><span class="o">=</span><span class="s1">&#39;length_ratio&#39;</span><span class="p">,</span> <span class="c1"># method for optimizing aspect ratio.</span>
+                                                                                                                        <span class="n">length_ratio_avg_fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">,</span>
+                                                                                                                        <span class="n">h_opt</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">H_color_combined</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">H_color_combined</span><span class="p">)</span> <span class="c1"># convert back to uint8 for visualization</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;uv mapped curvature color&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">H_color_combined</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b30571f92fcf96bd2a4d15f25b5e826cdc12ce4582d2957b9abbdf127043132d.png" src="../_images/b30571f92fcf96bd2a4d15f25b5e826cdc12ce4582d2957b9abbdf127043132d.png" />
+</div>
+</div>
 </section>
-<section id="we-now-proceed-to-step-5-notebook-to-build-topographic-coordinates-from-the-uv-parameterization">
-<h1>We now proceed to step 5 notebook to build topographic coordinates from the uv parameterization …<a class="headerlink" href="#we-now-proceed-to-step-5-notebook-to-build-topographic-coordinates-from-the-uv-parameterization" title="Link to this heading">#</a></h1>
+<section id="optimizing-the-aspect-ratio-of-the-uv-unwrap">
+<h2>7. Optimizing the aspect ratio of the uv-unwrap<a class="headerlink" href="#optimizing-the-aspect-ratio-of-the-uv-unwrap" title="Link to this heading">#</a></h2>
+<p>The default N x 2N uv unwrap is optimized for spherical shapes with this aspect ratio chosen based on the ratio between the arc lengths of the sphere from north-to-south pole to that of the equator. We can see for an elongated ellipsoid this aspect ratio will yield a distorted view, particularly if the major axis was mapped to the rows (i.e. v coordinate) and the minor axis was mapped to the columns (i.e. u coordinate) of the image.</p>
+<p>u-Unwrap3D allows auto-determination of the optimal aspect ratio by setting the <code class="docutils literal notranslate"><span class="pre">optimize_aspect_ratio=True</span></code> parameter in `unwrap3D.Unzipping.unzip.uv_map_sphere_surface_parameterization’</p>
+<p>We implement two different optimization critera for aspect ratio:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">aspect_ratio_method='length_ratio'</span></code>: This generalizes the arc length rationale for spheres and sets the aspect ratio based on the average total traversed length of <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span> along <span class="math notranslate nohighlight">\(v\)</span>-direction to that traversed along <span class="math notranslate nohighlight">\(u\)</span>-direction.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aspect_ratio_method='beltrami'</span></code>: This optimizes for the <a class="reference external" href="https://en.wikipedia.org/wiki/Beltrami_equation">Beltrami coefficient</a> which is related to finding <a class="reference external" href="https://en.wikipedia.org/wiki/Isothermal_coordinates">isothermal coordinates</a> in differential geometry</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">1. aspect ratio with length ratio method with median as average function.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">S_uv_opt_combined_length_ratio</span><span class="p">,</span> <span class="n">uv_Sref_equiareal_match_rot_combined_length_ratio</span><span class="p">,</span> <span class="n">h_opt_combined_length_ratio</span><span class="p">,</span> <span class="n">H_color_combined_length_ratio</span><span class="p">,</span> <span class="n">uv_surface_measurements_labels_combined_length_ratio</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">uv_map_sphere_surface_parameterization</span><span class="p">(</span><span class="n">sphere_mesh</span><span class="o">=</span><span class="n">equiareal_sphere_mesh_rot_combined</span><span class="p">,</span> 
+                                                                                                                                                                                                            <span class="n">surface_mesh</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="p">,</span>
+                                                                                                                                                                                                            <span class="n">surface_measurements_scalars</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mf">1.</span><span class="p">,</span> <span class="c1"># make sure its float.</span>
+                                                                                                                                                                                                            <span class="n">surface_measurements_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                                                                                                                                                                                            <span class="n">uv_grid_size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> 
+                                                                                                                                                                                                            <span class="n">optimize_aspect_ratio</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># Set true if you want to optimize the number of columns  </span>
+                                                                                                                                                                                                            <span class="n">aspect_ratio_method</span><span class="o">=</span><span class="s1">&#39;length_ratio&#39;</span><span class="p">,</span> <span class="c1"># method for optimizing aspect ratio.</span>
+                                                                                                                                                                                                            <span class="n">length_ratio_avg_fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">,</span>
+                                                                                                                                                                                                            <span class="n">h_opt</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">H_color_combined_length_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">H_color_combined_length_ratio</span><span class="p">)</span> <span class="c1"># convert back to uint8 for visualization</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">2. aspect ratio with beltrami method </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">S_uv_opt_combined_beltrami</span><span class="p">,</span> <span class="n">uv_Sref_equiareal_match_rot_combined_beltrami</span><span class="p">,</span> <span class="n">h_opt_combined_beltrami</span><span class="p">,</span> <span class="n">H_color_combined_beltrami</span><span class="p">,</span> <span class="n">uv_surface_measurements_labels_combined_beltrami</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">uv_map_sphere_surface_parameterization</span><span class="p">(</span><span class="n">sphere_mesh</span><span class="o">=</span><span class="n">equiareal_sphere_mesh_rot_combined</span><span class="p">,</span> 
+                                                                                                                                                                                                            <span class="n">surface_mesh</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="p">,</span>
+                                                                                                                                                                                                            <span class="n">surface_measurements_scalars</span><span class="o">=</span><span class="n">S_ref_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mf">1.</span><span class="p">,</span> <span class="c1"># make sure its float.</span>
+                                                                                                                                                                                                            <span class="n">surface_measurements_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                                                                                                                                                                                            <span class="n">uv_grid_size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> 
+                                                                                                                                                                                                            <span class="n">optimize_aspect_ratio</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># Set true if you want to optimize the number of columns  </span>
+                                                                                                                                                                                                            <span class="n">aspect_ratio_method</span><span class="o">=</span><span class="s1">&#39;beltrami&#39;</span><span class="p">,</span> <span class="c1"># method for optimizing aspect ratio.</span>
+                                                                                                                                                                                                            <span class="n">length_ratio_avg_fn</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">,</span>
+                                                                                                                                                                                                            <span class="n">h_opt</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">H_color_combined_beltrami</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">H_color_combined_beltrami</span><span class="p">)</span> <span class="c1"># convert back to uint8 for visualization</span>
+
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Visualize all 3: no aspect ratio optimization, length_ratio and beltrami together</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;no aspect ratio optimize&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">H_color_combined</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;with length ratio&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">H_color_combined_length_ratio</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;with beltrami&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">H_color_combined_beltrami</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a5272f74153697b9f21f906aa2d256e7bb2e5d437e45d10caae5b7866be219bc.png" src="../_images/a5272f74153697b9f21f906aa2d256e7bb2e5d437e45d10caae5b7866be219bc.png" />
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -812,16 +1125,16 @@ document.write(`
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "conda-env-unwrap3D_test-py"
+            mode: "python"
         },
         kernelOptions: {
-            name: "conda-env-unwrap3D_test-py",
+            name: "python3",
             path: "./03_basic_workflow"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'conda-env-unwrap3D_test-py'</script>
+    <script>kernelName = 'python3'</script>
 
                 </article>
               
@@ -867,16 +1180,24 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> using its equiareal spherical parameterization, <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-s-ref-x-y-z-and-s-omega-x-y-z-meshes-and-create-an-analysis-save-folder">Load <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\Omega}(x,y,z)\)</span> meshes and create an analysis save folder</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-the-rectangular-uv-grid">Setting up the rectangular UV grid</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-automatic-determination-of-optimal-uv-unwrapping-axis"><strong>Optional</strong>: Automatic determination of optimal uv-unwrapping axis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uv-unwrapping-by-pullback">UV-unwrapping by ‘pullback’</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-s-ref-x-y-z-and-s-text-ref-omega-x-y-z-meshes">1. Load <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\Omega}(x,y,z)\)</span> meshes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-the-rectangular-uv-grid">2. Setting up the rectangular UV grid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-of-uv-unwrapping-axis-optional-but-highly-recommended">3. Optimization of uv-unwrapping axis (optional, but <em>highly recommended</em>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-optimize-unwrap-for-the-curvature-of-s-text-ref-x-y-z">Example 1: Optimize unwrap for the curvature of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-optimize-unwrap-for-the-curvature-of-s-x-y-z">Example 2: Optimize unwrap for the curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-optimize-unwrap-for-both-curvature-of-s-x-y-z-and-s-text-ref-x-y-z">Example 3: Optimize unwrap for both curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
 </ul>
 </li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-now-proceed-to-step-5-notebook-to-build-topographic-coordinates-from-the-uv-parameterization">We now proceed to step 5 notebook to build topographic coordinates from the uv parameterization …</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uv-unwrapping-with-pullback">4. UV-unwrapping with ‘pullback’</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-uv-unwrap-rotated-spherical-parameterization-for-the-curvature-of-s-text-ref-x-y-z">Example 1: uv-unwrap rotated spherical parameterization for the curvature of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-uv-unwrap-rotated-spherical-parameterization-for-the-curvature-of-s-x-y-z">Example 2: uv-unwrap rotated spherical parameterization for the curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-uv-unwrap-rotated-spherical-parameterization-for-the-positive-protrusions-of-s-x-y-z-and-s-text-ref-x-y-z">Example 3: uv-unwrap rotated spherical parameterization for the positive protrusions of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> and <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-examples-1-2-3">5. Comparing Examples 1,2,3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#user-modifying-the-inferred-optimal-rotation">6. User modifying the inferred optimal rotation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-the-aspect-ratio-of-the-uv-unwrap">7. Optimizing the aspect ratio of the uv-unwrap</a></li>
+</ul>
   </nav></div>
 
 </div></div>
