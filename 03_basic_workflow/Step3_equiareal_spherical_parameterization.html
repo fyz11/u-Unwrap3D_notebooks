@@ -434,7 +434,12 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-and-visualizing-the-conformal-and-equiareal-distortion-error-during-relaxation">3. Quantifying and visualizing the conformal and equiareal distortion error during relaxation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-mean-conformal-and-equiareal-error-curve-during-relaxation">4. Plotting the mean conformal and equiareal error curve during relaxation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-tradeoff-between-conformal-and-equiareal">5. The tradeoff between conformal and equiareal</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-tips-for-area-distortion-relaxation">Troubleshooting tips for area distortion relaxation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-tips-for-area-distortion-relaxation">Troubleshooting tips for area distortion relaxation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-function-doesn-t-complete-1-iteration-of-relaxation-and-terminates-early">1. The function doesn’t complete 1 iteration of relaxation and terminates early.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxation-runs-for-xxx-iterations-doesn-t-finish-and-area-distortion-at-min-area-distort-is-much-greater-than-1">2. Relaxation runs for XXX iterations, doesn’t finish and area distortion at <code class="docutils literal notranslate"><span class="pre">min_area_distort</span></code> is much greater than 1.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cannot-find-automatically-min-area-distort">3. Cannot find automatically <code class="docutils literal notranslate"><span class="pre">min_area_distort</span></code></a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -897,6 +902,43 @@ We plot the family of curves according to this hybrid error, showing how increas
 </section>
 <section id="troubleshooting-tips-for-area-distortion-relaxation">
 <h2>Troubleshooting tips for area distortion relaxation<a class="headerlink" href="#troubleshooting-tips-for-area-distortion-relaxation" title="Link to this heading">#</a></h2>
+<p>We have noticed several common occurrences of how the area distortion relaxation appears to fail, and how to address them here.</p>
+<section id="the-function-doesn-t-complete-1-iteration-of-relaxation-and-terminates-early">
+<h3>1. The function doesn’t complete 1 iteration of relaxation and terminates early.<a class="headerlink" href="#the-function-doesn-t-complete-1-iteration-of-relaxation-and-terminates-early" title="Link to this heading">#</a></h3>
+<p><em>Reason</em>: the Lapacian matrix is likely singular or close to singular, and therefore cannot support matrix inversion for backwards Euler. This is likely one of or all of the following:</p>
+<ul class="simple">
+<li><p>at least one triangle face of your conformal spherical parameterization has interior angle close to <span class="math notranslate nohighlight">\(0^0\)</span>. Check by running <code class="docutils literal notranslate"><span class="pre">unwrap3D.Mesh.meshtools.measure_triangle_props</span></code>. The minimum angle of your mesh should be at least &gt; <span class="math notranslate nohighlight">\(10^0\)</span> (poor triangle quality)</p></li>
+<li><p>at least one triangle face of your conformal spherical parameterization has too small a surface area relative to floating point precision. Check by computing face area using <code class="docutils literal notranslate"><span class="pre">igl</span></code>, using the code <code class="docutils literal notranslate"><span class="pre">igl.doublearea(v,f)/2.</span></code> where <code class="docutils literal notranslate"><span class="pre">v</span></code> and <code class="docutils literal notranslate"><span class="pre">f</span></code> is the vertices and faces of the mesh respectively.</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> was not genus-0 or if it is, you have a thin neck or a ‘plate-like’ infill of a handle (if using shrinkwrapping)</p></li>
+</ul>
+<p><em>Fix</em>: recompute genus-0 <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> from Step 1 and perform the conformal spherical map in Step 2 using the iterative method</p>
+<ul class="simple">
+<li><p>use <code class="docutils literal notranslate"><span class="pre">remesh_method='CGAL'</span></code> for isotropic remeshing to improve triangle quality in <code class="docutils literal notranslate"><span class="pre">unwrap3D.Mesh.meshtools.marching_cubes_mesh_binary</span></code> and that you have remesh active, i.e. <code class="docutils literal notranslate"><span class="pre">remesh=True</span></code></p></li>
+<li><p>use lower <code class="docutils literal notranslate"><span class="pre">remesh_samples</span></code> after voxelization with <code class="docutils literal notranslate"><span class="pre">unwrap3D.Mesh.meshtools.marching_cubes_mesh_binary</span></code> to generate a coarser mesh</p></li>
+<li><p>use a dilated voxelization i.e. set <code class="docutils literal notranslate"><span class="pre">ksize_dilate</span></code> at least greater than <code class="docutils literal notranslate"><span class="pre">ksize_erode</span></code> by 2.</p></li>
+</ul>
+</section>
+<section id="relaxation-runs-for-xxx-iterations-doesn-t-finish-and-area-distortion-at-min-area-distort-is-much-greater-than-1">
+<h3>2. Relaxation runs for XXX iterations, doesn’t finish and area distortion at <code class="docutils literal notranslate"><span class="pre">min_area_distort</span></code> is much greater than 1.<a class="headerlink" href="#relaxation-runs-for-xxx-iterations-doesn-t-finish-and-area-distortion-at-min-area-distort-is-much-greater-than-1" title="Link to this heading">#</a></h3>
+<p><em>Reason</em>: There’s two potential reasons:</p>
+<ol class="arabic simple">
+<li><p>the shape or mesh of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> is preventing diffusion. <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> likely has a diffusion-limiting geometry such as a thin neck or a ‘plate-like’ infill of a handle, or <code class="docutils literal notranslate"><span class="pre">remesh_samples</span></code> is too high, leading to too small a triangle area in the conformal spherical parameterization.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delta</span></code> is too high or too low. <code class="docutils literal notranslate"><span class="pre">delta</span></code> governs ‘stiffness’ between edges. If you have a densely sampled mesh, i.e. lots of vertices <code class="docutils literal notranslate"><span class="pre">delta=0.1</span></code> may be too high, and there is barely any relaxation. The triangle area also internally limits the diffusion step size. Check by setting <code class="docutils literal notranslate"><span class="pre">debugviz=True</span></code>. The histogram bars should noticeably shift lower every iteration. If not, its a sign of too high a <code class="docutils literal notranslate"><span class="pre">delta</span></code>. Similarly, if <code class="docutils literal notranslate"><span class="pre">delta</span></code> is too low, its hard for neighboring vertices to maintain connectivity (move together). This often leads to visible ‘wiggles’ when plotting the <code class="docutils literal notranslate"><span class="pre">area_distortion_iter_curve</span></code> curve.</p></li>
+</ol>
+<p><em>Fix</em>:</p>
+<ol class="arabic simple">
+<li><p>recompute genus-0 <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> from Step 1 and perform the conformal spherical map in Step 2 using the iterative method as for troubleshooting 1 above i.e. use <code class="docutils literal notranslate"><span class="pre">remesh_method='CGAL'</span></code>, use lower <code class="docutils literal notranslate"><span class="pre">remesh_samples</span></code> (drop <code class="docutils literal notranslate"><span class="pre">min_mesh_size</span></code> too accordingly), set <code class="docutils literal notranslate"><span class="pre">ksize_dilate</span></code>&gt;<code class="docutils literal notranslate"><span class="pre">ksize_erode</span></code> to widen geometry features. Generally, you will spot problematic geometry because the <code class="docutils literal notranslate"><span class="pre">area_distortion_iter_curve</span></code> will not go down smoothly - it should show monotoniic linear decrease then plateau as it hits the minimum, as for the example here. Critically the first part whilst its minimizing is smooth.</p></li>
+<li><p>start with <code class="docutils literal notranslate"><span class="pre">delta=0.1</span></code> go down as <code class="docutils literal notranslate"><span class="pre">delta=0.05,</span> <span class="pre">0.01,</span> <span class="pre">0.005,</span> <span class="pre">0.001</span> <span class="pre">etc.</span></code>. If its not improving, try setting <code class="docutils literal notranslate"><span class="pre">lloyd_relax_bool=True</span></code> - this performs <a class="reference external" href="https://en.wikipedia.org/wiki/Lloyd%27s_algorithm">lloyd relaxation</a> of the mesh every <code class="docutils literal notranslate"><span class="pre">lloyd_every_iter</span></code> iterations to help improve triangle quality during the flow. This is most helpful for densely sampled meshes.</p></li>
+</ol>
+</section>
+<section id="cannot-find-automatically-min-area-distort">
+<h3>3. Cannot find automatically <code class="docutils literal notranslate"><span class="pre">min_area_distort</span></code><a class="headerlink" href="#cannot-find-automatically-min-area-distort" title="Link to this heading">#</a></h3>
+<p><em>Reason</em>: <code class="docutils literal notranslate"><span class="pre">min_area_distort</span></code> is computed by observing the sign change when the <code class="docutils literal notranslate"><span class="pre">area_distortion_iter_curve</span></code> first changes sign from negative to positive. This assumes you run iterations after full convergence. There is two reasons if the other two troubleshooting do not apply:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> is essentially spherical or close to. In this case conformal = equiareal parameterization. Therefore there is no need to relax.</p></li>
+<li><p>the relaxation has yet to converge. If <code class="docutils literal notranslate"><span class="pre">stepsize=1</span></code> already, then increase <code class="docutils literal notranslate"><span class="pre">max_iter</span></code>. The larger the deviation of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> is from a sphere, the greater the <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> required. Particulary for elongated structures, its not unusual to set <code class="docutils literal notranslate"><span class="pre">max_iter=1000</span></code>.</p></li>
+</ol>
+</section>
 </section>
 </section>
 
@@ -969,7 +1011,12 @@ We plot the family of curves according to this hybrid error, showing how increas
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-and-visualizing-the-conformal-and-equiareal-distortion-error-during-relaxation">3. Quantifying and visualizing the conformal and equiareal distortion error during relaxation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-mean-conformal-and-equiareal-error-curve-during-relaxation">4. Plotting the mean conformal and equiareal error curve during relaxation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-tradeoff-between-conformal-and-equiareal">5. The tradeoff between conformal and equiareal</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-tips-for-area-distortion-relaxation">Troubleshooting tips for area distortion relaxation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-tips-for-area-distortion-relaxation">Troubleshooting tips for area distortion relaxation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-function-doesn-t-complete-1-iteration-of-relaxation-and-terminates-early">1. The function doesn’t complete 1 iteration of relaxation and terminates early.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxation-runs-for-xxx-iterations-doesn-t-finish-and-area-distortion-at-min-area-distort-is-much-greater-than-1">2. Relaxation runs for XXX iterations, doesn’t finish and area distortion at <code class="docutils literal notranslate"><span class="pre">min_area_distort</span></code> is much greater than 1.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cannot-find-automatically-min-area-distort">3. Cannot find automatically <code class="docutils literal notranslate"><span class="pre">min_area_distort</span></code></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
