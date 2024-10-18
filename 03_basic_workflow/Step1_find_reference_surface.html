@@ -188,8 +188,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Step2_quasiconformal_spherical_parameterization.html">Step 2: Quasi-conformal spherical parameterization of the genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step4_uv_mapping_spherical_parameterization.html">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> into 2D using its spherical parameterization, <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\Omega}(x,y,z)\)</span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="Step5_building_topography_surface.html">Step 5: Building a topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space using the <span class="math notranslate nohighlight">\((u,v)\)</span> parameterized <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="Step5_building_topography_surface.html">Step 5: Building the topographic <span class="math notranslate nohighlight">\((d,u,v)\)</span> space of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step6_find_topographic_surface_mesh.html">Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space</a></li>
 
 </ul>
@@ -451,15 +450,18 @@ document.write(`
 <h1>Step 1: Find and create a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span><a class="headerlink" href="#step-1-find-and-create-a-genus-0-reference-surface-s-ref-x-y-z" title="Link to this heading">#</a></h1>
 <p>From the extracted cell surface, <span class="math notranslate nohighlight">\(S(x,y,z)\)</span>, we will find a reference shape using curvature-minimizing flow using a free-form deformation algorithm, <a class="reference external" href="https://arxiv.org/pdf/1203.6819">conformalized mean curvature flow</a> (cMCF).</p>
 <p>Conceptually, this involves:</p>
-<ol class="arabic simple">
+<ol class="arabic">
 <li><p>run cMCF on <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> for <span class="math notranslate nohighlight">\(N\)</span> iterations to generate <span class="math notranslate nohighlight">\(N+1\)</span> shapes (including the input)</p></li>
 <li><p>applying a selection/stopping criteria to pick the best shape for the desired reference</p>
-<ul class="simple">
-<li><p>Typically, we measure and monitor the mean absolute value <a class="reference external" href="https://www.cs.jhu.edu/~misha/Fall09/4-surfaces.pdf">discrete Gaussian curvature</a> of mesh vertices at each iteration.</p>
 <ul>
+<li><p>Typically, we measure and monitor the mean absolute value <a class="reference external" href="https://www.cs.jhu.edu/~misha/Fall09/4-surfaces.pdf">discrete Gaussian curvature</a> of mesh vertices at each iteration.</p>
+<ul class="simple">
 <li><p>Discrete Gaussian curvature is a topological property of the shape that is independent of the meshing of the surface and unlike mean curvature also independent of scale.</p></li>
-<li><p>Discrete Gaussian curvature of a vertex is defined as the angle deficit between the sum of the triangle angles incident to the vertex from <span class="math notranslate nohighlight">\(360^0\)</span> (or <span class="math notranslate nohighlight">\(2\pi\)</span> radians).
-$<span class="math notranslate nohighlight">\( \text{Discrete Gaussian curvature of a vertex}, K = 2\pi - \sum(\text{incident triangle angles})\)</span>$</p></li>
+<li><p>Discrete Gaussian curvature of a vertex is defined as the angle deficit between the sum of the triangle angles incident to the vertex from <span class="math notranslate nohighlight">\(360^0\)</span> (or <span class="math notranslate nohighlight">\(2\pi\)</span> radians).</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[ \text{Discrete Gaussian curvature of a vertex}, K = 2\pi - \sum(\text{incident triangle angles})\]</div>
+<ul class="simple">
 <li><p>K = 0 if surface is flat</p></li>
 <li><p>K &gt; 0 if surface has positive curvature</p></li>
 <li><p>K &lt; 0 if surface has negative curvature</p></li>
@@ -467,12 +469,12 @@ $<span class="math notranslate nohighlight">\( \text{Discrete Gaussian curvature
 </li>
 <li><p>We empirically <span class="math notranslate nohighlight">\(\langle |K| \rangle\)</span> behaves like a ‘shape state’ parameter, whereby its changepoints identify significant changes in the surface mesh corresponding to significant changes in shape.</p></li>
 <li><p>We identify changepoints in <span class="math notranslate nohighlight">\(\langle |K| \rangle\)</span> to generate (possibly multiple) candidate reference shapes</p>
-<ul>
+<ul class="simple">
 <li><p>for analyzing morphological motifs, we take the 1st candidate shape will be ‘closest’ appearance-wise to <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></p></li>
 </ul>
 </li>
 <li><p>There are many alternatives to define a stopping criteria for curvature-minimizing flows which we discuss in the specific chapter on finding reference e.g:</p>
-<ul>
+<ul class="simple">
 <li><p>rate of change in <span class="math notranslate nohighlight">\(\langle |K|\rangle\)</span> between successive iterations used in the paper</p></li>
 <li><p><a class="reference external" href="https://fwilliams.info/point-cloud-utils/sections/shape_metrics/">chamfer distance</a> between input surface and mesh at each iteration</p></li>
 </ul>
