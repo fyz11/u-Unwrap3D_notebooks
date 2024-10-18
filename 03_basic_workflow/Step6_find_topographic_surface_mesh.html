@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Step 6: Extract topographic surface \(S(d,u,v)\) given the topographic volume \(V(d,u,v)\) space &#8212; u-Unwrap3D Analysis Notebooks</title>
+    <title>Step 6: Compute topographic surface \(S(d,u,v)\) from topographic binary segmentation &#8212; u-Unwrap3D Analysis Notebooks</title>
   
   
   
@@ -189,8 +189,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step4_uv_mapping_spherical_parameterization.html">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> into 2D using its spherical parameterization, <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\Omega}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step5_building_topography_surface.html">Step 5: Building the topographic <span class="math notranslate nohighlight">\((d,u,v)\)</span> space of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space</a></li>
-
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 6: Compute topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> from topographic binary segmentation</a></li>
 </ul>
 </details></li>
 </ul>
@@ -417,7 +416,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Step 6: Extract topographic surface S(d,u,v) given the topographic volume V(d,u,v) space</h1>
+    <h1>Step 6: Compute topographic surface S(d,u,v) from topographic binary segmentation</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -427,16 +426,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-v-d-u-v-the-binary-cell-segmentation-and-create-an-analysis-save-folder">Load <span class="math notranslate nohighlight">\(V(d,u,v)\)</span>, the binary cell segmentation and create an analysis save folder</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-binary-segmentation-i-v-x-y-z-into-the-topographic-volume-space-v-d-u-v">Map binary segmentation <span class="math notranslate nohighlight">\(I(V(x,y,z))\)</span> into the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-the-topographic-binary-segmentation-to-obtain-topographic-surface-mesh-s-d-u-v">Mesh the topographic binary segmentation to obtain topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-surface-curvature-and-molecular-intensities-onto-topographic-surface-mesh-s-d-u-v">Map surface curvature and molecular intensities onto topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-v-d-u-v-and-the-original-binary-cell-segmentation">1. Load <span class="math notranslate nohighlight">\(V(d,u,v)\)</span>, and the original binary cell segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-binary-segmentation-b-v-x-y-z-into-the-topographic-coordinate-space-d-u-v">2. Map binary segmentation <span class="math notranslate nohighlight">\(B(V(x,y,z))\)</span> into the topographic coordinate space <span class="math notranslate nohighlight">\((d,u,v)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-the-topographic-binary-segmentation-to-obtain-topographic-surface-mesh-s-d-u-v">3. Mesh the topographic binary segmentation to obtain topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-surface-curvature-and-molecular-intensities-onto-topographic-surface-mesh-s-d-u-v">4. Map surface curvature and molecular intensities onto topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-have-now-finished-the-6-steps-to-map-an-input-surface-s-x-y-z-into-the-different-u-unwrap3d-proposed-representations-please-check-the-other-notebooks-for-specific-topics">We have now finished the 6 steps to map an input surface <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> into the different u-Unwrap3D proposed representations. Please check the other notebooks for specific topics.</a></li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -447,12 +441,13 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="step-6-extract-topographic-surface-s-d-u-v-given-the-topographic-volume-v-d-u-v-space">
-<h1>Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space<a class="headerlink" href="#step-6-extract-topographic-surface-s-d-u-v-given-the-topographic-volume-v-d-u-v-space" title="Link to this heading">#</a></h1>
-<p>Using the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> constructed from step 5 we can readily extract the corresponding topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> of the input surface by mapping the binary segmentation of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> into topography space and applying surface meshing.</p>
-<section id="load-v-d-u-v-the-binary-cell-segmentation-and-create-an-analysis-save-folder">
-<h2>Load <span class="math notranslate nohighlight">\(V(d,u,v)\)</span>, the binary cell segmentation and create an analysis save folder<a class="headerlink" href="#load-v-d-u-v-the-binary-cell-segmentation-and-create-an-analysis-save-folder" title="Link to this heading">#</a></h2>
-<p>We assume the user has worked through step 5 which generated the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> in the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step5_topographic_space</span></code>. We also need the original image in the folder <code class="docutils literal notranslate"><span class="pre">example_data/img</span></code> and its binary segmentation in <code class="docutils literal notranslate"><span class="pre">example_data/step0_cell_segmentation</span></code>.</p>
+  <section id="step-6-compute-topographic-surface-s-d-u-v-from-topographic-binary-segmentation">
+<h1>Step 6: Compute topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> from topographic binary segmentation<a class="headerlink" href="#step-6-compute-topographic-surface-s-d-u-v-from-topographic-binary-segmentation" title="Link to this heading">#</a></h1>
+<p>Using the topographic space <span class="math notranslate nohighlight">\((d,u,v)\)</span> constructed from step 5, we can extract the topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> of the input surface, <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> by mapping its binary volume segmentation <span class="math notranslate nohighlight">\(B(V(x,y,z))\)</span> into the topography space, then apply surface meshing. This works because the interior of the cell is infilled.</p>
+<p>Alternatively, one could map the intensities of the original image into topographic space and segment this image to obtain a binary segmentation, then surface mesh.</p>
+<section id="load-v-d-u-v-and-the-original-binary-cell-segmentation">
+<h2>1. Load <span class="math notranslate nohighlight">\(V(d,u,v)\)</span>, and the original binary cell segmentation<a class="headerlink" href="#load-v-d-u-v-and-the-original-binary-cell-segmentation" title="Link to this heading">#</a></h2>
+<p>We assume the user has worked through step 5 which generated the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> in the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step5_topographic_space</span></code>. We also need the original image in the folder <code class="docutils literal notranslate"><span class="pre">../../example_data/img</span></code> and its binary segmentation in <code class="docutils literal notranslate"><span class="pre">example_data/step0_cell_segmentation</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Utility_Functions.file_io</span> <span class="k">as</span> <span class="nn">fio</span>
@@ -463,7 +458,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">spio</span>
 
 <span class="c1"># example cell used</span>
-<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;example_data/img&#39;</span>
+<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;../../data/img&#39;</span>
 <span class="n">imgfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imgfolder</span><span class="p">,</span> <span class="s1">&#39;bleb_example.tif&#39;</span><span class="p">)</span>
 <span class="n">basefname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">imgfile</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get the filename with extension</span>
 
@@ -473,13 +468,13 @@ document.write(`
                          <span class="s1">&#39;step6_topographic_surface_mesh&#39;</span><span class="p">)</span>
 <span class="n">fio</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">savefolder</span><span class="p">)</span> <span class="c1"># auto generates the specified folder structure if doesn&#39;t currently exist.</span>
 
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Loading</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># original image</span>
-<span class="n">img_file</span> <span class="o">=</span> <span class="s1">&#39;example_data/img/</span><span class="si">%s</span><span class="s1">.tif&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)</span>
+<span class="n">img_file</span> <span class="o">=</span> <span class="s1">&#39;../../data/img/</span><span class="si">%s</span><span class="s1">.tif&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">skio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_file</span><span class="p">)</span>
-
 
 <span class="c1"># binary segmentation</span>
 <span class="n">img_folder</span> <span class="o">=</span> <span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step0_cell_segmentation&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)</span>
@@ -498,17 +493,18 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="map-binary-segmentation-i-v-x-y-z-into-the-topographic-volume-space-v-d-u-v">
-<h2>Map binary segmentation <span class="math notranslate nohighlight">\(I(V(x,y,z))\)</span> into the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span><a class="headerlink" href="#map-binary-segmentation-i-v-x-y-z-into-the-topographic-volume-space-v-d-u-v" title="Link to this heading">#</a></h2>
+<section id="map-binary-segmentation-b-v-x-y-z-into-the-topographic-coordinate-space-d-u-v">
+<h2>2. Map binary segmentation <span class="math notranslate nohighlight">\(B(V(x,y,z))\)</span> into the topographic coordinate space <span class="math notranslate nohighlight">\((d,u,v)\)</span><a class="headerlink" href="#map-binary-segmentation-b-v-x-y-z-into-the-topographic-coordinate-space-d-u-v" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># convert binary to float and use linear interpolation to map the binary segmentation into topographic space</span>
 <span class="kn">import</span> <span class="nn">unwrap3D.Image_Functions.image</span> <span class="k">as</span> <span class="nn">image_fn</span>
 <span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">plt</span> 
 
-<span class="n">topographic_binary</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">(</span><span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp3</span><span class="p">(</span><span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> 
-                                                       <span class="n">grid_shape</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> 
-                                                       <span class="n">I_ref</span><span class="o">=</span><span class="n">binary_img</span><span class="o">*</span><span class="mf">1.</span><span class="p">))</span>
+<span class="c1"># note: remember to invert coordinates, if mesh was extracted from the image transpose</span>
+<span class="n">topographic_binary</span> <span class="o">=</span> <span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp3</span><span class="p">(</span><span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)[</span><span class="o">...</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> 
+                                                    <span class="n">grid_shape</span><span class="o">=</span><span class="n">binary_img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> 
+                                                    <span class="n">I_ref</span><span class="o">=</span><span class="p">(</span><span class="n">binary_img</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="mf">255.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
 <span class="n">topographic_binary</span> <span class="o">=</span> <span class="n">topographic_binary</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">topography_size</span> <span class="o">=</span> <span class="n">topographic_binary</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
 
@@ -526,58 +522,37 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/b53c83fe1a88b761a589ba889b306ea092305cb0782bba3655e371d1e6ebb52b.png" src="../_images/b53c83fe1a88b761a589ba889b306ea092305cb0782bba3655e371d1e6ebb52b.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we map also the image intensities for comparison</span>
-
-<span class="n">topographic_I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">(</span><span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp3</span><span class="p">(</span><span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> 
-                                                       <span class="n">grid_shape</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> 
-                                                       <span class="n">I_ref</span><span class="o">=</span><span class="n">img</span><span class="p">))</span>
-<span class="n">topographic_I</span> <span class="o">=</span> <span class="n">topographic_I</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-
-<span class="c1"># visualize the mid cross sections of topographic and original cartesian.</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Topographic image mid cross-section intensities&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">topographic_I</span><span class="p">[</span><span class="n">topography_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">,:,:],</span><span class="mi">2</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">topographic_I</span><span class="p">[:,</span><span class="n">topography_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">,:],</span><span class="mi">2</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">topographic_I</span><span class="p">[:,:,</span><span class="n">topography_size</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">],</span><span class="mi">2</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/3f90ba417f60e7709fcd5ff3c4fa9c02843445ae32321a62797154dc850d6043.png" src="../_images/3f90ba417f60e7709fcd5ff3c4fa9c02843445ae32321a62797154dc850d6043.png" />
+<img alt="../_images/1b14b2d8b9c08b96fadee6afef0d6a4b64b057dd2239e4d148ce05b2ddd1b265.png" src="../_images/1b14b2d8b9c08b96fadee6afef0d6a4b64b057dd2239e4d148ce05b2ddd1b265.png" />
 </div>
 </div>
 </section>
 <section id="mesh-the-topographic-binary-segmentation-to-obtain-topographic-surface-mesh-s-d-u-v">
-<h2>Mesh the topographic binary segmentation to obtain topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span><a class="headerlink" href="#mesh-the-topographic-binary-segmentation-to-obtain-topographic-surface-mesh-s-d-u-v" title="Link to this heading">#</a></h2>
+<h2>3. Mesh the topographic binary segmentation to obtain topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span><a class="headerlink" href="#mesh-the-topographic-binary-segmentation-to-obtain-topographic-surface-mesh-s-d-u-v" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we mesh and keep the largest connected component</span>
 <span class="n">topographic_mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">marching_cubes_mesh_binary</span><span class="p">(</span><span class="n">topographic_binary</span><span class="p">,</span>   
                                                         <span class="n">presmooth</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="c1"># applies a presmooth</span>
-                                                        <span class="n">contourlevel</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span>
+                                                        <span class="n">contourlevel</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="c1"># isosurface level to mesh</span>
                                                         <span class="n">keep_largest_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># we want the largest connected component </span>
                                                         <span class="n">remesh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                        <span class="n">remesh_method</span><span class="o">=</span><span class="s1">&#39;pyacvd&#39;</span><span class="p">,</span> 
+                                                        <span class="n">remesh_method</span><span class="o">=</span><span class="s1">&#39;CGAL&#39;</span><span class="p">,</span> 
                                                         <span class="n">remesh_samples</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="c1"># remeshing with a target #vertices = 50% of original</span>
-                                                        <span class="n">predecimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># this applies quadric mesh simplication to remove very small edges before remeshing</span>
-                                                        <span class="n">min_mesh_size</span><span class="o">=</span><span class="mi">60000</span><span class="p">,</span>
-                                                        <span class="n">upsamplemethod</span><span class="o">=</span><span class="s1">&#39;loop&#39;</span><span class="p">)</span> <span class="c1"># upsample the mesh if after the simplification and remeshing &lt; min_mesh_size  </span>
+                                                        <span class="n">predecimate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># must be True if using remesh_method=&#39;pyacvd&#39;</span>
+                                                        <span class="n">min_mesh_size</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                                        <span class="n">upsamplemethod</span><span class="o">=</span><span class="s1">&#39;inplane&#39;</span><span class="p">)</span> <span class="c1"># upsample the mesh if after the simplification and remeshing &lt; min_mesh_size  </span>
+
+<span class="c1"># check the orientation</span>
+<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">topographic_mesh</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">topographic_mesh</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">topographic_mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.plotting</span> <span class="k">as</span> <span class="nn">plotting</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># visualize in matplotlib </span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.plotting</span> <span class="k">as</span> <span class="nn">plotting</span>
 
 <span class="c1"># plot the mesh - not very exciting at the moment due to lack of colors. </span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;3d&#39;</span><span class="p">},</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
@@ -593,17 +568,18 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/ff957294e217b960a3620ccb1499bc3101cc826e6648f1a289ae21a613162631.png" src="../_images/ff957294e217b960a3620ccb1499bc3101cc826e6648f1a289ae21a613162631.png" />
+<img alt="../_images/84d8dfc840f1c382e1163d00cd0ec8dae201bd3e216ceaddbc35de442a9a1052.png" src="../_images/84d8dfc840f1c382e1163d00cd0ec8dae201bd3e216ceaddbc35de442a9a1052.png" />
 </div>
 </div>
 </section>
 <section id="map-surface-curvature-and-molecular-intensities-onto-topographic-surface-mesh-s-d-u-v">
-<h2>Map surface curvature and molecular intensities onto topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span><a class="headerlink" href="#map-surface-curvature-and-molecular-intensities-onto-topographic-surface-mesh-s-d-u-v" title="Link to this heading">#</a></h2>
-<p>We can compute the surface curvature and molecular intensities for <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> directly in Cartesian space thanks to the bijective mapping.</p>
-<p>To do so, we map the vertices of <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> first into Cartesian <span class="math notranslate nohighlight">\((x,y,z)\)</span> space.</p>
+<h2>4. Map surface curvature and molecular intensities onto topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span><a class="headerlink" href="#map-surface-curvature-and-molecular-intensities-onto-topographic-surface-mesh-s-d-u-v" title="Link to this heading">#</a></h2>
+<p>We can compute the surface curvature and molecular intensities in Cartesian space and map this to <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> thanks to the bijective mapping.</p>
+<p>We map the vertices of <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> to Cartesian <span class="math notranslate nohighlight">\((x,y,z)\)</span> space, and interpolate the curvature and molecular intensities</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Analysis_Functions.topography</span> <span class="k">as</span> <span class="nn">topo_tools</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># transforming the vertices of the topography mesh to Cartesian (x,y,z) space</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Analysis_Functions.topography</span> <span class="k">as</span> <span class="nn">topo_tools</span>
 
 <span class="n">topography_verts_xyz</span> <span class="o">=</span> <span class="n">topo_tools</span><span class="o">.</span><span class="n">uv_depth_pts3D_to_xyz_pts3D</span><span class="p">(</span> <span class="n">topographic_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> 
                                                                <span class="n">topographic_coordinates</span><span class="p">)</span>
@@ -618,11 +594,11 @@ document.write(`
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span> 
 
 <span class="c1"># Compute the continuous mean curvature from the binary cell segmentation as for S(x,y,z) </span>
-<span class="n">H_binary</span><span class="p">,</span> <span class="n">H_sdf_vol_normal</span><span class="p">,</span> <span class="n">H_sdf_vol</span> <span class="o">=</span> <span class="n">segmentation</span><span class="o">.</span><span class="n">mean_curvature_binary</span><span class="p">(</span><span class="n">binary_img</span><span class="p">,</span> 
+<span class="n">H_binary</span><span class="p">,</span> <span class="n">H_sdf_vol_normal</span><span class="p">,</span> <span class="n">H_sdf_vol</span> <span class="o">=</span> <span class="n">segmentation</span><span class="o">.</span><span class="n">mean_curvature_binary</span><span class="p">(</span><span class="n">binary_img</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> 
                                                                            <span class="n">smooth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
                                                                            <span class="n">mask</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># if mask=True, only the curvature of a thin shell (+/-smooth) around the binary segmentation is returned. </span>
 
-<span class="c1"># interpolate the value onto the topographic mesh.</span>
+<span class="c1"># interpolate the value onto the topographic mesh. Note: inversion of points to match the image dimensions (the mesh was derived after transposing the binary)</span>
 <span class="n">topo_surf_H</span> <span class="o">=</span> <span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp3</span><span class="p">(</span><span class="n">topography_verts_xyz</span><span class="p">,</span> 
                                             <span class="n">grid_shape</span><span class="o">=</span> <span class="n">H_binary</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> 
                                             <span class="n">I_ref</span><span class="o">=</span> <span class="n">H_binary</span><span class="p">,</span> 
@@ -661,25 +637,12 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/04ddf369060830aeff06e3e6a6cef1443a714dd6f3dd3ab5fb9ab2a8444b8e16.png" src="../_images/04ddf369060830aeff06e3e6a6cef1443a714dd6f3dd3ab5fb9ab2a8444b8e16.png" />
+<img alt="../_images/bf013868ef88be364bd444324ab3bac175995508432d3c1a2b766fcdbc658a9b.png" src="../_images/bf013868ef88be364bd444324ab3bac175995508432d3c1a2b766fcdbc658a9b.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we can plot this with the original surface mesh for a side-by-side comparison! - can see they are almost identical. </span>
-
-
-<span class="c1"># 1. Topographic-to-Cartesian surface</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;3d&#39;</span><span class="p">},</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Topographic-to-Cartesian Curvature Surface&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
-            <span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
-            <span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">c</span> <span class="o">=</span> <span class="n">topo_surf_H_colors</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># use a larger size, as the mesh is smaller.</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
-<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="c1"># read in the cell segmentation surface</span>
 <span class="n">img_folder</span> <span class="o">=</span> <span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step0_cell_segmentation&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)</span>
@@ -688,9 +651,21 @@ document.write(`
 <span class="n">cartesian_surface_H</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step0_cell_segmentation&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">),</span>
                                                       <span class="s1">&#39;curvature_binary_mesh_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
 
+<span class="c1"># 1. Topographic-to-Cartesian surface</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Topographic-to-Cartesian&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">topo_surf_H_colors</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># use a larger size, as the mesh is smaller.</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
 <span class="c1"># 2. Original-Cartesian surface</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;3d&#39;</span><span class="p">},</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Original Cartesian Curvature Surface&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Original Input&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cartesian_surface_H</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
             <span class="n">cartesian_surface_H</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
@@ -703,45 +678,59 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/1424910c74692a00aae0886a1e00fb711b6b9ed5a46e7ca78cfdf46ba3ef4d40.png" src="../_images/1424910c74692a00aae0886a1e00fb711b6b9ed5a46e7ca78cfdf46ba3ef4d40.png" />
-<img alt="../_images/05f99d534c62a9438f7f53c66088f79db8e78a20a88a3509e0d04a6ad93b1562.png" src="../_images/05f99d534c62a9438f7f53c66088f79db8e78a20a88a3509e0d04a6ad93b1562.png" />
+<img alt="../_images/f04c27d05b7e4d1b0f4feec85861d49799c57b3abcdf06710df94f0dd299aeb8.png" src="../_images/f04c27d05b7e4d1b0f4feec85861d49799c57b3abcdf06710df94f0dd299aeb8.png" />
 </div>
 </div>
-<p>We now map the image intensity. As before we will sample 1um along the steepest gradient of the signed distance transform into the cell</p>
+<p>Similarly we can map the volumetric image intensity. As in Step 0 we will sample <span class="math notranslate nohighlight">\(1\mu m\)</span> along the steepest gradient of the signed distance transform into the cell to derive the surface proximal molecular intensity</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Mapping the molecular intensity up to 1um onto the topographic surface</span>
+<span class="sd">Mapping the molecular intensity up to 1um onto the topographic surface. This involves:</span>
+
+<span class="sd">1) deforming the surface at increments up to depth of 1um normal into cell</span>
+<span class="sd">2) taking an average of the intensities sampled </span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">1. propagate the mesh.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># create the surface mesh, of the topographic mapped back into Cartesian 3D. </span>
 <span class="n">topo_cartesian_mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">create_mesh</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">topography_verts_xyz</span><span class="p">,</span> <span class="c1"># just change the vertices, the faces does not change.</span>
                                             <span class="n">faces</span><span class="o">=</span><span class="n">topographic_mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span>
 
-<span class="n">n_samples</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span> <span class="mf">.104</span> <span class="c1"># total number of steps</span>
+<span class="c1"># check and invert the faces so the coloring is correct.</span>
+<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">topo_cartesian_mesh</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+    <span class="n">topo_cartesian_mesh</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">topo_cartesian_mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="o">...</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span> <span class="mf">.104</span> <span class="c1"># total number of steps. 0.104 is the voxel size in microns</span>
 <span class="n">stepsize</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># voxels</span>
 
-<span class="c1"># run the active contour cMCF to get the coordinates at different depths into the cell according to the external image gradient given by the gradient of the signed distance function.</span>
+<span class="c1"># run the active contour cMCF or active contours to get the coordinates at different depths into the cell according to the external image gradient given by the gradient of the signed distance function.</span>
 <span class="n">v_depth</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">parametric_mesh_constant_img_flow</span><span class="p">(</span><span class="n">topo_cartesian_mesh</span><span class="p">,</span> 
-                                                      <span class="n">external_img_gradient</span> <span class="o">=</span> <span class="n">H_sdf_vol_normal</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> 
+                                                      <span class="n">external_img_gradient</span> <span class="o">=</span> <span class="n">H_sdf_vol_normal</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="c1"># the inversion is because  </span>
                                                       <span class="n">niters</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">n_samples</span><span class="o">/</span><span class="n">stepsize</span><span class="p">),</span> 
                                                       <span class="n">deltaL</span><span class="o">=</span><span class="mf">5e-5</span><span class="p">,</span> <span class="c1"># delta which controls the stiffness of the mesh</span>
                                                       <span class="n">step_size</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> 
                                                       <span class="n">method</span><span class="o">=</span><span class="s1">&#39;implicit&#39;</span><span class="p">,</span> <span class="c1"># this specifies the cMCF solver.</span>
-                                                      <span class="n">conformalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># ensure we use the cMCF Laplacian</span>
+                                                      <span class="n">conformalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># if False, then uses active contours which has parameters of gamma, alpha, beta</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 19/19 [00:09&lt;00:00,  1.92it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 19/19 [00:02&lt;00:00,  6.80it/s]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the intensities at the sampled depth coordinates. </span>
-<span class="n">topo_v_depth_I</span> <span class="o">=</span> <span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp3</span><span class="p">(</span><span class="n">v_depth</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">2. sample intensity at propogated points and take average </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># since the mesh is derived from the transposed binary, we need to remember to invert the coordinates when getting the image intensity</span>
+<span class="c1"># get the intensities at the sampled depth coordinates. </span>
+<span class="n">topo_v_depth_I</span> <span class="o">=</span> <span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp3</span><span class="p">(</span><span class="n">v_depth</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)[</span><span class="o">...</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> 
                                             <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> 
                                             <span class="n">I_ref</span><span class="o">=</span><span class="n">img</span><span class="p">)</span>
 <span class="n">topo_v_depth_I</span> <span class="o">=</span> <span class="n">topo_v_depth_I</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">v_depth</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># matrix reshaping into a nicer shape. </span>
@@ -755,6 +744,8 @@ document.write(`
 <span class="n">topo_surf_intensity_img_raw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">topo_v_depth_I</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">topo_surf_intensity_img_raw</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">topo_surf_intensity_img_raw</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
 
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">topo_surf_intensity_img_raw</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">topo_surf_intensity_img_raw</span><span class="p">))</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd"># for visualization, we find the intensity range to be more pleasing if clipped to between the 1st and 99th percentile. </span>
 <span class="sd"># NOTE: we need to match the original intensity statistics to have identical visualisation ! </span>
@@ -765,6 +756,8 @@ document.write(`
                                                       <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_surface_curvature_intensity_stats&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
 <span class="n">I_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">curvature_intensity_stats</span><span class="p">[</span><span class="s1">&#39;surf_intensity&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">I_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">curvature_intensity_stats</span><span class="p">[</span><span class="s1">&#39;surf_intensity&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="mi">99</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">curvature_intensity_stats</span><span class="p">[</span><span class="s1">&#39;surf_intensity&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">curvature_intensity_stats</span><span class="p">[</span><span class="s1">&#39;surf_intensity&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 
 <span class="n">topo_surf_intensity_img_raw_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">topo_surf_intensity_img_raw</span><span class="p">,</span> 
                                                       <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">RdYlBu_r</span><span class="p">,</span>   
@@ -780,23 +773,16 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>26.45389435909244 214.38372550406132
+17.91748408400944 209.24241005020332
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we can plot this with the original surface mesh for a side-by-side comparison of the sampled molecular intensity! - can see they are almost identical. </span>
-
-
-<span class="c1"># 1. Topographic-to-Cartesian surface PI3K intensity</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;3d&#39;</span><span class="p">},</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Topographic-to-Cartesian PI3K Surface&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
-            <span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
-            <span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">c</span> <span class="o">=</span> <span class="n">topo_surf_intensity_img_raw_colors</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># use a larger size, as the mesh is smaller.</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
-<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># again we can show a side-by-side comparison of the sampled molecular intensity! - they are almost identical. </span>
 
 <span class="c1"># read in the cell segmentation surface</span>
 <span class="n">img_folder</span> <span class="o">=</span> <span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step0_cell_segmentation&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)</span>
@@ -805,9 +791,21 @@ document.write(`
 <span class="n">cartesian_surface_PI3K</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step0_cell_segmentation&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">),</span>
                                                       <span class="s1">&#39;PI3K_binary_mesh_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
 
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="c1"># 1. Topographic-to-Cartesian surface PI3K intensity</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Topographic-to-Cartesian PI3K&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">topography_verts_xyz</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">topo_surf_intensity_img_raw_colors</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># use a larger size, as the mesh is smaller.</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
 <span class="c1"># 2. Original-Cartesian surface</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;3d&#39;</span><span class="p">},</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Original Cartesian PI3K Surface&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Original Cartesian PI3K&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cartesian_surface_PI3K</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
             <span class="n">cartesian_surface_PI3K</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
@@ -820,14 +818,10 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/52932d2621a754e5657b963734368a1680a7e9977ce3d8c3fa858a6e971d29d9.png" src="../_images/52932d2621a754e5657b963734368a1680a7e9977ce3d8c3fa858a6e971d29d9.png" />
-<img alt="../_images/22a2035aa07fee023472b58e7b97ce83ac2f05b8fb0a802050db48a1bc9319a0.png" src="../_images/22a2035aa07fee023472b58e7b97ce83ac2f05b8fb0a802050db48a1bc9319a0.png" />
+<img alt="../_images/9636468973812d24026ed9952b4c6c28f1a7c91ec5b23fa9b5bd43d707ed3d98.png" src="../_images/9636468973812d24026ed9952b4c6c28f1a7c91ec5b23fa9b5bd43d707ed3d98.png" />
 </div>
 </div>
 </section>
-</section>
-<section id="we-have-now-finished-the-6-steps-to-map-an-input-surface-s-x-y-z-into-the-different-u-unwrap3d-proposed-representations-please-check-the-other-notebooks-for-specific-topics">
-<h1>We have now finished the 6 steps to map an input surface <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> into the different u-Unwrap3D proposed representations. Please check the other notebooks for specific topics.<a class="headerlink" href="#we-have-now-finished-the-6-steps-to-map-an-input-surface-s-x-y-z-into-the-different-u-unwrap3d-proposed-representations-please-check-the-other-notebooks-for-specific-topics" title="Link to this heading">#</a></h1>
 </section>
 
     <script type="text/x-thebe-config">
@@ -839,16 +833,16 @@ document.write(`
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "conda-env-unwrap3D_test-py"
+            mode: "python"
         },
         kernelOptions: {
-            name: "conda-env-unwrap3D_test-py",
+            name: "python3",
             path: "./03_basic_workflow"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'conda-env-unwrap3D_test-py'</script>
+    <script>kernelName = 'python3'</script>
 
                 </article>
               
@@ -894,16 +888,11 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 6: Extract topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> given the topographic volume <span class="math notranslate nohighlight">\(V(d,u,v)\)</span> space</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-v-d-u-v-the-binary-cell-segmentation-and-create-an-analysis-save-folder">Load <span class="math notranslate nohighlight">\(V(d,u,v)\)</span>, the binary cell segmentation and create an analysis save folder</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-binary-segmentation-i-v-x-y-z-into-the-topographic-volume-space-v-d-u-v">Map binary segmentation <span class="math notranslate nohighlight">\(I(V(x,y,z))\)</span> into the topographic volume space <span class="math notranslate nohighlight">\(V(d,u,v)\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-the-topographic-binary-segmentation-to-obtain-topographic-surface-mesh-s-d-u-v">Mesh the topographic binary segmentation to obtain topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-surface-curvature-and-molecular-intensities-onto-topographic-surface-mesh-s-d-u-v">Map surface curvature and molecular intensities onto topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-v-d-u-v-and-the-original-binary-cell-segmentation">1. Load <span class="math notranslate nohighlight">\(V(d,u,v)\)</span>, and the original binary cell segmentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-binary-segmentation-b-v-x-y-z-into-the-topographic-coordinate-space-d-u-v">2. Map binary segmentation <span class="math notranslate nohighlight">\(B(V(x,y,z))\)</span> into the topographic coordinate space <span class="math notranslate nohighlight">\((d,u,v)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-the-topographic-binary-segmentation-to-obtain-topographic-surface-mesh-s-d-u-v">3. Mesh the topographic binary segmentation to obtain topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-surface-curvature-and-molecular-intensities-onto-topographic-surface-mesh-s-d-u-v">4. Map surface curvature and molecular intensities onto topographic surface mesh <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#we-have-now-finished-the-6-steps-to-map-an-input-surface-s-x-y-z-into-the-different-u-unwrap3d-proposed-representations-please-check-the-other-notebooks-for-specific-topics">We have now finished the 6 steps to map an input surface <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> into the different u-Unwrap3D proposed representations. Please check the other notebooks for specific topics.</a></li>
-</ul>
-
   </nav></div>
 
 </div></div>
