@@ -570,7 +570,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [02:41&lt;00:00,  3.23s/it]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [02:32&lt;00:00,  3.04s/it]
 </pre></div>
 </div>
 </div>
@@ -600,6 +600,14 @@ document.write(`
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using the first as the reference. :&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
 
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Construct the mesh at the found changepoint</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">cMCF_mesh_S</span> <span class="o">=</span> <span class="n">mesh_S</span><span class="o">.</span><span class="n">copy</span><span class="p">();</span> <span class="n">cMCF_mesh_S</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">cMCF_mesh_S</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder_cMCF</span><span class="p">,</span> 
+                                      <span class="s1">&#39;cMCF_mesh_S.obj&#39;</span><span class="p">))</span>
+
 <span class="n">MCF_measures_dict</span><span class="p">[</span><span class="s1">&#39;ind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind</span>
 <span class="n">MCF_measures_dict</span><span class="p">[</span><span class="s1">&#39;inds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inds</span>
 
@@ -626,15 +634,6 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder_cMCF</span><span class="p">,</span> 
                           <span class="s1">&#39;MCF_iterations_&#39;</span><span class="o">+</span><span class="n">basefname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">,</span> <span class="s1">&#39;.svg&#39;</span><span class="p">)),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Construct the mesh at the found changepoint</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="n">cMCF_mesh_S</span> <span class="o">=</span> <span class="n">mesh_S</span><span class="o">.</span><span class="n">copy</span><span class="p">();</span> <span class="n">cMCF_mesh_S</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">ind</span><span class="p">]</span>
-
-<span class="n">tmp</span> <span class="o">=</span> <span class="n">cMCF_mesh_S</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder_cMCF</span><span class="p">,</span> 
-                                      <span class="s1">&#39;cMCF_mesh_S.obj&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -832,66 +831,66 @@ using the first as the reference. :
 initial_watertight: -8
 </pre></div>
 </div>
-<img alt="../../_images/22152beb7506b52708dfa682ff6fd8b5ed7b39bae6cf8e336d31b1d6e92dd036.png" src="../../_images/22152beb7506b52708dfa682ff6fd8b5ed7b39bae6cf8e336d31b1d6e92dd036.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initiating a genus-0 mesh automatically with interval:  [2.117024719230768, 2.117863352623299]
+<img alt="../../_images/1c410d80d769289ad8b09979ffe1fd07749d9dc70ead4f2d488d6e96d836871b.png" src="../../_images/1c410d80d769289ad8b09979ffe1fd07749d9dc70ead4f2d488d6e96d836871b.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initiating a genus-0 mesh automatically with interval:  [4.089280543163545, 4.090029428233324]
 </pre></div>
 </div>
-<img alt="../../_images/11edb8ac77f0e5a986445c2ed6ac9bcf3e689a40ea3b7e7701c7b98ede786ae5.png" src="../../_images/11edb8ac77f0e5a986445c2ed6ac9bcf3e689a40ea3b7e7701c7b98ede786ae5.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GVF iter: 15/15(98914, 3)
+<img alt="../../_images/7ffa0ea0a212f9291d8f897e8fc89301a399bf04977be1d7b8411d5d2d5f4937.png" src="../../_images/7ffa0ea0a212f9291d8f897e8fc89301a399bf04977be1d7b8411d5d2d5f4937.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GVF iter: 15/15(85138, 3)
 </pre></div>
 </div>
-<img alt="../../_images/0f8a2f0069e77d0bdc7c9f8602dc004615597e5233994f761534998f3e9e3674.png" src="../../_images/0f8a2f0069e77d0bdc7c9f8602dc004615597e5233994f761534998f3e9e3674.png" />
-<img alt="../../_images/dffd6a1e9d1b6cabb2e733beda6c9463b8521c1da45a64051e8edb82b3d52360.png" src="../../_images/dffd6a1e9d1b6cabb2e733beda6c9463b8521c1da45a64051e8edb82b3d52360.png" />
+<img alt="../../_images/2b95b89c6c051c35078a2f1e1ac844074b0b43bff8f1506bbcab67a3ebd00bc6.png" src="../../_images/2b95b89c6c051c35078a2f1e1ac844074b0b43bff8f1506bbcab67a3ebd00bc6.png" />
+<img alt="../../_images/0f83fb7eb5e7cdeee8e6cba8d401246ff18e5a2ceb12df028a0caee62da90e25.png" src="../../_images/0f83fb7eb5e7cdeee8e6cba8d401246ff18e5a2ceb12df028a0caee62da90e25.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
-0 4.29640062103999 changing lr:  0.75
-0 4.29640062103999
+0 4.335801012102749 changing lr:  0.75
+0 4.335801012102749
 1
 ==========================
 2
 --------------------------
-1 4.150069969869499
+1 4.189334864607437
 2
 ==========================
 2
 --------------------------
-2 4.157565144692615 changing lr:  0.5625
-2 4.157565144692615
+2 4.182354716177256
 3
 ==========================
 2
 --------------------------
-3 3.990222661832849
+3 4.188637173505003 changing lr:  0.5625
+3 4.188637173505003
 4
 ==========================
 2
 --------------------------
-4 3.9971460922453472 changing lr:  0.421875
-4 3.9971460922453472
+4 3.9931816915839953
 5
 ==========================
 2
 --------------------------
-5 3.794613044550036
+5 3.984538011784264
 6
 ==========================
 2
 --------------------------
-6 3.7876440462408967
+6 3.977406735551078
 7
 ==========================
 2
 --------------------------
-7 3.7796320861601957
+7 3.970494485626385
 8
 ==========================
 2
 --------------------------
-8 3.759506671777758
+8 3.96413953213622
 9
 ==========================
 2
 --------------------------
-9 3.722429411410762
+9 3.9765619674145904 changing lr:  0.421875
+9 3.9765619674145904
 {&#39;convex&#39;: False, &#39;volume&#39;: True, &#39;watertight&#39;: True, &#39;orientability&#39;: True, &#39;euler_number&#39;: 2, &#39;genus&#39;: 0.0}
 </pre></div>
 </div>
@@ -1007,18 +1006,18 @@ initial_watertight: -8
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 24%|██▍       | 119/500 [00:18&lt;01:04,  5.88it/s]c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:4648: RuntimeWarning: All-NaN slice encountered
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 41%|████▏     | 207/500 [00:44&lt;01:37,  3.01it/s]c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:4648: RuntimeWarning: All-NaN slice encountered
   max_size = igl.avg_edge_length(v, f) / np.nanmedian(gu_mag) # if divide by median less good.
-100%|██████████| 500/500 [02:11&lt;00:00,  3.80it/s]
+100%|██████████| 500/500 [03:14&lt;00:00,  2.58it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distortion at found iteration number: 1.0000957100741497
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distortion at found iteration number: 1.0016498473019195
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<img alt="../../_images/a3491d9f1b13733a5e46ad4863bf3526ddc15d1e90f9c769d79c9eab537ed37a.png" src="../../_images/a3491d9f1b13733a5e46ad4863bf3526ddc15d1e90f9c769d79c9eab537ed37a.png" />
+<img alt="../../_images/e98d75a9590602d462fe8bc44fb8333f09ffe6187c1bfe3168d40aed6d0056c2.png" src="../../_images/e98d75a9590602d462fe8bc44fb8333f09ffe6187c1bfe3168d40aed6d0056c2.png" />
 </div>
 </div>
 </section>
@@ -1107,7 +1106,7 @@ initial_watertight: -8
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/d7e5932f8b0d98d7cd6561f85f7ffbd60c84ebce8e6d21d22d39c010e327d126.png" src="../../_images/d7e5932f8b0d98d7cd6561f85f7ffbd60c84ebce8e6d21d22d39c010e327d126.png" />
+<img alt="../../_images/b611e26f3d6336d2c20a6ba5918f7b2308b1b275cab0f6fb92e5f1e7e6188dd5.png" src="../../_images/b611e26f3d6336d2c20a6ba5918f7b2308b1b275cab0f6fb92e5f1e7e6188dd5.png" />
 </div>
 </div>
 </section>
@@ -1152,17 +1151,17 @@ initial_watertight: -8
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 142/142 [00:22&lt;00:00,  6.44it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 36/36 [00:04&lt;00:00,  8.35it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 3.2217659950256348
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 2.915717601776123
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 25/25 [00:15&lt;00:00,  1.65it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 25/25 [00:07&lt;00:00,  3.53it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>topographic space dimension:  (168, 256, 458, 3)
-the first 142 slices are interior of S_ref
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>topographic space dimension:  (62, 256, 418, 3)
+the first 36 slices are interior of S_ref
 the next 25 slices are exterior of S_ref
 </pre></div>
 </div>
@@ -1198,7 +1197,7 @@ the next 25 slices are exterior of S_ref
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b3f9385246eb99c87a1563f5f11b3e6badb8a4289b29138bdd04cbf6cf853f13.png" src="../../_images/b3f9385246eb99c87a1563f5f11b3e6badb8a4289b29138bdd04cbf6cf853f13.png" />
+<img alt="../../_images/677a1b45dda23e548beaa78c9afda45af6527dc55164ab96893123fd02b26742.png" src="../../_images/677a1b45dda23e548beaa78c9afda45af6527dc55164ab96893123fd02b26742.png" />
 </div>
 </div>
 <div class="cell docutils container">

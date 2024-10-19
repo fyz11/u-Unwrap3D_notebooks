@@ -570,7 +570,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [03:11&lt;00:00,  3.84s/it]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [04:44&lt;00:00,  5.69s/it]
 </pre></div>
 </div>
 </div>
@@ -600,6 +600,15 @@ document.write(`
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;using the first as the reference. :&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
 
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Construct the mesh at the found changepoint and save it</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">cMCF_mesh_S</span> <span class="o">=</span> <span class="n">mesh_S</span><span class="o">.</span><span class="n">copy</span><span class="p">();</span> <span class="n">cMCF_mesh_S</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">cMCF_mesh_S</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder_cMCF</span><span class="p">,</span> 
+                                      <span class="s1">&#39;cMCF_mesh_S.obj&#39;</span><span class="p">))</span>
+
 <span class="n">MCF_measures_dict</span><span class="p">[</span><span class="s1">&#39;ind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind</span>
 <span class="n">MCF_measures_dict</span><span class="p">[</span><span class="s1">&#39;inds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inds</span>
 
@@ -626,26 +635,17 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder_cMCF</span><span class="p">,</span> 
                           <span class="s1">&#39;MCF_iterations_&#39;</span><span class="o">+</span><span class="n">basefname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">,</span> <span class="s1">&#39;.svg&#39;</span><span class="p">)),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Construct the mesh at the found changepoint</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="n">cMCF_mesh_S</span> <span class="o">=</span> <span class="n">mesh_S</span><span class="o">.</span><span class="n">copy</span><span class="p">();</span> <span class="n">cMCF_mesh_S</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">ind</span><span class="p">]</span>
-
-<span class="n">tmp</span> <span class="o">=</span> <span class="n">cMCF_mesh_S</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder_cMCF</span><span class="p">,</span> 
-                                      <span class="s1">&#39;cMCF_mesh_S.obj&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>possible iteration numbers for reference shape:
-[6]
+[ 5 23]
 using the first as the reference. :
-6
+5
 </pre></div>
 </div>
-<img alt="../../_images/2d6ea63bc1cf3227bed1b092e21d2e51b7781719b55c95ff1c125c6191103645.png" src="../../_images/2d6ea63bc1cf3227bed1b092e21d2e51b7781719b55c95ff1c125c6191103645.png" />
+<img alt="../../_images/c7197969b9ac4c234cc0b3e6f58ffde76b4f87f55cf8e5f3c7352e01c41ba21e.png" src="../../_images/c7197969b9ac4c234cc0b3e6f58ffde76b4f87f55cf8e5f3c7352e01c41ba21e.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -672,10 +672,10 @@ using the first as the reference. :
                                                                                                     <span class="n">use_GVF</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                                                                                     <span class="n">GVF_mu</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> 
                                                                                                     <span class="n">GVF_iterations</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
-                                                                                                    <span class="n">voxelize_padsize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                                                                                                    <span class="n">voxelize_padsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
                                                                                                     <span class="n">voxelize_dilate_ksize</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="c1"># make dilate_ksize &gt; erode_ksize if your mesh doesn&#39;t form a complete volume or there is quite a bit of holes.</span>
                                                                                                     <span class="n">voxelize_erode_ksize</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>  
-                                                                                                    <span class="n">extra_pad</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+                                                                                                    <span class="n">extra_pad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                                                                                                     <span class="n">genus0_alpha_frac</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span> <span class="c1"># default</span>
                                                                                                     <span class="n">genus0_alpha_auto</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                                                                                                     <span class="n">genus0_tol</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span> 
@@ -741,7 +741,7 @@ using the first as the reference. :
                                                                                                         <span class="n">voxelize_padsize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="c1"># this is just leave enough padding space </span>
                                                                                                         <span class="n">voxelize_dilate_ksize</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> 
                                                                                                         <span class="n">voxelize_erode_ksize</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1">## was this cos of 3? </span>
-                                                                                                        <span class="n">extra_pad</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+                                                                                                        <span class="n">extra_pad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                                                                                                         <span class="n">tightest_genus0_initial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                                                                                         <span class="n">genus0_alpha_frac</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
                                                                                                         <span class="n">genus0_alpha_auto</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -828,70 +828,69 @@ using the first as the reference. :
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial: -2
-initial_watertight: -2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initial: -30
+initial_watertight: -30
 </pre></div>
 </div>
-<img alt="../../_images/5d6537dbc72cfce8683a2c86f46abcaad686148a9362c2848a4d5ef6c26049ff.png" src="../../_images/5d6537dbc72cfce8683a2c86f46abcaad686148a9362c2848a4d5ef6c26049ff.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initiating a genus-0 mesh automatically with interval:  [1.580943693040661, 1.5819351696718922]
+<img alt="../../_images/591962bfe2175c6d22f1a383263c787c0652fbfa6f479ebf9a18814afa999218.png" src="../../_images/591962bfe2175c6d22f1a383263c787c0652fbfa6f479ebf9a18814afa999218.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initiating a genus-0 mesh automatically with interval:  [6.384232459208034, 6.385074942938468]
 </pre></div>
 </div>
-<img alt="../../_images/f849bb2f719d4c766446841750f2010f95d53ec4de0ee5184e47ae274e8f0b92.png" src="../../_images/f849bb2f719d4c766446841750f2010f95d53ec4de0ee5184e47ae274e8f0b92.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GVF iter: 15/15(91394, 3)
+<img alt="../../_images/b5a2752a3ad2db5b592c2453c1dc6ed4c92817ef1c6c3fc8ac63caecbf9c0032.png" src="../../_images/b5a2752a3ad2db5b592c2453c1dc6ed4c92817ef1c6c3fc8ac63caecbf9c0032.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GVF iter: 15/15(98466, 3)
 </pre></div>
 </div>
-<img alt="../../_images/075f7994ef49708f08b465d929416a54f6eedc4a2ab5a84f0aabaa10efd29608.png" src="../../_images/075f7994ef49708f08b465d929416a54f6eedc4a2ab5a84f0aabaa10efd29608.png" />
-<img alt="../../_images/bff13045e8e79bacba63cbb75d3a695d636d6d9ae2d9e7a27a40cd0d3a78bce0.png" src="../../_images/bff13045e8e79bacba63cbb75d3a695d636d6d9ae2d9e7a27a40cd0d3a78bce0.png" />
+<img alt="../../_images/bf0c34c1c58862f9af8e169ddf4bf614049d1cf87ac1e9808601c93d426e1568.png" src="../../_images/bf0c34c1c58862f9af8e169ddf4bf614049d1cf87ac1e9808601c93d426e1568.png" />
+<img alt="../../_images/a1f7ae3316136a8a5e661b5d783785a58f5a75485a09de97f18762e5f44fa131.png" src="../../_images/a1f7ae3316136a8a5e661b5d783785a58f5a75485a09de97f18762e5f44fa131.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
-0 4.381969608967172 changing lr:  0.75
-0 4.381969608967172
+0 4.348595643153912 changing lr:  0.75
+0 4.348595643153912
 1
 ==========================
 2
 --------------------------
-1 4.207654072617839
+1 4.191128243231426
 2
 ==========================
 2
 --------------------------
-2 4.204562972225283
+2 4.185915041229329
 3
 ==========================
 2
 --------------------------
-3 4.20433760247993
+3 4.183712729581569
 4
 ==========================
 2
 --------------------------
-4 4.208660799319627 changing lr:  0.5625
-4 4.208660799319627
+4 4.186503710332681 changing lr:  0.5625
+4 4.186503710332681
 5
 ==========================
 2
 --------------------------
-5 3.9806285892316757
+5 3.9757726450915487
 6
 ==========================
 2
 --------------------------
-6 3.976933041633669
+6 3.969127778362888
 7
 ==========================
 2
 --------------------------
-7 3.9730353078118057
+7 3.959837500469713
 8
 ==========================
 2
 --------------------------
-8 3.973294049404222 changing lr:  0.421875
-8 3.973294049404222
+8 3.949380826583938
 9
 ==========================
 2
 --------------------------
-9 3.7876675148854533
+9 3.8939012725382476
 {&#39;convex&#39;: False, &#39;volume&#39;: True, &#39;watertight&#39;: True, &#39;orientability&#39;: True, &#39;euler_number&#39;: 2, &#39;genus&#39;: 0.0}
 </pre></div>
 </div>
@@ -981,12 +980,13 @@ initial_watertight: -2
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;distortion at found iteration number:&#39;</span><span class="p">,</span> <span class="n">area_distortion_iter_curve</span><span class="p">[</span><span class="n">min_area_distort</span><span class="p">])</span>
 
 
+
 <span class="c1"># the area_distortion_iter_curve is another great check of things are working, we plot the np.log(curve) to visualize a log scale.</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">area_distortion_iter_curve</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">area_distortion_iter_curve</span><span class="p">),</span> <span class="s1">&#39;.-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">min_area_distort</span><span class="p">,</span> 
-            <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">area_distortion_iter_curve</span><span class="p">)),</span> 
-            <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">area_distortion_iter_curve</span><span class="p">)),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">area_distortion_iter_curve</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">area_distortion_iter_curve</span><span class="p">)])),</span> 
+            <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">area_distortion_iter_curve</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">area_distortion_iter_curve</span><span class="p">)])),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
@@ -1007,15 +1007,24 @@ initial_watertight: -2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 56%|█████▋    | 282/500 [01:19&lt;01:17,  2.82it/s]c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:4648: RuntimeWarning: All-NaN slice encountered
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 46%|████▌     | 229/500 [01:14&lt;01:28,  3.07it/s]c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:4616: RuntimeWarning: divide by zero encountered in divide
+  area_distortion_mesh = igl.doublearea(mesh_orig.vertices/np.sqrt(np.nansum(igl.doublearea(mesh_orig.vertices,f)*.5)), f) / igl.doublearea(v/np.sqrt(np.nansum(igl.doublearea(v,f)*.5)), f) # this is face measure!. and the connectivity is allowed to change! during evolution !.
+c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\numpy\core\fromnumeric.py:88: RuntimeWarning: invalid value encountered in reduce
+  return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
+c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:4658: RuntimeWarning: invalid value encountered in subtract
+  vA_vertex = vA_vertex - np.nansum(vA_vertex*normal, axis=-1)[:,None]*normal # this seems necessary...
+ 46%|████▌     | 230/500 [01:14&lt;01:30,  2.99it/s]c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:4648: RuntimeWarning: All-NaN slice encountered
   max_size = igl.avg_edge_length(v, f) / np.nanmedian(gu_mag) # if divide by median less good.
-100%|██████████| 500/500 [03:46&lt;00:00,  2.21it/s]
+100%|██████████| 500/500 [04:41&lt;00:00,  1.78it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distortion at found iteration number: 0.9999483043611526
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distortion at found iteration number: 1.007394887292127
 </pre></div>
 </div>
-<img alt="../../_images/dc540e0abc3c5544a94741c5fc122aa1a0e7bdc2e26e09ea802ea58397091e4d.png" src="../../_images/dc540e0abc3c5544a94741c5fc122aa1a0e7bdc2e26e09ea802ea58397091e4d.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<img alt="../../_images/a9b3844d3ca685806a309423412d01830eb7442ef34592cfb3a1c0696e6fbfb5.png" src="../../_images/a9b3844d3ca685806a309423412d01830eb7442ef34592cfb3a1c0696e6fbfb5.png" />
 </div>
 </div>
 </section>
@@ -1043,7 +1052,8 @@ initial_watertight: -2
 <span class="n">binary_H_S</span> <span class="o">=</span> <span class="n">H_S</span> <span class="o">&gt;</span> <span class="n">curvature_cutoff_voxels</span>
 
 <span class="c1"># define weights as the absolute value of curvature</span>
-<span class="n">weights</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">binary_H_Sref</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">binary_H_S</span>
+<span class="n">weighting_for_H_S</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">weighting_for_H_S</span><span class="o">*</span><span class="n">binary_H_Sref</span><span class="o">+</span><span class="n">weighting_for_H_S</span><span class="o">*</span><span class="n">binary_H_S</span>
 <span class="n">weights_proj</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># this is a signed i.e. has +/- values to resolve the ambiguity of putting the </span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -1103,7 +1113,7 @@ initial_watertight: -2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8be8c8d790c6c6acaf3e2f0f2f644dfa099800dba08c608bc3eb14851f88cb59.png" src="../../_images/8be8c8d790c6c6acaf3e2f0f2f644dfa099800dba08c608bc3eb14851f88cb59.png" />
+<img alt="../../_images/526493d6029b29cbb1b66975062e9ac9057879abab010912beaf4bdf99b64ba6.png" src="../../_images/526493d6029b29cbb1b66975062e9ac9057879abab010912beaf4bdf99b64ba6.png" />
 </div>
 </div>
 </section>
@@ -1148,17 +1158,17 @@ initial_watertight: -2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 24/24 [00:02&lt;00:00,  8.44it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 40/40 [00:05&lt;00:00,  7.21it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 3.389270305633545
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 7.022310495376587
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 25/25 [00:08&lt;00:00,  2.88it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 25/25 [00:08&lt;00:00,  2.90it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>topographic space dimension:  (50, 256, 460, 3)
-the first 24 slices are interior of S_ref
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>topographic space dimension:  (66, 256, 452, 3)
+the first 40 slices are interior of S_ref
 the next 25 slices are exterior of S_ref
 </pre></div>
 </div>
@@ -1194,7 +1204,7 @@ the next 25 slices are exterior of S_ref
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a0a870869b73b0a4394b28c1f5cda05c1608acf7fdab10d1590ce2c12fed78b6.png" src="../../_images/a0a870869b73b0a4394b28c1f5cda05c1608acf7fdab10d1590ce2c12fed78b6.png" />
+<img alt="../../_images/7b8157441b94d95275d339e2ea46f20bb56e7af29723bd338479ca930b8c8e2c.png" src="../../_images/7b8157441b94d95275d339e2ea46f20bb56e7af29723bd338479ca930b8c8e2c.png" />
 </div>
 </div>
 <div class="cell docutils container">
