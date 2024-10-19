@@ -1,1 +1,1 @@
-# Basic workflow for unwrapping 3D surfaces
+# Extracting surfaces from microscopy imaging
