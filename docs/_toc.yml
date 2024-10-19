@@ -21,7 +21,8 @@ parts:
       - file: 03_basic_workflow/Step4_uv_mapping_spherical_parameterization.ipynb
       - file: 03_basic_workflow/Step5_building_topography_surface.ipynb
       - file: 03_basic_workflow/Step6_find_topographic_surface_mesh.ipynb
-      # to do: flattening the surface. i.e. step7 
+      - file: 03_basic_workflow/Step7_topographic_cMCF_to_flatten.ipynb
+      # to do: putting steps 1-7 together for blebs, lamellipodia and filopodia example -> starting from just the meshes. [ no intensity image ]
 
   - caption: Customizing the Basic Workflow to input data
     chapters:
