@@ -13,15 +13,19 @@ parts:
   - caption: Basic Workflow
     chapters:
     - file: 03_basic_workflow/readme
+    - file: 03_basic_workflow/Step0_find_cell_surface_from_segmentation.ipynb
+    - file: 03_basic_workflow/Step1_find_reference_surface.ipynb
+    - file: 03_basic_workflow/Step2_quasiconformal_spherical_parameterization.ipynb
+    - file: 03_basic_workflow/Step3_equiareal_spherical_parameterization.ipynb
+    - file: 03_basic_workflow/Step4_uv_mapping_spherical_parameterization.ipynb
+    - file: 03_basic_workflow/Step5_building_topography_surface.ipynb
+    - file: 03_basic_workflow/Step6_find_topographic_surface_mesh.ipynb
+    - file: 03_basic_workflow/Step7_topographic_cMCF_to_flatten.ipynb
+    - file: 03_basic_workflow/full_example_cells/readme
       sections:
-      - file: 03_basic_workflow/Step0_find_cell_surface_from_segmentation.ipynb
-      - file: 03_basic_workflow/Step1_find_reference_surface.ipynb
-      - file: 03_basic_workflow/Step2_quasiconformal_spherical_parameterization.ipynb
-      - file: 03_basic_workflow/Step3_equiareal_spherical_parameterization.ipynb
-      - file: 03_basic_workflow/Step4_uv_mapping_spherical_parameterization.ipynb
-      - file: 03_basic_workflow/Step5_building_topography_surface.ipynb
-      - file: 03_basic_workflow/Step6_find_topographic_surface_mesh.ipynb
-      - file: 03_basic_workflow/Step7_topographic_cMCF_to_flatten.ipynb
+      - file: 03_basic_workflow/full_example_cells/unwrap_bleb_cell.ipynb
+      - file: 03_basic_workflow/full_example_cells/unwrap_filopodia_cell.ipynb
+      - file: 03_basic_workflow/full_example_cells/unwrap_lamellipodia_cell.ipynb
       # to do: putting steps 1-7 together for blebs, lamellipodia and filopodia example -> starting from just the meshes. [ no intensity image ]
 
   - caption: Customizing the Basic Workflow to input data

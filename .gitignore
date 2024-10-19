@@ -4,3 +4,4 @@
 temp*
 *.pyc
 docs/03_basic_workflow/example_results/*
+*.afdesign
