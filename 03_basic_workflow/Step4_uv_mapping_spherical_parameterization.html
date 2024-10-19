@@ -180,7 +180,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../01_introduction/readme.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../02_installation/readme.html">Installation</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Workflow</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Standard Workflow</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Standard workflow for unwrapping 3D surfaces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Step0_find_cell_surface_from_segmentation.html">Step 0: Segmenting a single cell from a volume image</a></li>
@@ -192,13 +192,13 @@
 <li class="toctree-l1"><a class="reference internal" href="Step6_find_topographic_surface_mesh.html">Step 6: Compute topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> from topographic binary segmentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Step7_topographic_cMCF_to_flatten.html">Step 7: Flattening the topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> onto the 2D plane</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="full_example_cells/readme.html">Full examples of standard workflow</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="full_example_cells/unwrap_bleb_cell.html">Step 0: Segmenting a single cell from a volume image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="full_example_cells/unwrap_bleb_cell.html">Example 1: Cell with blebs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="full_example_cells/unwrap_filopodia_cell.html">Step 0: Segmenting a single cell from a volume image</a></li>
 <li class="toctree-l2"><a class="reference internal" href="full_example_cells/unwrap_lamellipodia_cell.html">Step 0: Segmenting a single cell from a volume image</a></li>
 </ul>
 </details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Customizing the Basic Workflow to input data</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Customizing the standard workflow to input data</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../04_customizing_basic_workflow/readme.html">Basic workflow for unwrapping 3D surfaces</a></li>
 </ul>
@@ -606,7 +606,7 @@ document.write(`
 <h3>Example 1: Optimize unwrap for the curvature of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span><a class="headerlink" href="#example-1-optimize-unwrap-for-the-curvature-of-s-text-ref-x-y-z" title="Link to this heading">#</a></h3>
 <p>The reference is non spherical and has two ‘ends’. The blebs appear to concentrate at both of these ends, and present less elsewhere. We would like therefore to unwrap placing the two ‘ends’ equatorially in the uv-unwrap. We will:</p>
 <ol class="arabic simple">
-<li><p>compute and use the absolute value of mean curvature of <span class="math notranslate nohighlight">\(S_\)</span> as vertex weights</p></li>
+<li><p>compute and use the absolute value of mean curvature of <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> as vertex weights</p></li>
 <li><p>apply weighted eigendecomposition to optimize the orientation of the spherical parameterization</p></li>
 </ol>
 <div class="cell docutils container">
@@ -948,7 +948,7 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <img alt="../_images/b30571f92fcf96bd2a4d15f25b5e826cdc12ce4582d2957b9abbdf127043132d.png" src="../_images/b30571f92fcf96bd2a4d15f25b5e826cdc12ce4582d2957b9abbdf127043132d.png" />
-<img alt="../_images/87d05afa499b8c40609367d96132f8de495cf2c53580a3af91ae8437baba0cdc.png" src="../_images/87d05afa499b8c40609367d96132f8de495cf2c53580a3af91ae8437baba0cdc.png" />
+<img alt="../_images/e6ce0a7a769215c22646d4b932bbd5dfc581b87daebb1170111c0a95b57a19e5.png" src="../_images/e6ce0a7a769215c22646d4b932bbd5dfc581b87daebb1170111c0a95b57a19e5.png" />
 </div>
 </div>
 <p>On a side note, a uv-parameterized surface can be easily visualized without a mesh viewer by matplotlib using the <code class="docutils literal notranslate"><span class="pre">plot_surface</span></code> function.</p>
