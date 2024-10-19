@@ -24,8 +24,8 @@ parts:
     - file: 03_basic_workflow/full_example_cells/readme
       sections:
       - file: 03_basic_workflow/full_example_cells/unwrap_bleb_cell.ipynb
-      - file: 03_basic_workflow/full_example_cells/unwrap_filopodia_cell.ipynb
       - file: 03_basic_workflow/full_example_cells/unwrap_lamellipodia_cell.ipynb
+      - file: 03_basic_workflow/full_example_cells/unwrap_filopodia_cell.ipynb
       # to do: putting steps 1-7 together for blebs, lamellipodia and filopodia example -> starting from just the meshes. [ no intensity image ]
 
   - caption: Customizing the standard workflow to input data
