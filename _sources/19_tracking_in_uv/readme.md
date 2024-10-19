@@ -1,1 +1,1 @@
-# Basic workflow for unwrapping 3D surfaces
+# Tracking protrusions in 2D uv space

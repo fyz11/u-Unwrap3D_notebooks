@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Analyzing temporally tracked protrusions &#8212; u-Unwrap3D Analysis Notebooks</title>
+    <title>Unwrapping 2D images &#8212; u-Unwrap3D Analysis Notebooks</title>
   
   
   
@@ -57,11 +57,11 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '21_tracking_analytics/readme';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '12a_unwrapping_2D_images/readme';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Segmenting surface protrusions" href="../13_segmenting_surface_protrusions/readme.html" />
-    <link rel="prev" title="Tracking protrusions in 2D uv space" href="../19_tracking_in_uv/readme.html" />
+    <link rel="next" title="Glossary" href="../01_introduction/glossary.html" />
+    <link rel="prev" title="Unwrapping individual protrusions" href="../12_unwrapping_individual_protrusions/readme.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -214,12 +214,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../22_transporting_measurements/readme.html">Transferring measurements across meshes</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Applying u-Unwrap3D to live-cell imaging</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../16_shape_registration/readme.html">Shape registration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../15_compute_distortion_corrected_uv_measurements/readme.html">Computing distortion-corrected measurements for analysis in uv and topopraphy space</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../20_surface_flow_analytics/readme.html">Computing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../19_tracking_in_uv/readme.html">Tracking protrusions in 2D uv space</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Analyzing temporally tracked protrusions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../21_tracking_analytics/readme.html">Analyzing temporally tracked protrusions</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Applications of different surface representations</span></p>
 <ul class="nav bd-sidenav">
@@ -228,9 +228,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../18_spherical_harmonics/readme.html">Harmonics analysis of surfaces</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Mapping open 3D surfaces into 2D</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../12_unwrapping_individual_protrusions/readme.html">Unwrapping individual protrusions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../12a_unwrapping_2D_images/readme.html">Unwrapping 2D images</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Unwrapping 2D images</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -306,7 +306,7 @@
       
       
       
-      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks/issues/new?title=Issue%20on%20page%20%2F21_tracking_analytics/readme.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks/issues/new?title=Issue%20on%20page%20%2F12a_unwrapping_2D_images/readme.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -336,7 +336,7 @@
       
       
       
-      <li><a href="../_sources/21_tracking_analytics/readme.md" target="_blank"
+      <li><a href="../_sources/12a_unwrapping_2D_images/readme.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -418,7 +418,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Analyzing temporally tracked protrusions</h1>
+    <h1>Unwrapping 2D images</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -432,8 +432,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="analyzing-temporally-tracked-protrusions">
-<h1>Analyzing temporally tracked protrusions<a class="headerlink" href="#analyzing-temporally-tracked-protrusions" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="unwrapping-2d-images">
+<h1>Unwrapping 2D images<a class="headerlink" href="#unwrapping-2d-images" title="Link to this heading">#</a></h1>
 </section>
 
     <script type="text/x-thebe-config">
@@ -449,7 +449,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./21_tracking_analytics"
+            path: "./12a_unwrapping_2D_images"
         },
         predefinedOutput: true
     }
@@ -467,20 +467,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../19_tracking_in_uv/readme.html"
+       href="../12_unwrapping_individual_protrusions/readme.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Tracking protrusions in 2D uv space</p>
+        <p class="prev-next-title">Unwrapping individual protrusions</p>
       </div>
     </a>
     <a class="right-next"
-       href="../13_segmenting_surface_protrusions/readme.html"
+       href="../01_introduction/glossary.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Segmenting surface protrusions</p>
+        <p class="prev-next-title">Glossary</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

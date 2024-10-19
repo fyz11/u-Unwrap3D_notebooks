@@ -1,1 +1,1 @@
-# Basic workflow for unwrapping 3D surfaces
+# Decomposing surface into reference and protrusion meshes
