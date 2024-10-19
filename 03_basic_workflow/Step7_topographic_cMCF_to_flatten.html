@@ -62,6 +62,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '03_basic_workflow/Step7_topographic_cMCF_to_flatten';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Basic workflow for unwrapping 3D surfaces" href="../04_customizing_basic_workflow/readme.html" />
+    <link rel="prev" title="Step 6: Compute topographic surface \(S(d,u,v)\) from topographic binary segmentation" href="Step6_find_topographic_surface_mesh.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -124,8 +126,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -181,8 +181,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../02_installation/readme.html">Installation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Basic Workflow</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="readme.html">Standard workflow for unwrapping 3D surfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="readme.html">Standard workflow for unwrapping 3D surfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="Step0_find_cell_surface_from_segmentation.html">Step 0: Segmenting a single cell from a volume image</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step1_find_reference_surface.html">Step 1: Find and create a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step2_quasiconformal_spherical_parameterization.html">Step 2: Quasi-conformal spherical parameterization of the genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
@@ -190,6 +190,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Step4_uv_mapping_spherical_parameterization.html">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> into 2D using its spherical parameterization, <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\Omega}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step5_building_topography_surface.html">Step 5: Building the topographic <span class="math notranslate nohighlight">\((d,u,v)\)</span> space of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Step6_find_topographic_surface_mesh.html">Step 6: Compute topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> from topographic binary segmentation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Step 7: Flattening the topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> onto the 2D plane</a></li>
 </ul>
 </details></li>
 </ul>
@@ -531,7 +532,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\scipy\sparse\_index.py:142: SparseEfficiencyWarning: Changing the sparsity structure of a csc_matrix is expensive. lil and dok are more efficient.
   self._set_arrayXarray_sparse(i, j, x)
-100%|██████████| 10/10 [00:22&lt;00:00,  2.23s/it]
+100%|██████████| 10/10 [00:29&lt;00:00,  2.93s/it]
 </pre></div>
 </div>
 </div>
@@ -673,7 +674,8 @@ document.write(`
 </pre></div>
 </div>
 <img alt="../_images/a225a7d598c935effca00336d17679ab8816887e8bd931a8d2238ad2316578af.png" src="../_images/a225a7d598c935effca00336d17679ab8816887e8bd931a8d2238ad2316578af.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(256, 512, 3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>checking the shape of the output images
+(256, 512, 3)
 (256, 512, 3)
 </pre></div>
 </div>
@@ -712,6 +714,24 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="Step6_find_topographic_surface_mesh.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Step 6: Compute topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> from topographic binary segmentation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../04_customizing_basic_workflow/readme.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Basic workflow for unwrapping 3D surfaces</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
