@@ -14,12 +14,13 @@ In this section we present several possible methods for identifying protrusions 
     - use connected component analysis to identify individual spatially-contiguous areas as belonging to individual protrusions
     - Diffuse these seed label ids accounting for spatial connectivity and local surface convexity to cover the rest of the protrusion.
 
-> [!NOTE] 
-> We can segment protrusions using the above from either:
-> 
->   i). input 3D $S(x,y,z)$ surface mesh
->
->   ii). topography 3D $S(d,u,v)$ surface mesh 
->
-> $S(d,u,v)$ can pick up more protrusion particularly smaller protrusions however, it requires handling of the boundary conditions and an $S_{\text{ref}}(x,y,z)$ that allows each protrusion to be sufficiently visualized in $S(d,u,v)$. 
 
+```{note}
+We can segment protrusions using the above from either:
+ 
+    i). input 3D $S(x,y,z)$ surface mesh
+
+   ii). topography 3D $S(d,u,v)$ surface mesh 
+
+ $S(d,u,v)$ can pick up more protrusion particularly smaller protrusions however, it requires handling of the boundary conditions and an $S_{\text{ref}}(x,y,z)$ that allows each protrusion to be sufficiently visualized in $S(d,u,v)$. 
+```
