@@ -60,7 +60,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '12_unwrapping_individual_protrusions/readme';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Unwrapping 2D images" href="../12a_unwrapping_2D_images/readme.html" />
+    <link rel="next" title="Glossary" href="../01_introduction/glossary.html" />
     <link rel="prev" title="Harmonics analysis of surfaces" href="../18_spherical_harmonics/readme.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -230,7 +230,6 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Mapping open 3D surfaces into 2D</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Unwrapping individual protrusions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../12a_unwrapping_2D_images/readme.html">Unwrapping 2D images</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -434,6 +433,27 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="unwrapping-individual-protrusions">
 <h1>Unwrapping individual protrusions<a class="headerlink" href="#unwrapping-individual-protrusions" title="Link to this heading">#</a></h1>
+<p>If we take all the vertices assigned to an individual protrusion after instance segmentation we can form a separate new submesh whilst retaining the connectivity of the vertices. Such a submesh is an open surface, which unlike closed surface such as a sphere, do not have all faces connected to form a ‘watertight’ enclosed shaped but instead have an open boundary, and is hollow. An open surface is called <ins>simple</ins> if it contains no holes. A simple open surface is the equivalent of a genus-0 closed shape, and can be mapped conformally to the 2D disk.</p>
+<p><img alt="" src="../_images/protrusion-to-disk-square.png" /></p>
+<p>u-Unwrap3D provides functionality to map simple open surfaces to canonical shapes equivalent to the mapping of 3D surfaces to the unit sphere:</p>
+<ol class="arabic simple">
+<li><p><strong>2D unit disk</strong>:</p>
+<ul class="simple">
+<li><p>conformal map : through Poisson equation and quasiconformal maps</p></li>
+<li><p>equiareal map : through area distortion relaxation of the conformal map</p></li>
+</ul>
+</li>
+<li><p><strong>2D square</strong>:</p>
+<ul class="simple">
+<li><p>squaring the 2D disk mapping</p></li>
+</ul>
+</li>
+<li><p><strong>2D rectangle</strong>:</p>
+<ul class="simple">
+<li><p>from the 2D square mapping after optimization of the aspect-ratio</p></li>
+</ul>
+</li>
+</ol>
 </section>
 
     <script type="text/x-thebe-config">
@@ -476,11 +496,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="../12a_unwrapping_2D_images/readme.html"
+       href="../01_introduction/glossary.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Unwrapping 2D images</p>
+        <p class="prev-next-title">Glossary</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
