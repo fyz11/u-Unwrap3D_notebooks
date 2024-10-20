@@ -70,8 +70,8 @@ parts:
   - caption: Mapping open 3D surfaces into 2D
     chapters:
     - file: 12_unwrapping_individual_protrusions/readme # including refinement of segmentation.
-    = file: 12_unwrapping_individual_protrusions/unwrap_lamellipodia_protrusion.ipynb
-    
+    - file: 12_unwrapping_individual_protrusions/unwrap_lamellipodia_protrusion.ipynb
+
     #- file: 12a_unwrapping_2D_images/readme # not sure to include this or leave a note to the documentation of unwrap2D.
 
   - caption: Appendix
