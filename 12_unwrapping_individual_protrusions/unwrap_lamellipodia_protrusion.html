@@ -517,9 +517,6 @@ document.write(`
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;detected </span><span class="si">%d</span><span class="s1"> boundaries&#39;</span> <span class="o">%</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">boundaries</span><span class="p">)))</span>
 <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">boundaries</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># perform isotropic remeshing (just in case)</span>
-<span class="c1"># mesh_S = meshtools.incremental_isotropic_remesh(mesh_S)</span>
-
 <span class="c1"># the disk mapping is provided via the rectangular conformal mapping function.</span>
 <span class="n">disk_coords</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">rectangular_conformal_map</span><span class="p">(</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span>
                                                   <span class="n">mesh_S</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span>
@@ -558,7 +555,7 @@ document.write(`
 (3057, 2)
 </pre></div>
 </div>
-<img alt="../_images/c203d8a81e3f82bd1ad47e6f81e7400f4a1742ca4992c06ff2e08c4e913c8ce8.png" src="../_images/c203d8a81e3f82bd1ad47e6f81e7400f4a1742ca4992c06ff2e08c4e913c8ce8.png" />
+<img alt="../_images/8915a9f220097fd440f2b52f950f8ed4f69a921eda39a05ab5c85618ba506d14.png" src="../_images/8915a9f220097fd440f2b52f950f8ed4f69a921eda39a05ab5c85618ba506d14.png" />
 </div>
 </div>
 </section>
@@ -582,10 +579,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/50 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [00:05&lt;00:00,  9.22it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [00:04&lt;00:00, 11.95it/s]
 </pre></div>
 </div>
 </div>
@@ -599,8 +593,7 @@ document.write(`
 
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">area_distortion_iter</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
     <span class="c1"># smooth the area_distortion_curve helps finding the stopping, unlike spherical case, this curve is typically more bumpy </span>
-    <span class="n">mean_area_distortion_iter</span> <span class="o">=</span> <span class="n">tsa</span><span class="o">.</span><span class="n">baseline_als</span><span class="p">(</span><span class="n">mean_area_distortion_iter</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span> 
-
+    <span class="n">mean_area_distortion_iter</span> <span class="o">=</span> <span class="n">tsa</span><span class="o">.</span><span class="n">baseline_als</span><span class="p">(</span><span class="n">mean_area_distortion_iter</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span> 
 
     <span class="n">change</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mean_area_distortion_iter</span><span class="p">))[</span><span class="mi">1</span><span class="p">:][</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">mean_area_distortion_iter</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span> 
 
@@ -632,7 +625,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/9f026aa8470484e6e0d850846a64cc01234255389d934f071aa2badd0cff8126.png" src="../_images/9f026aa8470484e6e0d850846a64cc01234255389d934f071aa2badd0cff8126.png" />
+<img alt="../_images/2ef3a304995dbd67c0a695cda26ca1c7215d37b752cd8af88396096504a8d565.png" src="../_images/2ef3a304995dbd67c0a695cda26ca1c7215d37b752cd8af88396096504a8d565.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -665,7 +658,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/27ea663ee7194cccf9638529309768200457b5f4c3836069c8165f9c6402e876.png" src="../_images/27ea663ee7194cccf9638529309768200457b5f4c3836069c8165f9c6402e876.png" />
+<img alt="../_images/2f0c5f97b0c41d919cc8490d7b0ff837862d961b8b9296ab185a5a60a4c0c7b4.png" src="../_images/2f0c5f97b0c41d919cc8490d7b0ff837862d961b8b9296ab185a5a60a4c0c7b4.png" />
 </div>
 </div>
 </section>
@@ -704,7 +697,13 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/9367d4039de223366b992fccc8ec1ea398f0223f03998634e8dc3144fb2761e1.png" src="../_images/9367d4039de223366b992fccc8ec1ea398f0223f03998634e8dc3144fb2761e1.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Geometry\geometry.py:70: RuntimeWarning: invalid value encountered in sqrt
+  x = .5*np.sqrt(2.+2.*u*np.sqrt(2) + u**2 - v**2) - .5*np.sqrt(2.-2.*u*np.sqrt(2) + u**2 - v**2)
+c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Geometry\geometry.py:71: RuntimeWarning: invalid value encountered in sqrt
+  y = .5*np.sqrt(2.+2.*v*np.sqrt(2) - u**2 + v**2) - .5*np.sqrt(2.-2.*v*np.sqrt(2) - u**2 + v**2)
+</pre></div>
+</div>
+<img alt="../_images/5b8b3c9170b123cfabb0f5209b67a21577ea2e19ecc90206b8d315ad74d8d26a.png" src="../_images/5b8b3c9170b123cfabb0f5209b67a21577ea2e19ecc90206b8d315ad74d8d26a.png" />
 </div>
 </div>
 </section>
@@ -752,11 +751,25 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NaN result encountered.
-optimal length of y-axis as fraction of x-axis:  1.9098300562505255
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:7296: RuntimeWarning: divide by zero encountered in divide
+  Mx = np.reshape(np.vstack([e1[:,1],e2[:,1],e3[:,1]])/area /2. , ((1, 3*nf)), order=&#39;F&#39;);
+c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:7296: RuntimeWarning: invalid value encountered in divide
+  Mx = np.reshape(np.vstack([e1[:,1],e2[:,1],e3[:,1]])/area /2. , ((1, 3*nf)), order=&#39;F&#39;);
+c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:7297: RuntimeWarning: divide by zero encountered in divide
+  My = -np.reshape(np.vstack([e1[:,0],e2[:,0],e3[:,0]])/area /2. , ((1, 3*nf)), order=&#39;F&#39;);
+c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:7297: RuntimeWarning: invalid value encountered in divide
+  My = -np.reshape(np.vstack([e1[:,0],e2[:,0],e3[:,0]])/area /2. , ((1, 3*nf)), order=&#39;F&#39;);
+c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:7321: RuntimeWarning: invalid value encountered in divide
+  mu = (E - G + 2 * 1j * F) / ((E + G + 2.*np.sqrt(E*G - F**2))+1e-12);
+c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\scipy\optimize\_optimize.py:2359: OptimizeWarning: 
+NaN result encountered.
+  _endprint(x, flag, fval, maxfun, xatol, disp)
 </pre></div>
 </div>
-<img alt="../_images/a0164d169619160f1c2a2a8f4e2037a4f9578b536dd768c760127b7469dd984f.png" src="../_images/a0164d169619160f1c2a2a8f4e2037a4f9578b536dd768c760127b7469dd984f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimal length of y-axis as fraction of x-axis:  1.9098300562505255
+</pre></div>
+</div>
+<img alt="../_images/78ed0ff513ff0f8bb98249f99428b4309c5812e2b3e87410bf398b8f845a3509.png" src="../_images/78ed0ff513ff0f8bb98249f99428b4309c5812e2b3e87410bf398b8f845a3509.png" />
 </div>
 </div>
 </section>
