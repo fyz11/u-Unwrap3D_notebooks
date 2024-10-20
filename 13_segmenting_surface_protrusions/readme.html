@@ -57,10 +57,12 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '13_segmenting_surface_protrusions/readme';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Decomposing surface into reference and protrusion meshes" href="../14_volumizing_reference_and_protrusions/readme.html" />
+    <link rel="next" title="Example: Unwrapping a lamellipodia" href="binary_segment_protrusions.html" />
     <link rel="prev" title="Analyzing temporally tracked protrusions" href="../21_tracking_analytics/readme.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -223,7 +225,11 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Applications of different surface representations</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Segmenting surface protrusions</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Segmenting surface protrusions</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="binary_segment_protrusions.html">Example: Unwrapping a lamellipodia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance_segment_protrusions.html">Example: Unwrapping a lamellipodia</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../14_volumizing_reference_and_protrusions/readme.html">Decomposing surface into reference and protrusion meshes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../18_spherical_harmonics/readme.html">Harmonics analysis of surfaces</a></li>
 </ul>
@@ -436,6 +442,33 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="segmenting-surface-protrusions">
 <h1>Segmenting surface protrusions<a class="headerlink" href="#segmenting-surface-protrusions" title="Link to this heading">#</a></h1>
+<p>Cell surface protrusions have micron-scale curvature which may act as diffusion traps for molecular signals. They may also serve mechanically to interact with the environment or with other cells. Given a 3D cell surface, we would like to specifically identify what part of the surface are protrusions and potentially even each individual protrusion for further quantitative analysis, for example tracking the individual protrusions over time or</p>
+<p>In this section we present several possible methods for identifying protrusions using u-Shape3D. We distinguish between the task of 1) binary segmentation, identifying what is or is not protrusive and 2) instance segmentation, identifying each individual protrusion and their associated vertices and faces of the input mesh.</p>
+<ol class="arabic simple">
+<li><p>Binary protrusion segmentation (Is this part of the surface a protrusion - Yes/No)</p>
+<ul class="simple">
+<li><p>construct a protrusion ‘height’ function that can be evaluated at each vertex of the mesh</p></li>
+<li><p>measure the height at each vertex</p></li>
+<li><p>binary threshold according to the measured height.</p></li>
+</ul>
+</li>
+<li><p>Instance protrusion segmentation (Identifying each individual protrusion and assigning to each a unique label)</p>
+<ul class="simple">
+<li><p>find positive curvature ‘seeds’ to binary identify tips of protrusions</p></li>
+<li><p>use connected component analysis to identify individual spatially-contiguous areas as belonging to individual protrusions</p></li>
+<li><p>Diffuse these seed label ids accounting for spatial connectivity and local surface convexity to cover the rest of the protrusion.</p></li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<div><p>[!NOTE]
+We can segment protrusions using the above from either:</p>
+<p>i). input 3D <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> surface mesh</p>
+<p>ii). topography 3D <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> surface mesh</p>
+<p><span class="math notranslate nohighlight">\(S(d,u,v)\)</span> can pick up more protrusion particularly smaller protrusions however, it requires handling of the boundary conditions and an <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span> that allows each protrusion to be sufficiently visualized in <span class="math notranslate nohighlight">\(S(d,u,v)\)</span>.</p>
+</div></blockquote>
+<div class="toctree-wrapper compound">
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -478,11 +511,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="../14_volumizing_reference_and_protrusions/readme.html"
+       href="binary_segment_protrusions.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Decomposing surface into reference and protrusion meshes</p>
+        <p class="prev-next-title">Example: Unwrapping a lamellipodia</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
