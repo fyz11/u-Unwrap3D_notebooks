@@ -64,6 +64,9 @@ parts:
   - caption: Applications of different surface representations
     chapters:
     - file: 13_segmenting_surface_protrusions/readme
+      sections:
+      - file: 13_segmenting_surface_protrusions/binary_segment_protrusions.ipynb
+      - file: 13_segmenting_surface_protrusions/instance_segment_protrusions.ipynb
     - file: 14_volumizing_reference_and_protrusions/readme
     - file: 18_spherical_harmonics/readme 
 
