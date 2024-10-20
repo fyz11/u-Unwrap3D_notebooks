@@ -26,8 +26,7 @@ parts:
       - file: 03_basic_workflow/full_example_cells/unwrap_bleb_cell.ipynb
       - file: 03_basic_workflow/full_example_cells/unwrap_lamellipodia_cell.ipynb
       - file: 03_basic_workflow/full_example_cells/unwrap_filopodia_cell.ipynb
-      # to do: putting steps 1-7 together for blebs, lamellipodia and filopodia example -> starting from just the meshes. [ no intensity image ]
-
+      
   - caption: Customizing the standard workflow to input data
     chapters:
     - file: 04_customizing_basic_workflow/readme
@@ -71,7 +70,8 @@ parts:
   - caption: Mapping open 3D surfaces into 2D
     chapters:
     - file: 12_unwrapping_individual_protrusions/readme # including refinement of segmentation.
-    - file: 12a_unwrapping_2D_images/readme
+    = file: 12_unwrapping_individual_protrusions/unwrap_lamellipodia_protrusion.ipynb
+    #- file: 12a_unwrapping_2D_images/readme # not sure to include this or leave a note to the documentation of unwrap2D.
 
   - caption: Appendix
     chapters:
