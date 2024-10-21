@@ -466,10 +466,9 @@ document.write(`
 <h1>Binary protrusion segmentation<a class="headerlink" href="#binary-protrusion-segmentation" title="Link to this heading">#</a></h1>
 <p>The task of binary segmentation is to label each vertex (or alternatively face) of a mesh as being on a protrusion - 1, or not on a protrusion - 0.</p>
 <p>We will do this by measuring the ‘height’ of a vertex from a constructed reference.</p>
-<blockquote>
-<div><p>[!Note]
-The reference used for measuring height need not be the <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span> used for unwrapping. Here, we will use asymmetric least squares to derive a different reference.</p>
-</div></blockquote>
+<div class="alert alert-block alert-info"> 
+<b>NOTE</b> The reference used for measuring height need not be that used for unwrapping. It may be more optimal to construct a different reference depending on the problem as we show.
+</div>
 <p>The mesh we we will use to demonstrate is <code class="docutils literal notranslate"><span class="pre">../../data/mesh/lamellipodia_cell.obj</span></code>, as well as its corresponding topography mesh <code class="docutils literal notranslate"><span class="pre">../../data/mesh/topography/curvature_topographic_mesh_lamellipodia_cell.obj</span></code>. The method demonstrated generalizes for all protrusions, but may require tweaking of parameters.</p>
 <section id="read-in-the-surface-mesh">
 <h2>0. Read in the surface mesh<a class="headerlink" href="#read-in-the-surface-mesh" title="Link to this heading">#</a></h2>
@@ -587,9 +586,12 @@ The reference used for measuring height need not be the <span class="math notran
 </div>
 </div>
 </div>
-<p>The number of vertices of input and output is the same. Height is defined as the total curvilinear distance traversed from <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> to <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span><br />
-$<span class="math notranslate nohighlight">\(h_\text{cMCF} = \text{sgn}(S(x,y,z))\left (\sum_{i=0}^{i_\text{cMCF}-1} \left| S_{i+1}(x,y,z)-S_i(x,y,z)\right|\right )\)</span><span class="math notranslate nohighlight">\(
-where \)</span>i<span class="math notranslate nohighlight">\( is the iteration index of cMCF so that \)</span>S_\text{ref}(x,y,z)=S_{i_\text{cMCF}}(x,y,z)<span class="math notranslate nohighlight">\(, and \)</span>\text{sgn}(\cdot)<span class="math notranslate nohighlight">\( is +1 if the vertex on \)</span>S(x,y,z)<span class="math notranslate nohighlight">\( is exterior of \)</span>S_\text{ref}(x,y,z)<span class="math notranslate nohighlight">\( and -1 if interior of \)</span>S_\text{ref}(x,y,z)$.</p>
+<p>The number of vertices of input and output is the same. Height is defined as the total curvilinear distance traversed from <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> to <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+h_\text{cMCF} = \text{sgn}(S(x,y,z))\left (\sum_{i=0}^{i_\text{cMCF}-1} \left| S_{i+1}(x,y,z)-S_i(x,y,z)\right|\right )
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(i\)</span> is the iteration index of cMCF so that <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)=S_{i_\text{cMCF}}(x,y,z)\)</span>, and <span class="math notranslate nohighlight">\(\text{sgn}(\cdot)\)</span> is +1 if the vertex on <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> is exterior of <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span> and -1 if interior of <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute sgn(S(x,y,z)) by checking the sign of the cosine distance between the displacement vector of S to S_ref with the surface normal vector of S</span>
