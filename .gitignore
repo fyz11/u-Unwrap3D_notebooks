@@ -6,4 +6,5 @@ temp*
 docs/03_basic_workflow/example_results/*
 docs/03_basic_workflow/full_example_cells/example_results/*
 docs/12_unwrapping_individual_protrusions/example_results/*
+docs/13_segmenting_surface_protrusions/example_results/*
 *.afdesign
