@@ -441,17 +441,20 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-surface-mesh">0. Read in the surface mesh</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measure-mean-curvature-and-binary-segmentation">1. Measure mean curvature and binary segmentation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#s-x-y-z"><span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#s-d-u-v"><span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connected-component-analysis-to-label-unique-protrusion-tips">2. Connected component analysis to label unique protrusion tips</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postprocessing-and-diffusion-of-protrusion-tips-segmentation">3. Postprocessing and diffusion of protrusion tips segmentation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#s-d-u-v"><span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correcting-the-segmentation-of-boundary-vertices-when-using-s-d-u-v">4. Correcting the segmentation of boundary vertices when using <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
             </nav>
         </div>
@@ -622,6 +625,64 @@ document.write(`
 </div>
 </div>
 </section>
+<section id="s-d-u-v">
+<h3><span class="math notranslate nohighlight">\(S(d,u,v)\)</span><a class="headerlink" href="#s-d-u-v" title="Link to this heading">#</a></h3>
+<div class="alert alert-block alert-info"> 
+<b>NOTE</b> We have two options when using the topography mesh: 
+<ol class="arabic simple">
+<li><p>measuring and segmenting on the curvature in topography space, or</p></li>
+<li><p>map the topography mesh into Cartesian to sample the actual 3D mean curvature.</p></li>
+</ol>
+<p>We will demo option 1. here just to show what topography offers</p>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># use the topography binary </span>
+<span class="n">mesh_S_binary_topo</span> <span class="o">=</span> <span class="n">binary_topography_volume</span><span class="o">&gt;</span><span class="mi">0</span>
+
+<span class="c1"># compute curvature for the topography binary</span>
+<span class="n">H_surf_S_duv</span><span class="p">,</span> <span class="p">(</span><span class="n">H_binary_3D_S_duv</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">compute_mean_curvature_from_binary</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="p">,</span> 
+                                                                                        <span class="n">mesh_S_binary_topo</span><span class="p">,</span> 
+                                                                                        <span class="n">smooth_gradient</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
+                                                                                        <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
+                                                                                        <span class="n">invert_H</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                                                        <span class="n">return_H_img</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">H_binary_3D_S_duv</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">H_binary_3D_S_duv</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># impute nans </span>
+
+
+<span class="c1"># perform clustering on a shell volume around the surface, more equals setting a higher curvature threshold</span>
+<span class="n">n_clusters</span><span class="o">=</span> <span class="mi">3</span>
+<span class="c1"># this is another critical parameter in that it allows multi-scale smoothing of the curvature, this can help to segment protrusions over a larger area like lamellipodia</span>
+<span class="n">smooth_curvature_sigma</span><span class="o">=</span><span class="p">[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">3.</span><span class="p">,</span><span class="mf">5.</span><span class="p">]</span> 
+
+<span class="n">depth_binary_mask_duv</span><span class="p">,</span> <span class="n">H_binary_clusters_duv</span> <span class="o">=</span> <span class="n">topotools</span><span class="o">.</span><span class="n">segment_topography_vol_curvature_surface</span><span class="p">(</span><span class="n">H_binary_3D_S_duv</span><span class="p">,</span> 
+                                                                                                <span class="n">mesh_S_binary_topo</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">,</span>
+                                                                                                <span class="n">depth_ksize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="c1"># this is the size of shell around the surface </span>
+                                                                                                <span class="n">smooth_curvature_sigma</span><span class="o">=</span><span class="n">smooth_curvature_sigma</span><span class="p">,</span> <span class="c1"># multiscale. allows for multiscale</span>
+                                                                                                <span class="n">seg_method</span><span class="o">=</span><span class="s1">&#39;kmeans&#39;</span><span class="p">,</span> <span class="c1"># or gmm</span>
+                                                                                                <span class="n">n_samples</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="c1"># number of voxel points to sample</span>
+                                                                                                <span class="n">n_classes</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span> <span class="c1"># number of Kmeans cluster</span>
+                                                                                                <span class="n">scale_feats</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">H_binary_clusters_duv</span> <span class="o">=</span> <span class="n">topotools</span><span class="o">.</span><span class="n">remove_topography_segment_objects_binary</span><span class="p">(</span><span class="n">H_binary_clusters_duv</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">H_binary_clusters_duv</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="c1"># use the highest cluster id (most positive) </span>
+                                                                            <span class="n">minsize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="c1"># minimum size in voxels in Cartesian</span>
+                                                                            <span class="n">uv_params_depth</span><span class="o">=</span><span class="n">topographic_coordinates</span><span class="p">)</span> <span class="c1"># don&#39;t use if in cartesian, else can use to convert topo to cartesian here</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">depth_binary_mask_duv</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">H_binary_clusters_duv</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(62, 256, 418)
+</pre></div>
+</div>
+<img alt="../_images/147f571b9c1d67a016e17ac07d02c229bb129f1339f03da7d103403aac1d085f.png" src="../_images/147f571b9c1d67a016e17ac07d02c229bb129f1339f03da7d103403aac1d085f.png" />
+</div>
+</div>
+</section>
 </section>
 <section id="connected-component-analysis-to-label-unique-protrusion-tips">
 <h2>2. Connected component analysis to label unique protrusion tips<a class="headerlink" href="#connected-component-analysis-to-label-unique-protrusion-tips" title="Link to this heading">#</a></h2>
@@ -739,12 +800,145 @@ document.write(`
 </div>
 </div>
 </section>
+<section id="id2">
+<h3><span class="math notranslate nohighlight">\(S(d,u,v)\)</span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># connected component analysis, then label expansion, to help label a bit more. before diffusion on the mesh</span>
+<span class="n">H_binary_clusters_positive_tips_duv</span> <span class="o">=</span> <span class="n">H_binary_clusters_duv</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">H_binary_clusters_duv</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># gate with binary, remove small regions</span>
+<span class="n">protrusion_tips_duv</span> <span class="o">=</span> <span class="n">mesh_S_binary_topo</span> <span class="o">*</span> <span class="n">H_binary_clusters_positive_tips_duv</span>
+<span class="n">protrusion_tips_duv</span> <span class="o">=</span> <span class="n">skmorph</span><span class="o">.</span><span class="n">remove_small_objects</span><span class="p">(</span><span class="n">protrusion_tips_duv</span><span class="p">,</span> <span class="n">min_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">protrusion_tips_duv</span> <span class="o">=</span> <span class="n">skmeasure</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="n">protrusion_tips_duv</span><span class="p">)</span>
+<span class="n">protrusion_tips_duv</span> <span class="o">=</span> <span class="n">sksegmentation</span><span class="o">.</span><span class="n">expand_labels</span><span class="p">(</span><span class="n">protrusion_tips_duv</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># to visualize assign colors. </span>
+<span class="n">max_label_duv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">protrusion_tips_duv</span><span class="p">)</span>
+<span class="n">protrusion_tips_color_duv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mi">255</span><span class="o">*</span><span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">protrusion_tips_duv</span><span class="p">,</span> 
+                                                            <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral</span><span class="p">,</span> <span class="c1"># use the hsv map. </span>
+                                                            <span class="n">bg_label</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+                                                            <span class="n">vmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                                            <span class="n">vmax</span><span class="o">=</span><span class="n">max_label_duv</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">depth_binary_mask_duv</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">protrusion_tips_color_duv</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d77853673226cb9f429e5e21ced5acb0cf5044dc8e21fab3583e591342b78393.png" src="../_images/d77853673226cb9f429e5e21ced5acb0cf5044dc8e21fab3583e591342b78393.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">putting the volume-based segmentation back onto the mesh, color and export for visualization</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">protrusion_labels_duv</span> <span class="o">=</span> <span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp3</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> 
+                                                    <span class="n">grid_shape</span><span class="o">=</span><span class="n">mesh_S_binary_topo</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> 
+                                                    <span class="n">I_ref</span><span class="o">=</span><span class="n">protrusion_tips_duv</span><span class="p">,</span> 
+                                                    <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> 
+                                                    <span class="n">cast_uint8</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="c1"># assign colors for export</span>
+<span class="n">protrusion_labels_color_duv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mi">255</span><span class="o">*</span><span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">protrusion_labels_duv</span><span class="p">,</span> 
+                                                                        <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral</span><span class="p">,</span> 
+                                                                        <span class="n">bg_label</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+                                                                        <span class="n">vmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">max_label_duv</span><span class="p">))[</span><span class="o">...</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span>
+<span class="c1"># assign gray to background</span>
+<span class="n">protrusion_labels_color_duv</span><span class="p">[</span><span class="n">protrusion_labels_duv</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">])[</span><span class="kc">None</span><span class="p">,:]</span> 
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">colors are redundant, to help distinguish individual protrusions it is better to not color the boundary of each protrusion, setting the color to black</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># boundary loop finding works on faces. </span>
+<span class="n">face_labels_duv</span> <span class="o">=</span>  <span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp3</span><span class="p">(</span><span class="n">igl</span><span class="o">.</span><span class="n">barycenter</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> 
+                                                            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">),</span> 
+                                                        <span class="n">grid_shape</span><span class="o">=</span><span class="n">mesh_S_binary_topo</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> 
+                                                        <span class="n">I_ref</span><span class="o">=</span><span class="n">protrusion_tips_duv</span><span class="p">,</span> <span class="c1"># do we need to expand labels to be able to sample onto mesh. </span>
+                                                        <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> 
+                                                        <span class="n">cast_uint8</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">uniq_labels_duv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">face_labels_duv</span><span class="p">),</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># find all vertices associated with boundary and set the color on vertex to black</span>
+<span class="n">vertex_set_0</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">lab</span> <span class="ow">in</span> <span class="n">uniq_labels_duv</span><span class="p">:</span>
+    <span class="n">b_loop</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">boundary_loop</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">face_labels_duv</span><span class="o">==</span><span class="n">lab</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">b_loop</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">vertex_set_0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b_loop</span><span class="p">)</span>
+<span class="n">vertex_set_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">vertex_set_0</span><span class="p">))</span>
+
+<span class="n">protrusion_labels_color_duv</span><span class="p">[</span><span class="n">vertex_set_0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])[</span><span class="kc">None</span><span class="p">,:]</span> <span class="c1"># set all the boundaries to black</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">finally export the mesh with color</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">protrusion_labels_mesh_duv</span> <span class="o">=</span> <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">protrusion_labels_mesh_duv</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span> <span class="o">=</span> <span class="n">protrusion_labels_color_duv</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">protrusion_labels_mesh_duv</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                         <span class="s1">&#39;instance_segmentation_initial_Topography_3D_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">map the topographic to cartesian for visualization </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">mesh_S_duv_to_xyz</span> <span class="o">=</span> <span class="n">topotools</span><span class="o">.</span><span class="n">uv_depth_pts3D_to_xyz_pts3D</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">topographic_coordinates</span><span class="p">)</span>
+
+<span class="n">protrusion_labels_mesh_duv_to_xyz</span> <span class="o">=</span> <span class="n">protrusion_labels_mesh_duv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">protrusion_labels_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">mesh_S_duv_to_xyz</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">protrusion_labels_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                         <span class="s1">&#39;instance_segmentation_initial_Topography-to-Cartesian_3D_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Visualize in matplotlib</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">protrusion_labels_mesh_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">protrusion_labels_mesh_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">protrusion_labels_mesh_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">protrusion_labels_mesh_duv</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">protrusion_labels_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">protrusion_labels_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">protrusion_labels_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">protrusion_labels_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f19aaabde3c7f0b5df3c8c2c13744a511319c324a73861dfda8dc3d3f540c00f.png" src="../_images/f19aaabde3c7f0b5df3c8c2c13744a511319c324a73861dfda8dc3d3f540c00f.png" />
+</div>
+</div>
+</section>
 </section>
 <section id="postprocessing-and-diffusion-of-protrusion-tips-segmentation">
 <h2>3. Postprocessing and diffusion of protrusion tips segmentation<a class="headerlink" href="#postprocessing-and-diffusion-of-protrusion-tips-segmentation" title="Link to this heading">#</a></h2>
 <p>u-Unwrap3D adapts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.semi_supervised.LabelSpreading.html">labelspreading</a> to diffuse the protrusion steps for <span class="math notranslate nohighlight">\(n\)</span> steps on a surface mesh given an affinity matrix based on distance and local convexity to refine segmentation to capture more of the protrusions.</p>
-<section id="id2">
-<h3><span class="math notranslate nohighlight">\(S(x,y,z)\)</span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<section id="id3">
+<h3><span class="math notranslate nohighlight">\(S(x,y,z)\)</span><a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Filter out small detected protrusions we don&#39;t wish to diffuse</span>
@@ -849,9 +1043,139 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="s-d-u-v">
-<h3><span class="math notranslate nohighlight">\(S(d,u,v)\)</span><a class="headerlink" href="#s-d-u-v" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h3><span class="math notranslate nohighlight">\(S(d,u,v)\)</span><a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>We perform diffusion and postprocessing steps after mapping into Cartesian space.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Filter out small detected protrusions we don&#39;t wish to diffuse</span>
+<span class="n">protrusion_labels_final_duv</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">remove_small_mesh_components_labels</span><span class="p">(</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">,</span> 
+                                                                            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span> 
+                                                                            <span class="n">bg_label</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1"># this the background label</span>
+                                                                            <span class="n">labels</span><span class="o">=</span><span class="n">protrusion_labels_duv</span><span class="p">,</span> <span class="c1"># label </span>
+                                                                            <span class="n">vertex_labels_bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># True, since we are passing vertex based labels</span>
+                                                                            <span class="n">physical_size</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># filter by actual surface area</span>
+                                                                            <span class="n">minsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># set smallish</span>
+                                                                            <span class="n">keep_largest_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># if there are disconnected regions assigned the same label, keep only the largest</span>
+
+<span class="c1"># 2. construct affinity graph and diffuse labels for N iterations.</span>
+<span class="n">W_geometry_duv</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">vertex_geometric_affinity_matrix</span><span class="p">(</span><span class="n">protrusion_labels_mesh_duv</span><span class="p">,</span> 
+                                                                <span class="n">gamma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                                                                <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> 
+                                                                <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="c1"># &lt;0.5 biases towards convexity, &gt;0.5 biases towards uniform</span>
+                                                                <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="n">protrusion_labels_final_duv</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">labelspreading_mesh</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">,</span>
+                                                            <span class="n">f</span><span class="o">=</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span> 
+                                                            <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">))[</span><span class="n">protrusion_labels_final_duv</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">],</span>  <span class="c1"># exclude the background.</span>
+                                                            <span class="n">y</span><span class="o">=</span><span class="n">protrusion_labels_final_duv</span><span class="p">[</span><span class="n">protrusion_labels_final_duv</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">],</span> 
+                                                            <span class="n">W</span><span class="o">=</span><span class="n">W_geometry_duv</span><span class="p">,</span> 
+                                                            <span class="n">niters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="c1"># how many iterations, can use less can use more.</span>
+                                                            <span class="n">alpha_prop</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="c1"># clamping factor, if 1 output identical to input. </span>
+                                                            <span class="n">return_proba</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                                                            <span class="n">renorm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># 3. Second round of filtering out small detected protrusions</span>
+<span class="n">protrusion_labels_final_duv</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">remove_small_mesh_components_labels</span><span class="p">(</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">,</span> 
+                                                                            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span> 
+                                                                            <span class="n">bg_label</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1"># this the background label</span>
+                                                                            <span class="n">labels</span><span class="o">=</span><span class="n">protrusion_labels_final_duv</span><span class="p">,</span> <span class="c1"># label </span>
+                                                                            <span class="n">vertex_labels_bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># True, since we are passing vertex based labels</span>
+                                                                            <span class="n">physical_size</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># filter by actual surface area</span>
+                                                                            <span class="n">minsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># set smallish</span>
+                                                                            <span class="n">keep_largest_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># if there are disconnected regions assigned the same label, keep only the largest</span>
+
+<span class="c1"># 4. output the mesh with refined labels and its colors</span>
+<span class="c1"># assign colors for export</span>
+<span class="n">protrusion_labels_color_duv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mi">255</span><span class="o">*</span><span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">protrusion_labels_final_duv</span><span class="p">,</span> 
+                                                                <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral</span><span class="p">,</span> 
+                                                                <span class="n">bg_label</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+                                                                <span class="n">vmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">max_label_duv</span><span class="p">))[</span><span class="o">...</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span>
+<span class="c1"># assign gray to background</span>
+<span class="n">protrusion_labels_color_duv</span><span class="p">[</span><span class="n">protrusion_labels_final_duv</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">])[</span><span class="kc">None</span><span class="p">,:]</span> 
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">again, blacken vertices part of boundary loop</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">spstats</span>
+<span class="c1"># calculate face labels by taking the mode</span>
+<span class="n">face_labels_duv</span> <span class="o">=</span>  <span class="n">spstats</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="n">protrusion_labels_final_duv</span><span class="p">[</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">uniq_labels_duv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">face_labels_duv</span><span class="p">),</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># find all vertices associated with boundary and set the color on vertex to black</span>
+<span class="n">vertex_set_0</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">lab</span> <span class="ow">in</span> <span class="n">uniq_labels</span><span class="p">:</span>
+    <span class="n">b_loop</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">boundary_loop</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">face_labels_duv</span><span class="o">==</span><span class="n">lab</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">b_loop</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">vertex_set_0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b_loop</span><span class="p">)</span>
+<span class="n">vertex_set_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">vertex_set_0</span><span class="p">))</span>
+
+<span class="n">protrusion_labels_color_duv</span><span class="p">[</span><span class="n">vertex_set_0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])[</span><span class="kc">None</span><span class="p">,:]</span> <span class="c1"># set all the boundaries to black</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">finally export the mesh with color</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">protrusion_labels_final_mesh_duv</span> <span class="o">=</span> <span class="n">protrusion_labels_mesh_duv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span> <span class="o">=</span> <span class="n">protrusion_labels_color_duv</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                         <span class="s1">&#39;instance_segmentation_final_Topography_3D_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">map topography coordinates to cartesian</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">protrusion_labels_final_mesh_duv_to_xyz</span> <span class="o">=</span> <span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">protrusion_labels_final_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">mesh_S_duv_to_xyz</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">protrusion_labels_final_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                         <span class="s1">&#39;instance_segmentation_final_Topography-to-Cartesian_3D_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Visualize in matplotlib</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">protrusion_labels_final_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">protrusion_labels_final_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">protrusion_labels_final_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">protrusion_labels_final_mesh_duv_to_xyz</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/51e4c1f3ddc477cddf5f3768b107d2fa32843addfae3a613008519dc69d195f4.png" src="../_images/51e4c1f3ddc477cddf5f3768b107d2fa32843addfae3a613008519dc69d195f4.png" />
+</div>
+</div>
 </section>
+</section>
+<section id="correcting-the-segmentation-of-boundary-vertices-when-using-s-d-u-v">
+<h2>4. Correcting the segmentation of boundary vertices when using <span class="math notranslate nohighlight">\(S(d,u,v)\)</span><a class="headerlink" href="#correcting-the-segmentation-of-boundary-vertices-when-using-s-d-u-v" title="Link to this heading">#</a></h2>
+<p>Due to unwrapping effectively cutting open the 3D closed surface, and thereby breaking symmetry, any protrusions spanning the ‘seam’ i.e. lies at the boundary of <span class="math notranslate nohighlight">\((d,u,v)\)</span> space may be assigned two different labels i.e. two different protrusions when segmenting using <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> instead of being identified as one label and one unique protrusion as it really is.</p>
+<p>We will fix this by flattening the mesh onto the 2D plane, and taking account the boundary conditions. Specifically,</p>
+<ol class="arabic simple">
+<li><p>topographic cMCF to flatten topography mesh</p></li>
+<li><p>resample label as a 2D label image</p></li>
+<li><p>implement the boundary condition on all four edges and test for whether labels should be merged</p></li>
+<li><p>transfer corrected labels to the topographic mesh via the flattened topographic cMCF</p></li>
+</ol>
 </section>
 </section>
 
@@ -922,17 +1246,20 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-surface-mesh">0. Read in the surface mesh</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measure-mean-curvature-and-binary-segmentation">1. Measure mean curvature and binary segmentation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#s-x-y-z"><span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#s-d-u-v"><span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connected-component-analysis-to-label-unique-protrusion-tips">2. Connected component analysis to label unique protrusion tips</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postprocessing-and-diffusion-of-protrusion-tips-segmentation">3. Postprocessing and diffusion of protrusion tips segmentation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#s-d-u-v"><span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><span class="math notranslate nohighlight">\(S(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correcting-the-segmentation-of-boundary-vertices-when-using-s-d-u-v">4. Correcting the segmentation of boundary vertices when using <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
   </nav></div>
 
