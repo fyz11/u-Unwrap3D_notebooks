@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '13_segmenting_surface_protrusions/binary_segment_protrusions';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example: Unwrapping a lamellipodia" href="instance_segment_protrusions.html" />
+    <link rel="next" title="Instance protrusion segmentation" href="instance_segment_protrusions.html" />
     <link rel="prev" title="Segmenting surface protrusions" href="readme.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -227,7 +227,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="readme.html">Segmenting surface protrusions</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Binary protrusion segmentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance_segment_protrusions.html">Example: Unwrapping a lamellipodia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance_segment_protrusions.html">Instance protrusion segmentation</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../14_volumizing_reference_and_protrusions/readme.html">Decomposing surface into reference and protrusion meshes</a></li>
@@ -583,7 +583,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [04:07&lt;00:00,  4.96s/it]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [04:43&lt;00:00,  5.67s/it]
 </pre></div>
 </div>
 </div>
@@ -634,7 +634,7 @@ h_\text{cMCF} = \text{sgn}(S(x,y,z))\left (\sum_{i=0}^{i_\text{cMCF}-1} \left| S
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 9.77721118927002
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 13.588892698287964
 (317, 343, 177) (317, 343, 177)
 </pre></div>
 </div>
@@ -680,7 +680,7 @@ h_\text{cMCF} = \text{sgn}(S(x,y,z))\left (\sum_{i=0}^{i_\text{cMCF}-1} \left| S
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(3, 317, 343, 177)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 100/100 [00:36&lt;00:00,  2.73it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 100/100 [00:36&lt;00:00,  2.72it/s]
 </pre></div>
 </div>
 </div>
@@ -1363,7 +1363,7 @@ h_\text{ALS}(d,u,v) = d(S(d,u,v)) - d(S_\text{ref}(d,u,v))
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Example: Unwrapping a lamellipodia</p>
+        <p class="prev-next-title">Instance protrusion segmentation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
