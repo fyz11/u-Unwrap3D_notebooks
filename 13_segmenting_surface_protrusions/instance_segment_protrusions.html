@@ -454,7 +454,13 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correcting-the-segmentation-of-boundary-vertices-when-using-s-d-u-v">4. Correcting the segmentation of boundary vertices when using <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correcting-the-segmentation-at-boundary-when-using-s-d-u-v">4. Correcting the segmentation at boundary when using <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#topographic-cmcf-to-flatten-topography-mesh">1. Topographic cMCF to flatten topography mesh</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resample-labels-using-flattened-mesh-to-2d-image">2. Resample labels using flattened mesh to 2D image</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implement-boundary-conditions-and-test-for-label-merging">3. Implement boundary conditions and test for label merging</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-corrected-labels-back-to-the-topographic-mesh">4. Transfer corrected labels back to the topographic mesh</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -1166,8 +1172,8 @@ document.write(`
 </div>
 </section>
 </section>
-<section id="correcting-the-segmentation-of-boundary-vertices-when-using-s-d-u-v">
-<h2>4. Correcting the segmentation of boundary vertices when using <span class="math notranslate nohighlight">\(S(d,u,v)\)</span><a class="headerlink" href="#correcting-the-segmentation-of-boundary-vertices-when-using-s-d-u-v" title="Link to this heading">#</a></h2>
+<section id="correcting-the-segmentation-at-boundary-when-using-s-d-u-v">
+<h2>4. Correcting the segmentation at boundary when using <span class="math notranslate nohighlight">\(S(d,u,v)\)</span><a class="headerlink" href="#correcting-the-segmentation-at-boundary-when-using-s-d-u-v" title="Link to this heading">#</a></h2>
 <p>Due to unwrapping effectively cutting open the 3D closed surface, and thereby breaking symmetry, any protrusions spanning the ‘seam’ i.e. lies at the boundary of <span class="math notranslate nohighlight">\((d,u,v)\)</span> space may be assigned two different labels i.e. two different protrusions when segmenting using <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> instead of being identified as one label and one unique protrusion as it really is.</p>
 <p>We will fix this by flattening the mesh onto the 2D plane, and taking account the boundary conditions. Specifically,</p>
 <ol class="arabic simple">
@@ -1176,6 +1182,233 @@ document.write(`
 <li><p>implement the boundary condition on all four edges and test for whether labels should be merged</p></li>
 <li><p>transfer corrected labels to the topographic mesh via the flattened topographic cMCF</p></li>
 </ol>
+<div class="alert alert-block alert-info"> 
+<b>NOTE</b> Correcting the boundary segmentations necessarily means introducing multi-component (>1 contiguous spatial region) protrusions in topography and uv spaces. We recommend only doing this after conducting all upstream operations that depend on or assume single-component segmentations. This is why we leave it last.    
+</div><section id="topographic-cmcf-to-flatten-topography-mesh">
+<h3>1. Topographic cMCF to flatten topography mesh<a class="headerlink" href="#topographic-cmcf-to-flatten-topography-mesh" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Usteps</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">flow_metrics_dict</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">conformalized_mean_curvature_flow_topography</span><span class="p">(</span><span class="n">protrusion_labels_final_mesh_duv</span><span class="p">,</span> 
+                                                                                    <span class="n">max_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> 
+                                                                                    <span class="n">delta</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span> 
+                                                                                    <span class="n">conformalize</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+                                                                                    <span class="n">robust_L</span> <span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                                                                    <span class="n">mollify_factor</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+
+<span class="n">protrusion_labels_final_mesh_duv_flat</span> <span class="o">=</span> <span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">protrusion_labels_final_mesh_duv_flat</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">Usteps</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">protrusion_labels_final_mesh_duv_flat</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">protrusion_labels_final_mesh_duv_flat</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">protrusion_labels_final_mesh_duv_flat</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">protrusion_labels_final_mesh_duv_flat</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\scipy\sparse\_index.py:142: SparseEfficiencyWarning: Changing the sparsity structure of a csc_matrix is expensive. lil and dok are more efficient.
+  self._set_arrayXarray_sparse(i, j, x)
+100%|██████████| 10/10 [00:33&lt;00:00,  3.38s/it]
+</pre></div>
+</div>
+<img alt="../_images/e779837c5da2eba904fb990effd4cd7c92b04522ee5388ef9fac551313b9aad7.png" src="../_images/e779837c5da2eba904fb990effd4cd7c92b04522ee5388ef9fac551313b9aad7.png" />
+</div>
+</div>
+</section>
+<section id="resample-labels-using-flattened-mesh-to-2d-image">
+<h3>2. Resample labels using flattened mesh to 2D image<a class="headerlink" href="#resample-labels-using-flattened-mesh-to-2d-image" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set up the (d=const., u, v) image grid. </span>
+<span class="n">img_grid_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">protrusion_labels_final_mesh_duv_flat</span><span class="o">.</span><span class="n">vertices</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># average d</span>
+<span class="n">img_grid_v</span><span class="p">,</span> <span class="n">img_grid_u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">topographic_coordinates</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">img_grid_v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">img_grid_duv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">img_grid_d</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">img_grid_u</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> 
+                          <span class="n">img_grid_v</span><span class="p">,</span>
+                          <span class="n">img_grid_u</span><span class="p">])</span>
+
+<span class="c1"># transfer, using meshtools.transfer_mesh_measurements</span>
+<span class="n">match_params</span><span class="p">,</span> <span class="n">remapped_protrusion_label_colors</span><span class="p">,</span> <span class="n">remapped_labels</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">transfer_mesh_measurements</span><span class="p">(</span><span class="n">source_mesh</span><span class="o">=</span><span class="n">protrusion_labels_final_mesh_duv_flat</span><span class="p">,</span> <span class="c1"># flattened mesh</span>
+                                                                                            <span class="n">target_mesh_vertices</span><span class="o">=</span><span class="n">img_grid_duv</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="c1"># augmented 2D grid</span>
+                                                                                            <span class="n">source_mesh_vertex_scalars</span><span class="o">=</span><span class="n">protrusion_labels_final_mesh_duv_flat</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">],</span>
+                                                                                            <span class="n">source_mesh_vertex_labels</span><span class="o">=</span><span class="n">protrusion_labels_final_duv</span><span class="p">[:,</span><span class="kc">None</span><span class="p">])</span>
+
+<span class="n">remapped_labels</span> <span class="o">=</span> <span class="n">remapped_labels</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># since labels is only one dimension</span>
+<span class="n">protrusion_labels_final_duv_to_uv</span> <span class="o">=</span> <span class="n">remapped_labels</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">img_grid_duv</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">remapped_protrusion_label_colors</span> <span class="o">=</span> <span class="n">remapped_protrusion_label_colors</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">img_grid_duv</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+<span class="n">remapped_protrusion_label_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">remapped_protrusion_label_colors</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">remapped_protrusion_label_colors</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">protrusion_labels_final_duv_to_uv</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(256, 418)
+</pre></div>
+</div>
+<img alt="../_images/bdf5935c717fd7b475d6bf9b931f6c12cbdc4bbeaba62f379a2eaf69db8b70be.png" src="../_images/bdf5935c717fd7b475d6bf9b931f6c12cbdc4bbeaba62f379a2eaf69db8b70be.png" />
+</div>
+</div>
+</section>
+<section id="implement-boundary-conditions-and-test-for-label-merging">
+<h3>3. Implement boundary conditions and test for label merging<a class="headerlink" href="#implement-boundary-conditions-and-test-for-label-merging" title="Link to this heading">#</a></h3>
+<p>The boundary conditions of the 2D uv map is:</p>
+<ul class="simple">
+<li><p>periodic for left, right</p></li>
+<li><p>for top: left-side joins to right-side</p></li>
+<li><p>for bottom left-side joins to right-side</p></li>
+</ul>
+<p>u-Unwrap3D provides the single function <code class="docutils literal notranslate"><span class="pre">unwrap3D.Unzipping.unzip.correct_border_uv_segmentations</span></code> to implement these boundary conditions and check for all segmentations that should be merged based on spatial overlap.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">protrusion_labels_final_duv_to_uv_corrected</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">correct_border_uv_segmentations</span><span class="p">(</span><span class="n">protrusion_labels_final_duv_to_uv</span><span class="p">,</span> 
+                                                                                    <span class="n">border_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                                                                    <span class="n">dilate_ksize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                                                                                    <span class="n">min_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> 
+                                                                                    <span class="n">S_uv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                                                                                    <span class="n">use_real_size</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="c1"># recolor the corrected and visualize side by side</span>
+<span class="n">protrusion_labels_final_duv_to_uv_corrected_color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mf">255.</span><span class="o">*</span><span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">protrusion_labels_final_duv_to_uv_corrected</span><span class="p">,</span> 
+                                                                      <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral</span><span class="p">,</span> 
+                                                                      <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">max_label_duv</span><span class="p">)[</span><span class="o">...</span><span class="p">,:</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">protrusion_labels_final_duv_to_uv_corrected_color</span><span class="p">[</span><span class="n">protrusion_labels_final_duv_to_uv_corrected</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">])[</span><span class="kc">None</span><span class="p">,</span><span class="o">...</span><span class="p">]</span>
+
+<span class="c1"># some of the labels on the right has now been reassigned to the labels on the left they should belong to. </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;before correction&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">remapped_protrusion_label_colors</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;after border correction&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">protrusion_labels_final_duv_to_uv_corrected_color</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/25ffa93454ee0bb67536edfd8e92a76c6df32637b16acde6d51d02032ca756a3.png" src="../_images/25ffa93454ee0bb67536edfd8e92a76c6df32637b16acde6d51d02032ca756a3.png" />
+</div>
+</div>
+</section>
+<section id="transfer-corrected-labels-back-to-the-topographic-mesh">
+<h3>4. Transfer corrected labels back to the topographic mesh<a class="headerlink" href="#transfer-corrected-labels-back-to-the-topographic-mesh" title="Link to this heading">#</a></h3>
+<p>The transfer is carried out by noting the flattened topographic cMCF is 1-to-1 with topographic mesh i.e. same number of vertices, no change in face connectivity. Thus we interpolate the label corresponding to the <span class="math notranslate nohighlight">\((u,v)\)</span> coordinates of the flattened topographic cMCF by nearest interpolation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">protrusion_labels_final_duv_corrected</span> <span class="o">=</span> <span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp2</span><span class="p">(</span><span class="n">protrusion_labels_final_mesh_duv_flat</span><span class="o">.</span><span class="n">vertices</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:],</span> 
+                                                                       <span class="n">grid_shape</span><span class="o">=</span><span class="n">protrusion_labels_final_duv_to_uv_corrected</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> 
+                                                                       <span class="n">I_ref</span><span class="o">=</span><span class="n">protrusion_labels_final_duv_to_uv_corrected</span><span class="p">,</span> 
+                                                                       <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="c1"># regenerate the coloring</span>
+<span class="n">protrusion_labels_final_duv_corrected_color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mi">255</span><span class="o">*</span><span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">protrusion_labels_final_duv_corrected</span><span class="p">,</span> 
+                                                                                <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Spectral</span><span class="p">,</span> 
+                                                                                <span class="n">bg_label</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+                                                                                <span class="n">vmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">max_label_duv</span><span class="p">))[</span><span class="o">...</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span>
+<span class="c1"># assign gray to background</span>
+<span class="n">protrusion_labels_final_duv_corrected_color</span><span class="p">[</span><span class="n">protrusion_labels_final_duv_corrected</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">])[</span><span class="kc">None</span><span class="p">,:]</span> 
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">again, blacken vertices part of boundary loop</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">spstats</span>
+<span class="c1"># calculate face labels by taking the mode</span>
+<span class="n">face_labels_duv</span> <span class="o">=</span>  <span class="n">spstats</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="n">protrusion_labels_final_duv_corrected</span><span class="p">[</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">uniq_labels_duv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">face_labels_duv</span><span class="p">),</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># find all vertices associated with boundary and set the color on vertex to black</span>
+<span class="n">vertex_set_0</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">lab</span> <span class="ow">in</span> <span class="n">uniq_labels_duv</span><span class="p">:</span>
+    <span class="n">b_loop</span> <span class="o">=</span> <span class="n">igl</span><span class="o">.</span><span class="n">boundary_loop</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">[</span><span class="n">face_labels_duv</span><span class="o">==</span><span class="n">lab</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">b_loop</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">vertex_set_0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b_loop</span><span class="p">)</span>
+<span class="n">vertex_set_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">vertex_set_0</span><span class="p">))</span>
+
+<span class="n">protrusion_labels_final_duv_corrected_color</span><span class="p">[</span><span class="n">vertex_set_0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])[</span><span class="kc">None</span><span class="p">,:]</span> <span class="c1"># set all the boundaries to black</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">finally export the mesh with color</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">protrusion_labels_final_mesh_duv_corrected</span> <span class="o">=</span> <span class="n">protrusion_labels_final_mesh_duv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">protrusion_labels_final_mesh_duv_corrected</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span> <span class="o">=</span> <span class="n">protrusion_labels_final_duv_corrected_color</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">protrusion_labels_final_mesh_duv_corrected</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                             <span class="s1">&#39;instance_segmentation_final-corrected_Topography_3D_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">map topography coordinates to cartesian</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">protrusion_labels_final_mesh_duv_to_xyz_corrected</span> <span class="o">=</span> <span class="n">protrusion_labels_final_mesh_duv_corrected</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">protrusion_labels_final_mesh_duv_to_xyz_corrected</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">mesh_S_duv_to_xyz</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">protrusion_labels_final_mesh_duv_to_xyz_corrected</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                                  <span class="s1">&#39;instance_segmentation_final-corrected_Topography-to-Cartesian_3D_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Visualize in matplotlib</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">protrusion_labels_final_mesh_duv_corrected</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">protrusion_labels_final_mesh_duv_corrected</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">protrusion_labels_final_mesh_duv_corrected</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">protrusion_labels_final_mesh_duv_corrected</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">protrusion_labels_final_mesh_duv_to_xyz_corrected</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">protrusion_labels_final_mesh_duv_to_xyz_corrected</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">protrusion_labels_final_mesh_duv_to_xyz_corrected</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">protrusion_labels_final_mesh_duv_to_xyz_corrected</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b83d02051e8796e0e4f035a93541a6b61b19df5a1e7751971324d5ffb33fae4e.png" src="../_images/b83d02051e8796e0e4f035a93541a6b61b19df5a1e7751971324d5ffb33fae4e.png" />
+</div>
+</div>
+</section>
 </section>
 </section>
 
@@ -1259,7 +1492,13 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correcting-the-segmentation-of-boundary-vertices-when-using-s-d-u-v">4. Correcting the segmentation of boundary vertices when using <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correcting-the-segmentation-at-boundary-when-using-s-d-u-v">4. Correcting the segmentation at boundary when using <span class="math notranslate nohighlight">\(S(d,u,v)\)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#topographic-cmcf-to-flatten-topography-mesh">1. Topographic cMCF to flatten topography mesh</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resample-labels-using-flattened-mesh-to-2d-image">2. Resample labels using flattened mesh to 2D image</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implement-boundary-conditions-and-test-for-label-merging">3. Implement boundary conditions and test for label merging</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-corrected-labels-back-to-the-topographic-mesh">4. Transfer corrected labels back to the topographic mesh</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
