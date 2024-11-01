@@ -16,17 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
@@ -36,10 +38,11 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -66,6 +69,7 @@
     <link rel="prev" title="Step 1: Find and create a genus-0 reference surface, \(S_{ref}(x,y,z)\)" href="Step1_find_reference_surface.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -81,19 +85,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -101,7 +94,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,8 +101,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -126,7 +118,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,15 +149,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -397,24 +386,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -470,7 +451,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">igl</span>
 
 <span class="c1"># example cell used</span>
-<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;../../example_data/img&#39;</span>
+<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;../../data/img&#39;</span>
 <span class="n">imgfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imgfolder</span><span class="p">,</span> <span class="s1">&#39;bleb_example.tif&#39;</span><span class="p">)</span>
 <span class="n">basefname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">imgfile</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get the filename with extension</span>
 
@@ -540,8 +521,8 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>printed number of inverted faces per iteration
 [0, 0, 0, 0, 0, 0]
-recommended iterative conformal:  1.7203223705291748
-Choi et al. direct conformal:  6.841320991516113
+recommended iterative conformal:  4.810135841369629
+Choi et al. direct conformal:  14.325770616531372
 </pre></div>
 </div>
 </div>
@@ -576,24 +557,24 @@ Choi et al. direct conformal:  6.841320991516113
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>triangle props iterative:
-{&#39;min_angle&#39;: 36.91699032829735, &#39;avg_angle&#39;: 60.0, &#39;max_angle&#39;: 97.24459281631464, &#39;std_dev_angle&#39;: 5.522258780064003, &#39;min_quality&#39;: 0.7482094443199341, &#39;avg_quality&#39;: 0.9863552184561242, &#39;max_quality&#39;: 0.9999999186917886, &#39;quality&#39;: array([0.9766042 , 0.99781563, 0.99767575, ..., 0.98342149, 0.99156188,
-       0.9471116 ]), &#39;angles&#39;: array([[1.12463085, 0.87489113, 1.14207068],
-       [1.04186309, 1.09648491, 1.00324465],
-       [1.00405425, 1.03800105, 1.09953736],
+{&#39;min_angle&#39;: 37.72755825012703, &#39;avg_angle&#39;: 60.00000000000001, &#39;max_angle&#39;: 96.77951462608578, &#39;std_dev_angle&#39;: 4.602416979613976, &#39;min_quality&#39;: 0.7544342656414823, &#39;avg_quality&#39;: 0.9904537832406153, &#39;max_quality&#39;: 0.9999998443829548, &#39;quality&#39;: array([0.99022527, 0.98870827, 0.98488669, ..., 0.98583723, 0.9777652 ,
+       0.99995536]), &#39;angles&#39;: array([[0.99094327, 0.98729905, 1.16335033],
+       [1.16315121, 0.9516156 , 1.02682584],
+       [0.9635418 , 0.98645905, 1.1915918 ],
        ...,
-       [1.10131324, 0.90269963, 1.13757978],
-       [1.01041097, 1.15312723, 0.97805445],
-       [0.9617505 , 0.86336746, 1.3164747 ]])}
+       [1.18472648, 1.00075562, 0.95611055],
+       [0.92452656, 0.99967113, 1.21739496],
+       [1.03953202, 1.05172123, 1.0503394 ]])}
 =========================
 triangle props direct:
-{&#39;min_angle&#39;: 33.54104213592802, &#39;avg_angle&#39;: 60.00000000000001, &#39;max_angle&#39;: 104.19455840518937, &#39;std_dev_angle&#39;: 8.547885460935499, &#39;min_quality&#39;: 0.665757418560149, &#39;avg_quality&#39;: 0.9679643895747508, &#39;max_quality&#39;: 0.9999996699327401, &#39;quality&#39;: array([0.98736868, 0.991581  , 0.99162982, ..., 0.7887286 , 0.98230283,
-       0.80618966]), &#39;angles&#39;: array([[1.1104129 , 0.91968286, 1.11149689],
-       [1.10209261, 1.09668546, 0.94281458],
-       [0.94311016, 1.10182296, 1.09665953],
+{&#39;min_angle&#39;: 30.930843003120742, &#39;avg_angle&#39;: 60.00000000000001, &#39;max_angle&#39;: 98.11151126528594, &#39;std_dev_angle&#39;: 7.829824117694427, &#39;min_quality&#39;: 0.6931658075816856, &#39;avg_quality&#39;: 0.9728591140223615, &#39;max_quality&#39;: 0.9999983516674269, &#39;quality&#39;: array([0.99567969, 0.99565083, 0.99566051, ..., 0.96767302, 0.91652935,
+       0.90920887]), &#39;angles&#39;: array([[1.09158677, 0.97249596, 1.07750992],
+       [1.07778518, 1.09157683, 0.97223065],
+       [1.09195766, 0.97236561, 1.07726938],
        ...,
-       [0.74888861, 1.63608648, 0.75661757],
-       [1.07184314, 1.16491159, 0.90483792],
-       [0.79406999, 0.74121989, 1.60630277]])}
+       [1.01109782, 0.88512555, 1.24536928],
+       [0.74086023, 1.09982487, 1.30090755],
+       [1.08785054, 1.32211514, 0.73162698]])}
 =========================
 </pre></div>
 </div>
@@ -646,8 +627,8 @@ triangle props direct:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/df2ee1001e8f7e61eb166b9aea4302828f3cd9e6d60f51d4bf5203b355643dca.png" src="../_images/df2ee1001e8f7e61eb166b9aea4302828f3cd9e6d60f51d4bf5203b355643dca.png" />
-<img alt="../_images/152d3f8040e88a6c4047fcb2b1a8e0e4a0e7f6a6af5796926ed1ccd2f688bf93.png" src="../_images/152d3f8040e88a6c4047fcb2b1a8e0e4a0e7f6a6af5796926ed1ccd2f688bf93.png" />
+<img alt="../_images/84d5450dbe26e807ea57e2d12d497b8ac8357f6121f0000da0c5da96db8872c1.png" src="../_images/84d5450dbe26e807ea57e2d12d497b8ac8357f6121f0000da0c5da96db8872c1.png" />
+<img alt="../_images/ba5a1d96610831293866495150f25416e24ebea531f9b54d65440d931561f62b.png" src="../_images/ba5a1d96610831293866495150f25416e24ebea531f9b54d65440d931561f62b.png" />
 </div>
 </div>
 </section>
@@ -729,11 +710,11 @@ triangle props direct:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>quasiconformal error of iterative method: 1.1945110474774998
-mean equiareal error of iterative method: 1.4315104770389404
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>quasiconformal error of iterative method: 1.1873036453396435
+mean equiareal error of iterative method: 1.4135101985988752
 -----------------------------------------
-quasiconformal error of direct method: 1.0130877413849257
-mean equiareal error of direct method: 1.5422257877799368
+quasiconformal error of direct method: 1.0192368494880721
+mean equiareal error of direct method: 1.5193297616244414
 -----------------------------------------
 </pre></div>
 </div>
@@ -798,7 +779,8 @@ mean equiareal error of direct method: 1.5422257877799368
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -857,8 +839,8 @@ Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
   </footer>

@@ -16,17 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
@@ -36,10 +38,11 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
@@ -64,6 +67,7 @@
     <link rel="prev" title="Example 2: Cell with lamellipodia" href="unwrap_lamellipodia_cell.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -79,19 +83,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -99,7 +92,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -107,8 +99,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -124,7 +116,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -154,15 +147,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -395,24 +384,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -577,7 +558,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [07:56&lt;00:00,  9.54s/it]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [04:51&lt;00:00,  5.83s/it]
 </pre></div>
 </div>
 </div>
@@ -652,7 +633,7 @@ using the first as the reference. :
 5
 </pre></div>
 </div>
-<img alt="../../_images/c7197969b9ac4c234cc0b3e6f58ffde76b4f87f55cf8e5f3c7352e01c41ba21e.png" src="../../_images/c7197969b9ac4c234cc0b3e6f58ffde76b4f87f55cf8e5f3c7352e01c41ba21e.png" />
+<img alt="../../_images/cbab4b803a5f0ed737c8a02f5d96072167adc50433631f45b2ea774786c477b4.png" src="../../_images/cbab4b803a5f0ed737c8a02f5d96072167adc50433631f45b2ea774786c477b4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -668,7 +649,7 @@ using the first as the reference. :
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    run shrinkwrapping to get genus-0 version </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">total_shrinkwrap_iters</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># we can lower number when the shape is simple, as here, or let it be higher to see if we can get better wrap than initial</span>
+    <span class="n">total_shrinkwrap_iters</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># we can lower number when the shape is simple, as here, or let it be higher to see if we can get better wrap than initial</span>
     <span class="n">decay_rate</span> <span class="o">=</span> <span class="mf">0.75</span>
     <span class="n">min_lr</span> <span class="o">=</span> <span class="mf">0.24</span> <span class="c1"># for decay_rate 0.5, this would mean lowest is 0.25.</span>
 
@@ -839,65 +820,40 @@ using the first as the reference. :
 initial_watertight: -30
 </pre></div>
 </div>
-<img alt="../../_images/591962bfe2175c6d22f1a383263c787c0652fbfa6f479ebf9a18814afa999218.png" src="../../_images/591962bfe2175c6d22f1a383263c787c0652fbfa6f479ebf9a18814afa999218.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initiating a genus-0 mesh automatically with interval:  [6.384232459208034, 6.385074942938468]
+<img alt="../../_images/7ddf5e56beb87a8491ba375cae603a4c5cecb76d8d626be06208a99c098f4c09.png" src="../../_images/7ddf5e56beb87a8491ba375cae603a4c5cecb76d8d626be06208a99c098f4c09.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initiating a genus-0 mesh automatically with interval:  [6.384232459208011, 6.385074942938445]
 </pre></div>
 </div>
-<img alt="../../_images/b5a2752a3ad2db5b592c2453c1dc6ed4c92817ef1c6c3fc8ac63caecbf9c0032.png" src="../../_images/b5a2752a3ad2db5b592c2453c1dc6ed4c92817ef1c6c3fc8ac63caecbf9c0032.png" />
+<img alt="../../_images/a555997e0629195914ac0a3c0e752ff0fc25d6507fb2f3d400654c7b9c9120eb.png" src="../../_images/a555997e0629195914ac0a3c0e752ff0fc25d6507fb2f3d400654c7b9c9120eb.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GVF iter: 15/15(98466, 3)
 </pre></div>
 </div>
-<img alt="../../_images/bf0c34c1c58862f9af8e169ddf4bf614049d1cf87ac1e9808601c93d426e1568.png" src="../../_images/bf0c34c1c58862f9af8e169ddf4bf614049d1cf87ac1e9808601c93d426e1568.png" />
-<img alt="../../_images/a1f7ae3316136a8a5e661b5d783785a58f5a75485a09de97f18762e5f44fa131.png" src="../../_images/a1f7ae3316136a8a5e661b5d783785a58f5a75485a09de97f18762e5f44fa131.png" />
+<img alt="../../_images/aa3eaa95dd8361841e04ccfb0bc21cf2a5f96f3e2cf0df28211e79e20644d841.png" src="../../_images/aa3eaa95dd8361841e04ccfb0bc21cf2a5f96f3e2cf0df28211e79e20644d841.png" />
+<img alt="../../_images/84ba2eb1a5c1f22c0538b88040cc4cce2d8bef4672bf2d800a0190d3083c1aab.png" src="../../_images/84ba2eb1a5c1f22c0538b88040cc4cce2d8bef4672bf2d800a0190d3083c1aab.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
-0 4.348595643153912 changing lr:  0.75
-0 4.348595643153912
+0 4.348595643152784 changing lr:  0.75
+0 4.348595643152784
 1
 ==========================
 2
 --------------------------
-1 4.191128243231426
+1 4.186939163908125
 2
 ==========================
 2
 --------------------------
-2 4.185915041229329
+2 4.180065997957307
 3
 ==========================
 2
 --------------------------
-3 4.183712729581569
+3 4.183987027991085 changing lr:  0.5625
+3 4.183987027991085
 4
 ==========================
 2
 --------------------------
-4 4.186503710332681 changing lr:  0.5625
-4 4.186503710332681
-5
-==========================
-2
---------------------------
-5 3.9757726450915487
-6
-==========================
-2
---------------------------
-6 3.969127778362888
-7
-==========================
-2
---------------------------
-7 3.959837500469713
-8
-==========================
-2
---------------------------
-8 3.949380826583938
-9
-==========================
-2
---------------------------
-9 3.8939012725382476
+4 3.974752832448118
 {&#39;convex&#39;: False, &#39;volume&#39;: True, &#39;watertight&#39;: True, &#39;orientability&#39;: True, &#39;euler_number&#39;: 2, &#39;genus&#39;: 0.0}
 </pre></div>
 </div>
@@ -1014,21 +970,15 @@ initial_watertight: -30
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 46%|████▌     | 229/500 [01:16&lt;01:29,  3.04it/s]c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:4616: RuntimeWarning: divide by zero encountered in divide
-  area_distortion_mesh = igl.doublearea(mesh_orig.vertices/np.sqrt(np.nansum(igl.doublearea(mesh_orig.vertices,f)*.5)), f) / igl.doublearea(v/np.sqrt(np.nansum(igl.doublearea(v,f)*.5)), f) # this is face measure!. and the connectivity is allowed to change! during evolution !.
-c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\numpy\core\fromnumeric.py:88: RuntimeWarning: invalid value encountered in reduce
-  return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
-c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:4658: RuntimeWarning: invalid value encountered in subtract
-  vA_vertex = vA_vertex - np.nansum(vA_vertex*normal, axis=-1)[:,None]*normal # this seems necessary...
- 46%|████▌     | 230/500 [01:16&lt;01:29,  3.03it/s]c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:4648: RuntimeWarning: All-NaN slice encountered
-  max_size = igl.avg_edge_length(v, f) / np.nanmedian(gu_mag) # if divide by median less good.
-100%|██████████| 500/500 [04:54&lt;00:00,  1.70it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 34%|███▎      | 168/500 [00:48&lt;01:42,  3.25it/s]c:\Users\fyz11\anaconda3\envs\u_Unwrap3D\lib\site-packages\numpy\lib\nanfunctions.py:1217: RuntimeWarning: All-NaN slice encountered
+  return function_base._ureduce(a, func=_nanmedian, keepdims=keepdims,
+100%|██████████| 500/500 [04:43&lt;00:00,  1.76it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distortion at found iteration number: 1.007394887292127
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distortion at found iteration number: 1.0091392035665636
 </pre></div>
 </div>
-<img alt="../../_images/63ffc026a8ca11d68cf80d0c95ead9e5f938bac9a7c77fc03c6000f0127c26a1.png" src="../../_images/63ffc026a8ca11d68cf80d0c95ead9e5f938bac9a7c77fc03c6000f0127c26a1.png" />
+<img alt="../../_images/31c8b7fe2b4eba788d017ca598aadf1dffed8be05ba9be9139c2b1fbf980aa19.png" src="../../_images/31c8b7fe2b4eba788d017ca598aadf1dffed8be05ba9be9139c2b1fbf980aa19.png" />
 </div>
 </div>
 </section>
@@ -1117,7 +1067,7 @@ c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/526493d6029b29cbb1b66975062e9ac9057879abab010912beaf4bdf99b64ba6.png" src="../../_images/526493d6029b29cbb1b66975062e9ac9057879abab010912beaf4bdf99b64ba6.png" />
+<img alt="../../_images/ea0587b96831f6adc67441dd91f53a2bf281fc5e6562d62380334ed0077a4ac7.png" src="../../_images/ea0587b96831f6adc67441dd91f53a2bf281fc5e6562d62380334ed0077a4ac7.png" />
 </div>
 </div>
 </section>
@@ -1131,21 +1081,21 @@ c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\s
 
 <span class="n">S_mesh_pts</span> <span class="o">=</span> <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-<span class="n">topography_space</span><span class="p">,</span> <span class="p">(</span><span class="n">N_in</span><span class="p">,</span> <span class="n">N_out</span><span class="p">)</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">build_topography_space_from_Suv</span><span class="p">(</span><span class="n">S_uv_opt</span><span class="p">,</span> 
-                                                                        <span class="n">Sref_img_binary</span><span class="p">,</span>
-                                                                        <span class="n">external_gradient_field</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># build if none, using Euclidean distance transform</span>
-                                                                        <span class="n">pad_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
-                                                                        <span class="n">alpha_step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># use automatic method</span>
-                                                                        <span class="n">outer_surf_pts</span> <span class="o">=</span> <span class="n">S_mesh_pts</span><span class="p">,</span>
-                                                                        <span class="n">outer_n_dists</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># let this be auto determined. </span>
-                                                                        <span class="n">outer_pad_dist</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="c1"># the leeway.</span>
-                                                                        <span class="n">outer_method</span><span class="o">=</span><span class="s1">&#39;forward_euler&#39;</span><span class="p">,</span>
-                                                                        <span class="n">outer_smooth_win_factor</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="c1"># we will smooth by minimum length of uv divide this factor. </span>
-                                                                        <span class="n">inner_n_dists</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="c1"># in voxels.</span>
-                                                                        <span class="n">inner_sdf_method</span> <span class="o">=</span> <span class="s1">&#39;harmonic&#39;</span><span class="p">,</span>
-                                                                        <span class="n">inner_source_mask</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
-                                                                        <span class="n">inner_harmonic_ds</span> <span class="o">=</span> <span class="mf">4.</span><span class="p">,</span> <span class="c1"># harmonic distance transform is memory-intensive and slow. Nearly always we must downsample so the volume is at most 256 x 256 x 256 voxels. 4x downsample by default. </span>
-                                                                        <span class="n">inner_method</span><span class="o">=</span><span class="s1">&#39;active_contours&#39;</span><span class="p">)</span>
+<span class="n">topography_space</span><span class="p">,</span> <span class="p">(</span><span class="n">N_in</span><span class="p">,</span> <span class="n">N_out</span><span class="p">),</span> <span class="n">alpha_step</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">build_topography_space_from_Suv</span><span class="p">(</span><span class="n">S_uv_opt</span><span class="p">,</span> 
+                                                                                    <span class="n">Sref_img_binary</span><span class="p">,</span>
+                                                                                    <span class="n">external_gradient_field</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># build if none, using Euclidean distance transform</span>
+                                                                                    <span class="n">pad_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
+                                                                                    <span class="n">alpha_step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># use automatic method</span>
+                                                                                    <span class="n">outer_surf_pts</span> <span class="o">=</span> <span class="n">S_mesh_pts</span><span class="p">,</span>
+                                                                                    <span class="n">outer_n_dists</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># let this be auto determined. </span>
+                                                                                    <span class="n">outer_pad_dist</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="c1"># the leeway.</span>
+                                                                                    <span class="n">outer_method</span><span class="o">=</span><span class="s1">&#39;forward_euler&#39;</span><span class="p">,</span>
+                                                                                    <span class="n">outer_smooth_win_factor</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="c1"># we will smooth by minimum length of uv divide this factor. </span>
+                                                                                    <span class="n">inner_n_dists</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="c1"># in voxels.</span>
+                                                                                    <span class="n">inner_sdf_method</span> <span class="o">=</span> <span class="s1">&#39;harmonic&#39;</span><span class="p">,</span>
+                                                                                    <span class="n">inner_source_mask</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+                                                                                    <span class="n">inner_harmonic_ds</span> <span class="o">=</span> <span class="mf">4.</span><span class="p">,</span> <span class="c1"># harmonic distance transform is memory-intensive and slow. Nearly always we must downsample so the volume is at most 256 x 256 x 256 voxels. 4x downsample by default. </span>
+                                                                                    <span class="n">inner_method</span><span class="o">=</span><span class="s1">&#39;active_contours&#39;</span><span class="p">)</span>
 
 <span class="c1"># check what is the dimensions of the topographic space</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;topographic space dimension: &#39;</span><span class="p">,</span> <span class="n">topography_space</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -1157,23 +1107,24 @@ c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\s
              <span class="p">{</span><span class="s1">&#39;topographic_map&#39;</span><span class="p">:</span> <span class="n">topography_space</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> 
               <span class="s1">&#39;uv_map&#39;</span><span class="p">:</span> <span class="n">S_uv_opt</span><span class="p">,</span> 
               <span class="s1">&#39;N_inside&#39;</span><span class="p">:</span> <span class="n">N_in</span><span class="p">,</span> 
-              <span class="s1">&#39;N_outside&#39;</span><span class="p">:</span> <span class="n">N_out</span><span class="p">})</span> 
+              <span class="s1">&#39;N_outside&#39;</span><span class="p">:</span> <span class="n">N_out</span><span class="p">,</span>
+              <span class="s1">&#39;alpha_step&#39;</span><span class="p">:</span> <span class="n">alpha_step</span><span class="p">})</span> 
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 40/40 [00:05&lt;00:00,  7.32it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 41/41 [00:07&lt;00:00,  5.43it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 7.926419973373413
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 7.095995664596558
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 25/25 [00:10&lt;00:00,  2.48it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 25/25 [00:10&lt;00:00,  2.46it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>topographic space dimension:  (66, 256, 452, 3)
-the first 40 slices are interior of S_ref
-the next 25 slices are exterior of S_ref
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>topographic space dimension:  (67, 256, 468, 3)
+the first 25 slices are interior of S_ref
+the next 41 slices are exterior of S_ref
 </pre></div>
 </div>
 </div>
@@ -1208,7 +1159,7 @@ the next 25 slices are exterior of S_ref
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/7b8157441b94d95275d339e2ea46f20bb56e7af29723bd338479ca930b8c8e2c.png" src="../../_images/7b8157441b94d95275d339e2ea46f20bb56e7af29723bd338479ca930b8c8e2c.png" />
+<img alt="../../_images/496cdc08507adada16d7f6c3fbb16ada48183624e50d81b6155facd026a72b02.png" src="../../_images/496cdc08507adada16d7f6c3fbb16ada48183624e50d81b6155facd026a72b02.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1330,7 +1281,8 @@ the next 25 slices are exterior of S_ref
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1393,8 +1345,8 @@ Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
   </footer>

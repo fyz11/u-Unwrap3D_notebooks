@@ -16,17 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
@@ -36,10 +38,11 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
@@ -64,6 +67,7 @@
     <link rel="prev" title="Full examples of standard workflow" href="readme.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -79,19 +83,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -99,7 +92,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -107,8 +99,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -124,7 +116,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -154,15 +147,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -395,24 +384,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -577,7 +558,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [03:28&lt;00:00,  4.17s/it]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [04:15&lt;00:00,  5.11s/it]
 </pre></div>
 </div>
 </div>
@@ -651,7 +632,7 @@ using the first as the reference. :
 6
 </pre></div>
 </div>
-<img alt="../../_images/2d6ea63bc1cf3227bed1b092e21d2e51b7781719b55c95ff1c125c6191103645.png" src="../../_images/2d6ea63bc1cf3227bed1b092e21d2e51b7781719b55c95ff1c125c6191103645.png" />
+<img alt="../../_images/e153b9d112142dd70a877fdeee8a59e7422a8602e3f554438d208dccddc06d1e.png" src="../../_images/e153b9d112142dd70a877fdeee8a59e7422a8602e3f554438d208dccddc06d1e.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -838,66 +819,67 @@ using the first as the reference. :
 initial_watertight: -2
 </pre></div>
 </div>
-<img alt="../../_images/5d6537dbc72cfce8683a2c86f46abcaad686148a9362c2848a4d5ef6c26049ff.png" src="../../_images/5d6537dbc72cfce8683a2c86f46abcaad686148a9362c2848a4d5ef6c26049ff.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initiating a genus-0 mesh automatically with interval:  [1.580943693040661, 1.5819351696718922]
+<img alt="../../_images/6c8c69d2c930b25d743ba04e9eb351382ee6358dcd76e14304079b0897792c68.png" src="../../_images/6c8c69d2c930b25d743ba04e9eb351382ee6358dcd76e14304079b0897792c68.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initiating a genus-0 mesh automatically with interval:  [1.580943693040664, 1.5819351696718953]
 </pre></div>
 </div>
-<img alt="../../_images/f849bb2f719d4c766446841750f2010f95d53ec4de0ee5184e47ae274e8f0b92.png" src="../../_images/f849bb2f719d4c766446841750f2010f95d53ec4de0ee5184e47ae274e8f0b92.png" />
+<img alt="../../_images/470a1964b17537e518c2a064135730592a02a7692f6356d06ad44b3d2e160cb2.png" src="../../_images/470a1964b17537e518c2a064135730592a02a7692f6356d06ad44b3d2e160cb2.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GVF iter: 15/15(91394, 3)
 </pre></div>
 </div>
-<img alt="../../_images/075f7994ef49708f08b465d929416a54f6eedc4a2ab5a84f0aabaa10efd29608.png" src="../../_images/075f7994ef49708f08b465d929416a54f6eedc4a2ab5a84f0aabaa10efd29608.png" />
-<img alt="../../_images/bff13045e8e79bacba63cbb75d3a695d636d6d9ae2d9e7a27a40cd0d3a78bce0.png" src="../../_images/bff13045e8e79bacba63cbb75d3a695d636d6d9ae2d9e7a27a40cd0d3a78bce0.png" />
+<img alt="../../_images/04bf75153a37de31f432fe3764d25fda2f60a98d9c1e01d4c17d15d7b5e6d66c.png" src="../../_images/04bf75153a37de31f432fe3764d25fda2f60a98d9c1e01d4c17d15d7b5e6d66c.png" />
+<img alt="../../_images/121061eaef1145e96d02124df929988248e70b301072d7c5c27e5418ae16320c.png" src="../../_images/121061eaef1145e96d02124df929988248e70b301072d7c5c27e5418ae16320c.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
-0 4.381969608967172 changing lr:  0.75
-0 4.381969608967172
+0 4.381969609028927 changing lr:  0.75
+0 4.381969609028927
 1
 ==========================
 2
 --------------------------
-1 4.207654072617839
+1 4.207770322133165
 2
 ==========================
 2
 --------------------------
-2 4.204562972225283
+2 4.202155083364334
 3
 ==========================
 2
 --------------------------
-3 4.20433760247993
+3 4.199750074173715
 4
 ==========================
 2
 --------------------------
-4 4.208660799319627 changing lr:  0.5625
-4 4.208660799319627
+4 4.202309526159078 changing lr:  0.5625
+4 4.202309526159078
 5
 ==========================
 2
 --------------------------
-5 3.9806285892316757
+5 3.9814642710038126
 6
 ==========================
 2
 --------------------------
-6 3.976933041633669
+6 3.980282962408279
 7
 ==========================
 2
 --------------------------
-7 3.9730353078118057
+7 3.980288144104363 changing lr:  0.421875
+7 3.980288144104363
 8
 ==========================
 2
 --------------------------
-8 3.973294049404222 changing lr:  0.421875
-8 3.973294049404222
+8 3.7814979951915393
 9
 ==========================
 2
 --------------------------
-9 3.7876675148854533
+9 3.793587520173209 changing lr:  0.31640625
+9 3.793587520173209
 {&#39;convex&#39;: False, &#39;volume&#39;: True, &#39;watertight&#39;: True, &#39;orientability&#39;: True, &#39;euler_number&#39;: 2, &#39;genus&#39;: 0.0}
 </pre></div>
 </div>
@@ -1013,15 +995,15 @@ initial_watertight: -2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 56%|█████▋    | 282/500 [01:29&lt;01:30,  2.42it/s]c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\unwrap3D\Mesh\meshtools.py:4648: RuntimeWarning: All-NaN slice encountered
-  max_size = igl.avg_edge_length(v, f) / np.nanmedian(gu_mag) # if divide by median less good.
-100%|██████████| 500/500 [04:15&lt;00:00,  1.95it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 42%|████▏     | 209/500 [01:00&lt;01:38,  2.95it/s]c:\Users\fyz11\anaconda3\envs\u_Unwrap3D\lib\site-packages\numpy\lib\nanfunctions.py:1217: RuntimeWarning: All-NaN slice encountered
+  return function_base._ureduce(a, func=_nanmedian, keepdims=keepdims,
+100%|██████████| 500/500 [04:13&lt;00:00,  1.98it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distortion at found iteration number: 0.9999483043611526
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distortion at found iteration number: 0.9998968355844017
 </pre></div>
 </div>
-<img alt="../../_images/dc540e0abc3c5544a94741c5fc122aa1a0e7bdc2e26e09ea802ea58397091e4d.png" src="../../_images/dc540e0abc3c5544a94741c5fc122aa1a0e7bdc2e26e09ea802ea58397091e4d.png" />
+<img alt="../../_images/df174533ea5d6c526f9138f7756ea8f5eaa6e7ec359b0266765a9412a951cae9.png" src="../../_images/df174533ea5d6c526f9138f7756ea8f5eaa6e7ec359b0266765a9412a951cae9.png" />
 </div>
 </div>
 </section>
@@ -1109,7 +1091,7 @@ initial_watertight: -2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8be8c8d790c6c6acaf3e2f0f2f644dfa099800dba08c608bc3eb14851f88cb59.png" src="../../_images/8be8c8d790c6c6acaf3e2f0f2f644dfa099800dba08c608bc3eb14851f88cb59.png" />
+<img alt="../../_images/f3e2b39fb39215c43d41089e9bfcc9289d985e627e4d41a852566326f19d7f7e.png" src="../../_images/f3e2b39fb39215c43d41089e9bfcc9289d985e627e4d41a852566326f19d7f7e.png" />
 </div>
 </div>
 </section>
@@ -1123,7 +1105,7 @@ initial_watertight: -2
 
 <span class="n">S_mesh_pts</span> <span class="o">=</span> <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-<span class="n">topography_space</span><span class="p">,</span> <span class="p">(</span><span class="n">N_in</span><span class="p">,</span> <span class="n">N_out</span><span class="p">)</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">build_topography_space_from_Suv</span><span class="p">(</span><span class="n">S_uv_opt</span><span class="p">,</span> 
+<span class="n">topography_space</span><span class="p">,</span> <span class="p">(</span><span class="n">N_in</span><span class="p">,</span> <span class="n">N_out</span><span class="p">),</span> <span class="n">alpha_step</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">build_topography_space_from_Suv</span><span class="p">(</span><span class="n">S_uv_opt</span><span class="p">,</span> 
                                                                         <span class="n">Sref_img_binary</span><span class="p">,</span>
                                                                         <span class="n">external_gradient_field</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># build if none, using Euclidean distance transform</span>
                                                                         <span class="n">pad_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
@@ -1149,23 +1131,24 @@ initial_watertight: -2
              <span class="p">{</span><span class="s1">&#39;topographic_map&#39;</span><span class="p">:</span> <span class="n">topography_space</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> 
               <span class="s1">&#39;uv_map&#39;</span><span class="p">:</span> <span class="n">S_uv_opt</span><span class="p">,</span> 
               <span class="s1">&#39;N_inside&#39;</span><span class="p">:</span> <span class="n">N_in</span><span class="p">,</span> 
-              <span class="s1">&#39;N_outside&#39;</span><span class="p">:</span> <span class="n">N_out</span><span class="p">})</span> 
+              <span class="s1">&#39;N_outside&#39;</span><span class="p">:</span> <span class="n">N_out</span><span class="p">,</span>
+              <span class="s1">&#39;alpha_step&#39;</span><span class="p">:</span> <span class="n">alpha_step</span><span class="p">})</span> 
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 24/24 [00:03&lt;00:00,  7.49it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 24/24 [00:04&lt;00:00,  5.52it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 4.041174650192261
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 3.5887999534606934
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 25/25 [00:13&lt;00:00,  1.87it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 25/25 [00:10&lt;00:00,  2.42it/s]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>topographic space dimension:  (50, 256, 460, 3)
-the first 24 slices are interior of S_ref
-the next 25 slices are exterior of S_ref
+the first 25 slices are interior of S_ref
+the next 24 slices are exterior of S_ref
 </pre></div>
 </div>
 </div>
@@ -1200,7 +1183,7 @@ the next 25 slices are exterior of S_ref
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/fa3c6489f1b1a6c38ca9e0dde43cd8d5dbd34f2999169c777f75c0348aeab85a.png" src="../../_images/fa3c6489f1b1a6c38ca9e0dde43cd8d5dbd34f2999169c777f75c0348aeab85a.png" />
+<img alt="../../_images/b4247f406a09e6f9a01b3347a73ec1fb079c05db521521669527db8376fe9752.png" src="../../_images/b4247f406a09e6f9a01b3347a73ec1fb079c05db521521669527db8376fe9752.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1322,7 +1305,8 @@ the next 25 slices are exterior of S_ref
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1385,8 +1369,8 @@ Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
   </footer>

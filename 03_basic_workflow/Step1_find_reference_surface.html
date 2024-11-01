@@ -16,17 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
@@ -36,10 +38,11 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -66,6 +69,7 @@
     <link rel="prev" title="Step 0: Segmenting a single cell from a volume image" href="Step0_find_cell_surface_from_segmentation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -81,19 +85,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -101,7 +94,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,8 +101,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -126,7 +118,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,15 +149,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -397,24 +386,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -512,7 +493,7 @@ document.write(`
 <span class="sd">Preamble: setting up the folders</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># example cell used</span>
-<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;../../example_data/img&#39;</span>
+<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;../../data/img&#39;</span>
 <span class="n">imgfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imgfolder</span><span class="p">,</span> <span class="s1">&#39;bleb_example.tif&#39;</span><span class="p">)</span>
 <span class="n">basefname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">imgfile</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get the filename with extension</span>
 
@@ -582,7 +563,10 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [00:41&lt;00:00,  1.19it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/50 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [01:01&lt;00:00,  1.22s/it]
 </pre></div>
 </div>
 </div>
@@ -635,57 +619,57 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/e2158abb0c35743a22828cdc5b4b5e661c22462f3d3ea61746faf5dc354b4aa7.png" src="../_images/e2158abb0c35743a22828cdc5b4b5e661c22462f3d3ea61746faf5dc354b4aa7.png" />
-<img alt="../_images/59478346187e77e53d3f34359770c1db55f3f9497fc73d95047a06e513bc6a9f.png" src="../_images/59478346187e77e53d3f34359770c1db55f3f9497fc73d95047a06e513bc6a9f.png" />
-<img alt="../_images/6c13ff0969c48aa12dff831e792a487605b28167d8e21507ea81a2570d92b2fa.png" src="../_images/6c13ff0969c48aa12dff831e792a487605b28167d8e21507ea81a2570d92b2fa.png" />
-<img alt="../_images/f0d7c3587f0a3376eb43daddb143cf03c16bc717a4f23ce1202a5edf9b0e3e98.png" src="../_images/f0d7c3587f0a3376eb43daddb143cf03c16bc717a4f23ce1202a5edf9b0e3e98.png" />
-<img alt="../_images/7eb5c04c5d31599751283ef082ae7be9eb9c9d4d001203298211cd1cc6791330.png" src="../_images/7eb5c04c5d31599751283ef082ae7be9eb9c9d4d001203298211cd1cc6791330.png" />
-<img alt="../_images/01dfa84e413253c7c32ff69660f89463f8115e3c9501e0a093c0c601f6291518.png" src="../_images/01dfa84e413253c7c32ff69660f89463f8115e3c9501e0a093c0c601f6291518.png" />
-<img alt="../_images/11183f8aaf6014aae626f229a461ad979180974667798b661b4fb97ff13dc36a.png" src="../_images/11183f8aaf6014aae626f229a461ad979180974667798b661b4fb97ff13dc36a.png" />
-<img alt="../_images/c11bed581e2dce8bc950d22986ee890e6c25d9a2f35d812f06a4af7a6a000555.png" src="../_images/c11bed581e2dce8bc950d22986ee890e6c25d9a2f35d812f06a4af7a6a000555.png" />
-<img alt="../_images/90f95a49ead1965e0fafa38c1df4ba3f3008269e12cbe2b61769c243db4efd57.png" src="../_images/90f95a49ead1965e0fafa38c1df4ba3f3008269e12cbe2b61769c243db4efd57.png" />
-<img alt="../_images/f25282f695b5f3de1973bbc2419442bf77f5bd7b3ff892197825c706635626de.png" src="../_images/f25282f695b5f3de1973bbc2419442bf77f5bd7b3ff892197825c706635626de.png" />
-<img alt="../_images/4f569a724eb1e29a81028ec4a0e5b56c6d671cde0c7ac1e4d347efd5b01b2f0b.png" src="../_images/4f569a724eb1e29a81028ec4a0e5b56c6d671cde0c7ac1e4d347efd5b01b2f0b.png" />
-<img alt="../_images/27a7a4f64564d4f4eec944dc8e38e47e683081ced98bbd5750f6ea47c4c28ab1.png" src="../_images/27a7a4f64564d4f4eec944dc8e38e47e683081ced98bbd5750f6ea47c4c28ab1.png" />
-<img alt="../_images/02e9e8afec2e5cd7378fd09b339d81db3a94722b9293225c087eaabfed143e72.png" src="../_images/02e9e8afec2e5cd7378fd09b339d81db3a94722b9293225c087eaabfed143e72.png" />
-<img alt="../_images/a5c38657bb61eb50541df7f79175968f34a9c12d9b2b9507601adde6c5ea309b.png" src="../_images/a5c38657bb61eb50541df7f79175968f34a9c12d9b2b9507601adde6c5ea309b.png" />
-<img alt="../_images/77cb22862cb7c4c0a690a4993f2615f2b1a7c20983caff9987d141682b22136a.png" src="../_images/77cb22862cb7c4c0a690a4993f2615f2b1a7c20983caff9987d141682b22136a.png" />
-<img alt="../_images/c0eeedee64064d38b3b5abed7062251118adfac85890a7b846e48687ec617988.png" src="../_images/c0eeedee64064d38b3b5abed7062251118adfac85890a7b846e48687ec617988.png" />
-<img alt="../_images/04b4374e698843df61923ff0d6f3c312b46dac5298f5c8a6bf5920530ffd35db.png" src="../_images/04b4374e698843df61923ff0d6f3c312b46dac5298f5c8a6bf5920530ffd35db.png" />
-<img alt="../_images/5aeb21dab0632f20a1b5b9df26e7c4bff65faa4bb49c06d1642919a7465b50fa.png" src="../_images/5aeb21dab0632f20a1b5b9df26e7c4bff65faa4bb49c06d1642919a7465b50fa.png" />
-<img alt="../_images/058cfc1a0cffcd7ca5aa7fac5b5a55421d65aeb64b647a24eeea64a1b9c3223d.png" src="../_images/058cfc1a0cffcd7ca5aa7fac5b5a55421d65aeb64b647a24eeea64a1b9c3223d.png" />
-<img alt="../_images/9aa28770ef7b9f008f803d385ae3ab3877d6af0605732bcbb18a1ac9ed53094c.png" src="../_images/9aa28770ef7b9f008f803d385ae3ab3877d6af0605732bcbb18a1ac9ed53094c.png" />
-<img alt="../_images/e719a3de2eb320178c9b90d3584e90ca4196806244aec9978b633a0dc7c762e0.png" src="../_images/e719a3de2eb320178c9b90d3584e90ca4196806244aec9978b633a0dc7c762e0.png" />
-<img alt="../_images/9d57b930ca84c035106c35d242bbe58585982ebd88684be2952fccce4869b241.png" src="../_images/9d57b930ca84c035106c35d242bbe58585982ebd88684be2952fccce4869b241.png" />
-<img alt="../_images/5976ea4d1aa9c9402d9b02d4c5d01038ba1f47cfe6b9f51200297bf7c6d82b44.png" src="../_images/5976ea4d1aa9c9402d9b02d4c5d01038ba1f47cfe6b9f51200297bf7c6d82b44.png" />
-<img alt="../_images/9fa279b49446b9e0593ceb958869af01a02da2ec715688ea17e7d78a7b5a6cb0.png" src="../_images/9fa279b49446b9e0593ceb958869af01a02da2ec715688ea17e7d78a7b5a6cb0.png" />
-<img alt="../_images/59b0bd98832ba09a01a87adf3c83e5ddb8d970b09c9af034bcec0251d6b0231f.png" src="../_images/59b0bd98832ba09a01a87adf3c83e5ddb8d970b09c9af034bcec0251d6b0231f.png" />
-<img alt="../_images/9821406d678728afb52e7ef0da25b1fa76e31ffd5df1512288d35ed6e21234f1.png" src="../_images/9821406d678728afb52e7ef0da25b1fa76e31ffd5df1512288d35ed6e21234f1.png" />
-<img alt="../_images/3a7d7826d5afd71b03431cac5442c406fb6bb84f4645da1c778d196ced49b8f1.png" src="../_images/3a7d7826d5afd71b03431cac5442c406fb6bb84f4645da1c778d196ced49b8f1.png" />
-<img alt="../_images/6ddab319eceeb31a2d891cb27a447688ff807c5f1403775ff5afd417ae240bee.png" src="../_images/6ddab319eceeb31a2d891cb27a447688ff807c5f1403775ff5afd417ae240bee.png" />
-<img alt="../_images/e79f1fb3f358851da799a38d881f74674d35965d9df0ee278a3ead82ef0af851.png" src="../_images/e79f1fb3f358851da799a38d881f74674d35965d9df0ee278a3ead82ef0af851.png" />
-<img alt="../_images/753b84b3aae7261f71ea813f54c534c787d4012836180945a6166395539b1654.png" src="../_images/753b84b3aae7261f71ea813f54c534c787d4012836180945a6166395539b1654.png" />
-<img alt="../_images/b1a2048382fa5074b99d72265220b55dc8b83ce2a787b9a4a39b764efdf3e4f7.png" src="../_images/b1a2048382fa5074b99d72265220b55dc8b83ce2a787b9a4a39b764efdf3e4f7.png" />
-<img alt="../_images/d2723cf7b869982270e142009b9c1fdbf4cc494b5564dc275f0e50402a197085.png" src="../_images/d2723cf7b869982270e142009b9c1fdbf4cc494b5564dc275f0e50402a197085.png" />
-<img alt="../_images/ccb3ca8ae15b23c9c9111039b732cb08e6a0c09910eeadc7efb70dd8c8c789f5.png" src="../_images/ccb3ca8ae15b23c9c9111039b732cb08e6a0c09910eeadc7efb70dd8c8c789f5.png" />
-<img alt="../_images/61ad0e8e78c513a25a772089730b626b3948e3c725bd9fb09361f69f5146bfd7.png" src="../_images/61ad0e8e78c513a25a772089730b626b3948e3c725bd9fb09361f69f5146bfd7.png" />
-<img alt="../_images/d1152d55a5f05171f50d8272f63b8967ad16d19427064879b17e8c2c9de877ce.png" src="../_images/d1152d55a5f05171f50d8272f63b8967ad16d19427064879b17e8c2c9de877ce.png" />
-<img alt="../_images/bc98ab2186ce7062063a0dd0584f6018e1f7e197e07d4f5a908e21aefc0563aa.png" src="../_images/bc98ab2186ce7062063a0dd0584f6018e1f7e197e07d4f5a908e21aefc0563aa.png" />
-<img alt="../_images/4bee2e9d79ad092aa222ccbcc25c772883454d5269469e2578b3688e50bceaff.png" src="../_images/4bee2e9d79ad092aa222ccbcc25c772883454d5269469e2578b3688e50bceaff.png" />
-<img alt="../_images/0f863bfe2ff7269d6b0760e02aaf439465f66fcbaff522cd2a9b0536c254fbb9.png" src="../_images/0f863bfe2ff7269d6b0760e02aaf439465f66fcbaff522cd2a9b0536c254fbb9.png" />
-<img alt="../_images/44f20745e5981eb572fa351e03a02b4929a416e41b20df774d6339719a736bfc.png" src="../_images/44f20745e5981eb572fa351e03a02b4929a416e41b20df774d6339719a736bfc.png" />
-<img alt="../_images/34e045bf1ae3a59ea6d58ae4805b48ffd30f0c68860ce115f86b72d6ea2fb7c5.png" src="../_images/34e045bf1ae3a59ea6d58ae4805b48ffd30f0c68860ce115f86b72d6ea2fb7c5.png" />
-<img alt="../_images/007107ffc3db816e33ce1dc95b8bde008e6599a00f2e2318536370c36625a84b.png" src="../_images/007107ffc3db816e33ce1dc95b8bde008e6599a00f2e2318536370c36625a84b.png" />
-<img alt="../_images/ad4b27a077a253ecd876a58583de25087b8f3b3899da84abf613b3b7a026b384.png" src="../_images/ad4b27a077a253ecd876a58583de25087b8f3b3899da84abf613b3b7a026b384.png" />
-<img alt="../_images/859d9377723d6237ad4f527fff3d8c541b4bc658f918a5dba614dd0bce699749.png" src="../_images/859d9377723d6237ad4f527fff3d8c541b4bc658f918a5dba614dd0bce699749.png" />
-<img alt="../_images/74d305353e7549daeb5c7642033871f117e67fe8c3e1ad0154bc66cc676c6c89.png" src="../_images/74d305353e7549daeb5c7642033871f117e67fe8c3e1ad0154bc66cc676c6c89.png" />
-<img alt="../_images/a9a948c544287fafbb97c3c993d6afe428fdcf92b2de8ce90a1f36b34c96a6a8.png" src="../_images/a9a948c544287fafbb97c3c993d6afe428fdcf92b2de8ce90a1f36b34c96a6a8.png" />
-<img alt="../_images/2baa3a563780eb970a593bb628e28ca9331e656312e3fbba52840bb873a5ad7c.png" src="../_images/2baa3a563780eb970a593bb628e28ca9331e656312e3fbba52840bb873a5ad7c.png" />
-<img alt="../_images/18bc05688ca289c0dfa232e0abb9ccc8a3805fe2fae46e48fd8bc4fb026bc7c5.png" src="../_images/18bc05688ca289c0dfa232e0abb9ccc8a3805fe2fae46e48fd8bc4fb026bc7c5.png" />
-<img alt="../_images/b8cdf231437a37d53bdc6caa68880d0fcc2435415910461a75252eb93c2637df.png" src="../_images/b8cdf231437a37d53bdc6caa68880d0fcc2435415910461a75252eb93c2637df.png" />
-<img alt="../_images/86b48f426545de5c3050e571836523b1765dc556bd514a40d31e446848175031.png" src="../_images/86b48f426545de5c3050e571836523b1765dc556bd514a40d31e446848175031.png" />
-<img alt="../_images/7d44eae6924b32c7d4b685fa2534838ec3c17942abef3a4f73fd20d16a9f6764.png" src="../_images/7d44eae6924b32c7d4b685fa2534838ec3c17942abef3a4f73fd20d16a9f6764.png" />
-<img alt="../_images/63798ed2dd26003021c6561d0db0a91826b19b56d40197a4f73b217c67982389.png" src="../_images/63798ed2dd26003021c6561d0db0a91826b19b56d40197a4f73b217c67982389.png" />
+<img alt="../_images/de6458dfba1229553944ffa8a7547a543489e8f49aad68a88b6a10ea8f642c6e.png" src="../_images/de6458dfba1229553944ffa8a7547a543489e8f49aad68a88b6a10ea8f642c6e.png" />
+<img alt="../_images/9674ae0d81498cc988668b69d14435020d8ee64e3d3ca31b5c26e3969569044e.png" src="../_images/9674ae0d81498cc988668b69d14435020d8ee64e3d3ca31b5c26e3969569044e.png" />
+<img alt="../_images/2ba0f43e8aed256407567b619b0e0cbdafd8f96daa9575cc70c829c225be562c.png" src="../_images/2ba0f43e8aed256407567b619b0e0cbdafd8f96daa9575cc70c829c225be562c.png" />
+<img alt="../_images/c83b80c69e2e1e31581328cc84e8ebacaa115d43e8e9e88db9d1c2e39a98edf9.png" src="../_images/c83b80c69e2e1e31581328cc84e8ebacaa115d43e8e9e88db9d1c2e39a98edf9.png" />
+<img alt="../_images/a0648f65f056ce57a4602d37c165922e7e3a654747f3f6977576ccc9a2c2468e.png" src="../_images/a0648f65f056ce57a4602d37c165922e7e3a654747f3f6977576ccc9a2c2468e.png" />
+<img alt="../_images/2a14284c3c05dd85e5ad62f5744595947d7b2f399692201a210e02a33ca1f331.png" src="../_images/2a14284c3c05dd85e5ad62f5744595947d7b2f399692201a210e02a33ca1f331.png" />
+<img alt="../_images/e23e1a76aa06bb3555d628c332544fa44871da58a22820633ed20562c0a0c1d5.png" src="../_images/e23e1a76aa06bb3555d628c332544fa44871da58a22820633ed20562c0a0c1d5.png" />
+<img alt="../_images/ca2ec4b0949da587cbeb51de219acfba7797a16c6efa16d7d35f917a84719b94.png" src="../_images/ca2ec4b0949da587cbeb51de219acfba7797a16c6efa16d7d35f917a84719b94.png" />
+<img alt="../_images/0e1454a301810357170951b2eff9e71a4e05f7a7822038390c763cae9a2f2ce3.png" src="../_images/0e1454a301810357170951b2eff9e71a4e05f7a7822038390c763cae9a2f2ce3.png" />
+<img alt="../_images/a46880a4af038049b2d4cc2d9fb836df95a15c08a6ee8226587686eb61814fe1.png" src="../_images/a46880a4af038049b2d4cc2d9fb836df95a15c08a6ee8226587686eb61814fe1.png" />
+<img alt="../_images/fe531ec9e9e7ac4a4b1ebb68cdc684b3aa3fcd1c9893b4687f1e4ed6ecc29028.png" src="../_images/fe531ec9e9e7ac4a4b1ebb68cdc684b3aa3fcd1c9893b4687f1e4ed6ecc29028.png" />
+<img alt="../_images/c76de76fa27ccc79f19278444a942d1b9e69fd2996e64b195a515fddc414e7a1.png" src="../_images/c76de76fa27ccc79f19278444a942d1b9e69fd2996e64b195a515fddc414e7a1.png" />
+<img alt="../_images/1d577f176ad9245d7a38f4bc38c038e201e6590d7ca39b3f4562027733ebac20.png" src="../_images/1d577f176ad9245d7a38f4bc38c038e201e6590d7ca39b3f4562027733ebac20.png" />
+<img alt="../_images/4718be67684375c33e636dc885c9467f56522318b5cba9e52538b1bb38d5784f.png" src="../_images/4718be67684375c33e636dc885c9467f56522318b5cba9e52538b1bb38d5784f.png" />
+<img alt="../_images/9c458ba466e1d547697de7200469f1357edd17bb3ea3a421ff4e2969f4dc7189.png" src="../_images/9c458ba466e1d547697de7200469f1357edd17bb3ea3a421ff4e2969f4dc7189.png" />
+<img alt="../_images/4cbf04813bfe5391d61d02886112f7287874582bac546f4686c0dfcf34f12288.png" src="../_images/4cbf04813bfe5391d61d02886112f7287874582bac546f4686c0dfcf34f12288.png" />
+<img alt="../_images/c77bf2e20810333efb53cc4a5c843a5c1274071a5049569c1a5ea3be6a0ac41a.png" src="../_images/c77bf2e20810333efb53cc4a5c843a5c1274071a5049569c1a5ea3be6a0ac41a.png" />
+<img alt="../_images/1ff32af20bcda033834ef1e0e37b128a85e872189551beb4c4a929208e854510.png" src="../_images/1ff32af20bcda033834ef1e0e37b128a85e872189551beb4c4a929208e854510.png" />
+<img alt="../_images/f5b78d676b60fa2d7c288ed4ee7866c7f795b579bb027d69634fc86a6e810452.png" src="../_images/f5b78d676b60fa2d7c288ed4ee7866c7f795b579bb027d69634fc86a6e810452.png" />
+<img alt="../_images/6108dce17d45529970beb30c53f6e265600ff126594c250acdd2473815d67137.png" src="../_images/6108dce17d45529970beb30c53f6e265600ff126594c250acdd2473815d67137.png" />
+<img alt="../_images/63df293aeb00f88e01748ef835430409d0078aff80a07ec9030a2213f17ce84a.png" src="../_images/63df293aeb00f88e01748ef835430409d0078aff80a07ec9030a2213f17ce84a.png" />
+<img alt="../_images/48cd245a30d38771ebddc78218e8975f7e45389e7c90d9acc3d9b63e2fafb44d.png" src="../_images/48cd245a30d38771ebddc78218e8975f7e45389e7c90d9acc3d9b63e2fafb44d.png" />
+<img alt="../_images/4dda6fa6f178fe302babc12453753a3fa51a3f4eebdfacec915aa4ef77bcd79b.png" src="../_images/4dda6fa6f178fe302babc12453753a3fa51a3f4eebdfacec915aa4ef77bcd79b.png" />
+<img alt="../_images/59eb45477bfd0cbb8fa43598e7dff9ecbd54ea771fd3afff136e768da597c672.png" src="../_images/59eb45477bfd0cbb8fa43598e7dff9ecbd54ea771fd3afff136e768da597c672.png" />
+<img alt="../_images/b46dbc9e54a399ba0ed5d4a504c3561147a24ec7a3f2e7480236f0f2dc42432f.png" src="../_images/b46dbc9e54a399ba0ed5d4a504c3561147a24ec7a3f2e7480236f0f2dc42432f.png" />
+<img alt="../_images/0172f6d5c91ce4c55eefc60874a67eac890c1925793302f89df3ca273b8c0d7d.png" src="../_images/0172f6d5c91ce4c55eefc60874a67eac890c1925793302f89df3ca273b8c0d7d.png" />
+<img alt="../_images/3fd7032163895c653d1694036ed146acce782b1e7a95bec08a7efdb121480b3e.png" src="../_images/3fd7032163895c653d1694036ed146acce782b1e7a95bec08a7efdb121480b3e.png" />
+<img alt="../_images/4a07f106080a761c4bd0b561c33723e4ded37b66f2e4e21c65ed42505b488bcc.png" src="../_images/4a07f106080a761c4bd0b561c33723e4ded37b66f2e4e21c65ed42505b488bcc.png" />
+<img alt="../_images/a92d7f74c5c032bcdab8b3515ad24976165b8071e97c02382df007ae295a540e.png" src="../_images/a92d7f74c5c032bcdab8b3515ad24976165b8071e97c02382df007ae295a540e.png" />
+<img alt="../_images/f31571c195965c9d89595dc86f842eca5304f20e56e9ebe4069354a760dd873b.png" src="../_images/f31571c195965c9d89595dc86f842eca5304f20e56e9ebe4069354a760dd873b.png" />
+<img alt="../_images/17e77f580953b04bd2b92d154baaa38304395c0115aa3e176f1e2c7ac9ccc8cd.png" src="../_images/17e77f580953b04bd2b92d154baaa38304395c0115aa3e176f1e2c7ac9ccc8cd.png" />
+<img alt="../_images/1c8c1f812681cf86996c1f3b3fcddde64252fc304953f6ba16d4653e9a8b7191.png" src="../_images/1c8c1f812681cf86996c1f3b3fcddde64252fc304953f6ba16d4653e9a8b7191.png" />
+<img alt="../_images/8f1b927827fdd4576b5b0627ca2c652bee1fd5b30a55c3079a01f1249d3a2061.png" src="../_images/8f1b927827fdd4576b5b0627ca2c652bee1fd5b30a55c3079a01f1249d3a2061.png" />
+<img alt="../_images/236c20abe0d6925850501fc2c59fa15d8ce99dc6cc919f9b7ad6b3651cebcf95.png" src="../_images/236c20abe0d6925850501fc2c59fa15d8ce99dc6cc919f9b7ad6b3651cebcf95.png" />
+<img alt="../_images/43eac2cde068af63456fa92ef01ee4014373477bd5a6fd4ea621b2a25bf3e677.png" src="../_images/43eac2cde068af63456fa92ef01ee4014373477bd5a6fd4ea621b2a25bf3e677.png" />
+<img alt="../_images/771a743331ed3abe9c335fb26fe87fcdf5a90bcaa4a5c56ee45289bb7bea44fd.png" src="../_images/771a743331ed3abe9c335fb26fe87fcdf5a90bcaa4a5c56ee45289bb7bea44fd.png" />
+<img alt="../_images/0b2d57b9983d77c3bdf4b67690b594e43f3546ce9c07d19d8ce94e42fcce6ec1.png" src="../_images/0b2d57b9983d77c3bdf4b67690b594e43f3546ce9c07d19d8ce94e42fcce6ec1.png" />
+<img alt="../_images/dee2a8012aabd49bf25df177f2f48a27de241fe5f44d27a92b25219121071023.png" src="../_images/dee2a8012aabd49bf25df177f2f48a27de241fe5f44d27a92b25219121071023.png" />
+<img alt="../_images/65cffdedfd42f45548d7e57f53d62687a06d3777e39fc810dc52021dd75d7e34.png" src="../_images/65cffdedfd42f45548d7e57f53d62687a06d3777e39fc810dc52021dd75d7e34.png" />
+<img alt="../_images/f5892e34966d069f635ac1d1cf21882f3588fa766198a8e0252c5b083134fdcf.png" src="../_images/f5892e34966d069f635ac1d1cf21882f3588fa766198a8e0252c5b083134fdcf.png" />
+<img alt="../_images/fdf100e07d468c4f2ca9cc82483d3ea4603ff3264b30405fd12745b49266c6d3.png" src="../_images/fdf100e07d468c4f2ca9cc82483d3ea4603ff3264b30405fd12745b49266c6d3.png" />
+<img alt="../_images/7e8aad90ebdf2b948217033160c8c00d7ea7ac6f98e189d0a266cf638120336c.png" src="../_images/7e8aad90ebdf2b948217033160c8c00d7ea7ac6f98e189d0a266cf638120336c.png" />
+<img alt="../_images/11d2b0d32ddfa127a33bbdd2316bef75d3acecabcde905c553cdad7e1e53b4d7.png" src="../_images/11d2b0d32ddfa127a33bbdd2316bef75d3acecabcde905c553cdad7e1e53b4d7.png" />
+<img alt="../_images/f198802e0827473a88ac05582a8829eba0b2ae10dcf0b666b83adadebab9a78e.png" src="../_images/f198802e0827473a88ac05582a8829eba0b2ae10dcf0b666b83adadebab9a78e.png" />
+<img alt="../_images/c6f8bfed3d5a17dc705a5d8c6aad0b439e2284b103e9062fd06fcfc0744538e2.png" src="../_images/c6f8bfed3d5a17dc705a5d8c6aad0b439e2284b103e9062fd06fcfc0744538e2.png" />
+<img alt="../_images/90c3f0ff510956ae1b07cbf6567412b65dc6089e80646209e0e8f448b513fc3c.png" src="../_images/90c3f0ff510956ae1b07cbf6567412b65dc6089e80646209e0e8f448b513fc3c.png" />
+<img alt="../_images/0d7b911b935a61e48df22664e35c65b517f1f1280b2dbf222ee2f80659f8a716.png" src="../_images/0d7b911b935a61e48df22664e35c65b517f1f1280b2dbf222ee2f80659f8a716.png" />
+<img alt="../_images/422440fbff4022f49e1e9481a65b45fbc8f3d4c264603cd08a0b4fe5b555697d.png" src="../_images/422440fbff4022f49e1e9481a65b45fbc8f3d4c264603cd08a0b4fe5b555697d.png" />
+<img alt="../_images/0ed825bdcdbe38517965d484e3293b242f821b974ffdbbe2189242c0dbeead95.png" src="../_images/0ed825bdcdbe38517965d484e3293b242f821b974ffdbbe2189242c0dbeead95.png" />
+<img alt="../_images/854104c062482adf10981831b485a81d8a6079eb586b86907dde7cea58ab9aa7.png" src="../_images/854104c062482adf10981831b485a81d8a6079eb586b86907dde7cea58ab9aa7.png" />
+<img alt="../_images/33ce0fc4479e05717693a14bc4253a1e07f1a72e208b299a75d3fbf587ec0c78.png" src="../_images/33ce0fc4479e05717693a14bc4253a1e07f1a72e208b299a75d3fbf587ec0c78.png" />
 </div>
 </div>
 </section>
@@ -788,8 +772,8 @@ In the paper, we initially described monitoring the rate of change in mean absol
 [4]
 </pre></div>
 </div>
-<img alt="../_images/9fe18cba85cc2d8dfffc3de2ff77a2b3d630fa39394791aef995ea0499cd34c1.png" src="../_images/9fe18cba85cc2d8dfffc3de2ff77a2b3d630fa39394791aef995ea0499cd34c1.png" />
-<img alt="../_images/cc95c532196b4ffab55e62c48517271d5ee5ee3699f1afc0d9c3abf01b54a97a.png" src="../_images/cc95c532196b4ffab55e62c48517271d5ee5ee3699f1afc0d9c3abf01b54a97a.png" />
+<img alt="../_images/eed5d154ff58c1916f57abd3543f5f65d6f690274c4287fe26bfcdbb5f89fba1.png" src="../_images/eed5d154ff58c1916f57abd3543f5f65d6f690274c4287fe26bfcdbb5f89fba1.png" />
+<img alt="../_images/7b5f927afc086222ceaa2eb1fd0cc8470ba4b93dd87e567f52a5ae07780eccf0.png" src="../_images/7b5f927afc086222ceaa2eb1fd0cc8470ba4b93dd87e567f52a5ae07780eccf0.png" />
 </div>
 </div>
 </section>
@@ -848,7 +832,7 @@ In the paper, we initially described monitoring the rate of change in mean absol
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/84f73963fa150647695e1ce5279aa3c392560ee2a279cd99b2c5c5e26f143c59.png" src="../_images/84f73963fa150647695e1ce5279aa3c392560ee2a279cd99b2c5c5e26f143c59.png" />
+<img alt="../_images/cd9c1ca33bef86910a6abe7ee6455c620285e847a9d6e170fdf90ff01c2487cf.png" src="../_images/cd9c1ca33bef86910a6abe7ee6455c620285e847a9d6e170fdf90ff01c2487cf.png" />
 </div>
 </div>
 </section>
@@ -1126,40 +1110,40 @@ In the paper, we initially described monitoring the rate of change in mean absol
 initial_watertight: 2
 </pre></div>
 </div>
-<img alt="../_images/bab5dcec22b4018c731e8d5fb10c7d53fc4f9dd1bebbe20c30bdcc057aec7218.png" src="../_images/bab5dcec22b4018c731e8d5fb10c7d53fc4f9dd1bebbe20c30bdcc057aec7218.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initiating a genus-0 mesh automatically with interval:  [3.0164365292638387, 3.0170245751500513]
+<img alt="../_images/ef44f395356d1639e8f141f1f93f9c9ddf38885e700df2c109ed19cb95331d58.png" src="../_images/ef44f395356d1639e8f141f1f93f9c9ddf38885e700df2c109ed19cb95331d58.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>initiating a genus-0 mesh automatically with interval:  [3.004936615559782, 3.0055246926182777]
 </pre></div>
 </div>
-<img alt="../_images/6ce2d5a4776f21e59e75ec87c15c1b9d70cf90a21210da83a5dec3b82966a03f.png" src="../_images/6ce2d5a4776f21e59e75ec87c15c1b9d70cf90a21210da83a5dec3b82966a03f.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GVF iter: 15/15(80754, 3)
+<img alt="../_images/fccb240220164f923379e07c1e75e930945328f6ae63e9d00c8279bbba31860f.png" src="../_images/fccb240220164f923379e07c1e75e930945328f6ae63e9d00c8279bbba31860f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GVF iter: 15/15(82482, 3)
 </pre></div>
 </div>
-<img alt="../_images/d566eacc9e6f96472e6efaea1c500e109b02eb6d02bfed58b17c7183f0eed77c.png" src="../_images/d566eacc9e6f96472e6efaea1c500e109b02eb6d02bfed58b17c7183f0eed77c.png" />
-<img alt="../_images/0d82082852682cfe746c671f26dfda4efe218fb82f9018dc6a7be6c4322eb2ea.png" src="../_images/0d82082852682cfe746c671f26dfda4efe218fb82f9018dc6a7be6c4322eb2ea.png" />
+<img alt="../_images/c3d68d7041ed86d3703784496d4d14e37f042c4ab1263f16b4fe40736d598c7e.png" src="../_images/c3d68d7041ed86d3703784496d4d14e37f042c4ab1263f16b4fe40736d598c7e.png" />
+<img alt="../_images/601bc4ff957b855880976ace0712828d3a061d061759b9e0bc1f8e71ecdad969.png" src="../_images/601bc4ff957b855880976ace0712828d3a061d061759b9e0bc1f8e71ecdad969.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
-0 4.159202728906411 changing lr:  0.75
-0 4.159202728906411
+0 4.154158643545541 changing lr:  0.75
+0 4.154158643545541
 1
 ==========================
 2
 --------------------------
-1 3.9332972708740392
+1 3.9342746914386995
 2
 ==========================
 2
 --------------------------
-2 3.9295720674250187
+2 3.928994295314892
 3
 ==========================
 2
 --------------------------
-3 3.932135719122728 changing lr:  0.5625
-3 3.932135719122728
+3 3.928257314914751
 4
 ==========================
 2
 --------------------------
-4 3.7160885223334383
+4 3.930037788270435 changing lr:  0.5625
+4 3.930037788270435
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>findfont: Font family &#39;Liberation Sans&#39; not found.
@@ -1182,7 +1166,7 @@ findfont: Font family &#39;Liberation Sans&#39; not found.
 findfont: Font family &#39;Liberation Sans&#39; not found.
 </pre></div>
 </div>
-<img alt="../_images/b442fadb07c4cb478327c34c17e93304f918db0902046971ff66412d3d9bf0f2.png" src="../_images/b442fadb07c4cb478327c34c17e93304f918db0902046971ff66412d3d9bf0f2.png" />
+<img alt="../_images/84670c32afc262a813cc88bda2ebbda5f21a89b59ead025d7280dd9c617be30a.png" src="../_images/84670c32afc262a813cc88bda2ebbda5f21a89b59ead025d7280dd9c617be30a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1289,8 +1273,8 @@ findfont: Font family &#39;Liberation Sans&#39; not found.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/796f268cfcc73b1b27bacb71d1e6625158348aa2dddc72d1163a0fa7bfa62188.png" src="../_images/796f268cfcc73b1b27bacb71d1e6625158348aa2dddc72d1163a0fa7bfa62188.png" />
-<img alt="../_images/956c01b5e00bb88b4aa1ecfd5abdb427c2341ac02fd5a555ae5c2fbb303185d2.png" src="../_images/956c01b5e00bb88b4aa1ecfd5abdb427c2341ac02fd5a555ae5c2fbb303185d2.png" />
+<img alt="../_images/6645b60cc9ae6043f466e81bee3951196a1d42749e33f7a360bd731bd77944f0.png" src="../_images/6645b60cc9ae6043f466e81bee3951196a1d42749e33f7a360bd731bd77944f0.png" />
+<img alt="../_images/763afd512c864f6f268d7de042479db47948d42547f11feba531d44c96daf042.png" src="../_images/763afd512c864f6f268d7de042479db47948d42547f11feba531d44c96daf042.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1310,8 +1294,8 @@ findfont: Font family &#39;Liberation Sans&#39; not found.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean squared error (chamfer distance):  1.7769792
-fraction total surface area change:  -0.02273273641995371
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean squared error (chamfer distance):  1.7718253
+fraction total surface area change:  -0.022664958798817025
 </pre></div>
 </div>
 </div>
@@ -1453,13 +1437,13 @@ fraction total surface area change:  -0.02273273641995371
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>number of vertices on genus-0 S_ref geometry:  (18314, 3)
-number of vertices in original surface:  (23745, 3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>number of vertices on genus-0 S_ref geometry:  (18198, 3)
+number of vertices in original surface:  (23864, 3)
 </pre></div>
 </div>
-<img alt="../_images/44f246e09590e4c3c575bc50f48967b27125d30538fb00db87ea2d4762ad1960.png" src="../_images/44f246e09590e4c3c575bc50f48967b27125d30538fb00db87ea2d4762ad1960.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean squared error (chamfer distance):  1.4498198
-fraction total surface area change:  -0.020492047006579837
+<img alt="../_images/7652527d5476e695fe3e979683c7f10c953bcedface4cd8765ff7472c7f6eaf7.png" src="../_images/7652527d5476e695fe3e979683c7f10c953bcedface4cd8765ff7472c7f6eaf7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean squared error (chamfer distance):  1.4446409
+fraction total surface area change:  -0.021063772918917697
 </pre></div>
 </div>
 </div>
@@ -1522,7 +1506,8 @@ fraction total surface area change:  -0.020492047006579837
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1586,8 +1571,8 @@ Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
   </footer>

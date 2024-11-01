@@ -16,17 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
@@ -36,10 +38,11 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -66,6 +69,7 @@
     <link rel="prev" title="Step 6: Compute topographic surface \(S(d,u,v)\) from topographic binary segmentation" href="Step6_find_topographic_surface_mesh.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -81,19 +85,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -101,7 +94,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,8 +101,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -126,7 +118,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,15 +149,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -397,24 +386,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -541,9 +522,9 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\s205272\AppData\Local\miniconda3\envs\unwrap3d_test_py310_noskfmm\lib\site-packages\scipy\sparse\_index.py:142: SparseEfficiencyWarning: Changing the sparsity structure of a csc_matrix is expensive. lil and dok are more efficient.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\fyz11\anaconda3\envs\u_Unwrap3D\lib\site-packages\scipy\sparse\_index.py:137: SparseEfficiencyWarning: Changing the sparsity structure of a csc_matrix is expensive. lil_matrix is more efficient.
   self._set_arrayXarray_sparse(i, j, x)
-100%|██████████| 10/10 [00:29&lt;00:00,  2.93s/it]
+100%|██████████| 10/10 [00:50&lt;00:00,  5.01s/it]
 </pre></div>
 </div>
 </div>
@@ -596,17 +577,17 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/e80eb8e6991a62545190f75a9b15b5a544bec55bbfe9c57e45dbaa606a9cf965.png" src="../_images/e80eb8e6991a62545190f75a9b15b5a544bec55bbfe9c57e45dbaa606a9cf965.png" />
-<img alt="../_images/c8d07b2458e6c07f822372b341a54d5a5930ef9d7f9504436cf867ccc77f1a69.png" src="../_images/c8d07b2458e6c07f822372b341a54d5a5930ef9d7f9504436cf867ccc77f1a69.png" />
-<img alt="../_images/84dd53fd47890e5ba3d97b36267b22ed858382c5bd1e0a80d2ee75c101d4ed6e.png" src="../_images/84dd53fd47890e5ba3d97b36267b22ed858382c5bd1e0a80d2ee75c101d4ed6e.png" />
-<img alt="../_images/937e85aaa783a52c0717506df05226a708b1e2dc73221cea1a0125bcee2c29c0.png" src="../_images/937e85aaa783a52c0717506df05226a708b1e2dc73221cea1a0125bcee2c29c0.png" />
-<img alt="../_images/2350f41069370e6a3e8267b6016be81f061b21bf87ef88d0fe54b2ad8d7b8721.png" src="../_images/2350f41069370e6a3e8267b6016be81f061b21bf87ef88d0fe54b2ad8d7b8721.png" />
-<img alt="../_images/f9aa68bcf97eca222c2167fecfa6a86c48f688dd4c764de7a22f54a43551f46a.png" src="../_images/f9aa68bcf97eca222c2167fecfa6a86c48f688dd4c764de7a22f54a43551f46a.png" />
-<img alt="../_images/7aa7a7b689b7df0c766f5c72cd8c779ed701a9bb93d42dd76875e32e0f6e13dc.png" src="../_images/7aa7a7b689b7df0c766f5c72cd8c779ed701a9bb93d42dd76875e32e0f6e13dc.png" />
-<img alt="../_images/edce350ecbeea05093edc11e71d0a9276ec596384f4b435f2cfab94818dcdd8c.png" src="../_images/edce350ecbeea05093edc11e71d0a9276ec596384f4b435f2cfab94818dcdd8c.png" />
-<img alt="../_images/45192331b4028bcf088f2c0509d3b6ea7af72a229b25f570cb3ac626aa1bfc4f.png" src="../_images/45192331b4028bcf088f2c0509d3b6ea7af72a229b25f570cb3ac626aa1bfc4f.png" />
-<img alt="../_images/de0689116fb7377f0e655e1bcdb0fbe25fe692741cd4ae2e14beb55f4411f7f7.png" src="../_images/de0689116fb7377f0e655e1bcdb0fbe25fe692741cd4ae2e14beb55f4411f7f7.png" />
-<img alt="../_images/3a30adc6136c4d24578e8d9e9a95db6f25b6375324ac67023f925b8e5a694e42.png" src="../_images/3a30adc6136c4d24578e8d9e9a95db6f25b6375324ac67023f925b8e5a694e42.png" />
+<img alt="../_images/1932a21a185a446230a4443fb4dc53819c06f3afc3e0ec11a498b22501cbca66.png" src="../_images/1932a21a185a446230a4443fb4dc53819c06f3afc3e0ec11a498b22501cbca66.png" />
+<img alt="../_images/09547089f89c62d193bb93d91c7514a17a7750e8e7b437d3a32c68117574a661.png" src="../_images/09547089f89c62d193bb93d91c7514a17a7750e8e7b437d3a32c68117574a661.png" />
+<img alt="../_images/6a04df22ddc4beaeadd60929ea2030012ccef48fdd7da5d3da5c8b94c6aa6b00.png" src="../_images/6a04df22ddc4beaeadd60929ea2030012ccef48fdd7da5d3da5c8b94c6aa6b00.png" />
+<img alt="../_images/001b597129cdc194daadb5f93eeb07a98deb9c6aa6d1558b475dcd3c72d8ef5b.png" src="../_images/001b597129cdc194daadb5f93eeb07a98deb9c6aa6d1558b475dcd3c72d8ef5b.png" />
+<img alt="../_images/97359d490f611b0a37eb223d9b759f38a0d31d4f7958d43e681076dde0f881a5.png" src="../_images/97359d490f611b0a37eb223d9b759f38a0d31d4f7958d43e681076dde0f881a5.png" />
+<img alt="../_images/42386d0a034b39d4ce4cb33df537183a7f9a8981e39cb77fe6ff32fd3ea4e445.png" src="../_images/42386d0a034b39d4ce4cb33df537183a7f9a8981e39cb77fe6ff32fd3ea4e445.png" />
+<img alt="../_images/a2ca21dad6b7f159612e48ea184db581c3b4800dce15c9f40b79b71fdef2af87.png" src="../_images/a2ca21dad6b7f159612e48ea184db581c3b4800dce15c9f40b79b71fdef2af87.png" />
+<img alt="../_images/5f8da072eab0dee3b890159b0e81edfb6a41c5bf196f219289efdf68e6b0d94e.png" src="../_images/5f8da072eab0dee3b890159b0e81edfb6a41c5bf196f219289efdf68e6b0d94e.png" />
+<img alt="../_images/aebd15319f5c8b25e806454ddbe85dfec59e0f9beba39bdbe814ce44154c13e7.png" src="../_images/aebd15319f5c8b25e806454ddbe85dfec59e0f9beba39bdbe814ce44154c13e7.png" />
+<img alt="../_images/0ae3538c6aef1b18ec38a32575d47cca0fe3b200f27dc6d189e2abcd8b06a7b9.png" src="../_images/0ae3538c6aef1b18ec38a32575d47cca0fe3b200f27dc6d189e2abcd8b06a7b9.png" />
+<img alt="../_images/022d0862c962c25d2ecf86b0bd5249e33dc4594c7ac0ebdf010efdc57fdfc622.png" src="../_images/022d0862c962c25d2ecf86b0bd5249e33dc4594c7ac0ebdf010efdc57fdfc622.png" />
 </div>
 </div>
 </section>
@@ -627,7 +608,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/13582aff9af084d35dbcf10a94145e0642ea21b0e26c84019d013fefb1413551.png" src="../_images/13582aff9af084d35dbcf10a94145e0642ea21b0e26c84019d013fefb1413551.png" />
+<img alt="../_images/25447f55aa16d24be61583e271579677c5bb6f34dc850e922e86791f3c225f10.png" src="../_images/25447f55aa16d24be61583e271579677c5bb6f34dc850e922e86791f3c225f10.png" />
 </div>
 </div>
 </section>
@@ -684,7 +665,7 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(71, 256, 512, 3)
 </pre></div>
 </div>
-<img alt="../_images/a225a7d598c935effca00336d17679ab8816887e8bd931a8d2238ad2316578af.png" src="../_images/a225a7d598c935effca00336d17679ab8816887e8bd931a8d2238ad2316578af.png" />
+<img alt="../_images/659f92b33d13d0b7e6a58aec1013b80defe7ce9374c17987f1b2aef09ab9e036.png" src="../_images/659f92b33d13d0b7e6a58aec1013b80defe7ce9374c17987f1b2aef09ab9e036.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>checking the shape of the output images
 (256, 512, 3)
 (256, 512, 3)
@@ -750,7 +731,8 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -810,8 +792,8 @@ Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
   </footer>

@@ -16,17 +16,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
@@ -36,10 +38,11 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -66,6 +69,7 @@
     <link rel="prev" title="Step 4: UV mapping \(S_{ref}(x,y,z)\) into 2D using its spherical parameterization, \(S_{\text{ref}}^{\Omega}(x,y,z)\)" href="Step4_uv_mapping_spherical_parameterization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -81,19 +85,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -101,7 +94,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -109,8 +101,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -126,7 +118,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,15 +149,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -397,24 +386,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -546,32 +527,32 @@ document.write(`
                                                 <span class="n">vol_shape</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">3</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># the transpose is because, we extracted its surface after transposing the binary.</span>
 <span class="n">S_mesh_pts</span> <span class="o">=</span> <span class="n">surf_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-<span class="n">topography_space</span><span class="p">,</span> <span class="p">(</span><span class="n">N_in</span><span class="p">,</span> <span class="n">N_out</span><span class="p">)</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">build_topography_space_from_Suv</span><span class="p">(</span><span class="n">S_uv</span><span class="p">,</span> 
-                                                                        <span class="n">Sref_binary</span><span class="p">,</span>
-                                                                        <span class="n">external_gradient_field</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># build if none, using Euclidean distance transform</span>
-                                                                        <span class="n">pad_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
-                                                                        <span class="n">alpha_step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># use automatic method</span>
-                                                                        <span class="n">outer_surf_pts</span> <span class="o">=</span> <span class="n">S_mesh_pts</span><span class="p">,</span>
-                                                                        <span class="n">outer_n_dists</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># let this be auto determined. </span>
-                                                                        <span class="n">outer_pad_dist</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="c1"># the leeway.</span>
-                                                                        <span class="n">outer_method</span><span class="o">=</span><span class="s1">&#39;forward_euler&#39;</span><span class="p">,</span>
-                                                                        <span class="n">outer_smooth_win_factor</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="c1"># we will smooth by minimum length of uv divide this factor. </span>
-                                                                        <span class="n">inner_n_dists</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="c1"># in voxels.</span>
-                                                                        <span class="n">inner_sdf_method</span> <span class="o">=</span> <span class="s1">&#39;harmonic&#39;</span><span class="p">,</span>
-                                                                        <span class="n">inner_source_mask</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
-                                                                        <span class="n">inner_harmonic_ds</span> <span class="o">=</span> <span class="mf">4.</span><span class="p">,</span> <span class="c1"># harmonic distance transform is memory-intensive and slow. Nearly always we must downsample so the volume is at most 256 x 256 x 256 voxels. 4x downsample by default. </span>
-                                                                        <span class="n">inner_method</span><span class="o">=</span><span class="s1">&#39;active_contours&#39;</span><span class="p">)</span>
+<span class="n">topography_space</span><span class="p">,</span> <span class="p">(</span><span class="n">N_in</span><span class="p">,</span> <span class="n">N_out</span><span class="p">),</span> <span class="n">alpha_step</span> <span class="o">=</span> <span class="n">uzip</span><span class="o">.</span><span class="n">build_topography_space_from_Suv</span><span class="p">(</span><span class="n">S_uv</span><span class="p">,</span> 
+                                                                                    <span class="n">Sref_binary</span><span class="p">,</span>
+                                                                                    <span class="n">external_gradient_field</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># build if none, using Euclidean distance transform</span>
+                                                                                    <span class="n">pad_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
+                                                                                    <span class="n">alpha_step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># use automatic method</span>
+                                                                                    <span class="n">outer_surf_pts</span> <span class="o">=</span> <span class="n">S_mesh_pts</span><span class="p">,</span>
+                                                                                    <span class="n">outer_n_dists</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># let this be auto determined. </span>
+                                                                                    <span class="n">outer_pad_dist</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="c1"># the leeway.</span>
+                                                                                    <span class="n">outer_method</span><span class="o">=</span><span class="s1">&#39;forward_euler&#39;</span><span class="p">,</span>
+                                                                                    <span class="n">outer_smooth_win_factor</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="c1"># we will smooth by minimum length of uv divide this factor. </span>
+                                                                                    <span class="n">inner_n_dists</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="c1"># in voxels.</span>
+                                                                                    <span class="n">inner_sdf_method</span> <span class="o">=</span> <span class="s1">&#39;harmonic&#39;</span><span class="p">,</span>
+                                                                                    <span class="n">inner_source_mask</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+                                                                                    <span class="n">inner_harmonic_ds</span> <span class="o">=</span> <span class="mf">4.</span><span class="p">,</span> <span class="c1"># harmonic distance transform is memory-intensive and slow. Nearly always we must downsample so the volume is at most 256 x 256 x 256 voxels. 4x downsample by default. </span>
+                                                                                    <span class="n">inner_method</span><span class="o">=</span><span class="s1">&#39;active_contours&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 45/45 [00:08&lt;00:00,  5.22it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 45/45 [00:11&lt;00:00,  3.80it/s]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 3.188556671142578
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 2.926464319229126
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 25/25 [00:12&lt;00:00,  2.02it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 25/25 [00:17&lt;00:00,  1.46it/s]
 </pre></div>
 </div>
 </div>
@@ -615,15 +596,19 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>topographic space dimension:  (71, 256, 512, 3)
-the first 45 slices are interior of S_ref
-the next 25 slices are exterior of S_ref
+the first 25 slices are interior of S_ref
+the next 45 slices are exterior of S_ref
 </pre></div>
 </div>
-<img alt="../_images/21ffb6f90312fd738133af2b7c66c97e090a35c7d581b3c16fdceab882711b5b.png" src="../_images/21ffb6f90312fd738133af2b7c66c97e090a35c7d581b3c16fdceab882711b5b.png" />
-<img alt="../_images/6953851bca91b7e7ade703beafa28b000a2df5f6cf473fac15f618cd30103ed1.png" src="../_images/6953851bca91b7e7ade703beafa28b000a2df5f6cf473fac15f618cd30103ed1.png" />
-<img alt="../_images/422d7961ec848797034ea12b8e240c4aeaeb50b6614eb1bcf5d2bc839c2a9def.png" src="../_images/422d7961ec848797034ea12b8e240c4aeaeb50b6614eb1bcf5d2bc839c2a9def.png" />
-<img alt="../_images/83ca2cc17af94e7cfebe51c905978467affde1be6f51e3e8687f196b492ae0cb.png" src="../_images/83ca2cc17af94e7cfebe51c905978467affde1be6f51e3e8687f196b492ae0cb.png" />
-<img alt="../_images/54c6d3d738c6cac9953ca4c883e670863bb959ce67b3ac20f67be0ac267bccb8.png" src="../_images/54c6d3d738c6cac9953ca4c883e670863bb959ce67b3ac20f67be0ac267bccb8.png" />
+<img alt="../_images/7dbf64a3206d31c1797cfef8d56aa05b6d8feba62ae0740f0ca6b07e301f60b9.png" src="../_images/7dbf64a3206d31c1797cfef8d56aa05b6d8feba62ae0740f0ca6b07e301f60b9.png" />
+<img alt="../_images/9d0892f58189147b469754fcb1d6416b4bdc184cfbedf14ef29a4c9a5ee691c5.png" src="../_images/9d0892f58189147b469754fcb1d6416b4bdc184cfbedf14ef29a4c9a5ee691c5.png" />
+<img alt="../_images/efed05b0c737062735d76cd84225e11e9cf1204944c01e29c94f27c7d7584744.png" src="../_images/efed05b0c737062735d76cd84225e11e9cf1204944c01e29c94f27c7d7584744.png" />
+<img alt="../_images/976fe4079f3b19d4f1f118e63e806d26b060061951b0d85f88aa124f838dbef8.png" src="../_images/976fe4079f3b19d4f1f118e63e806d26b060061951b0d85f88aa124f838dbef8.png" />
+<img alt="../_images/c77d65d2c946c2b66b01d101fae41e4a120a18b046273a1a9e56d9b67571d2f2.png" src="../_images/c77d65d2c946c2b66b01d101fae41e4a120a18b046273a1a9e56d9b67571d2f2.png" />
+<img alt="../_images/cf3d16ae05c619291dcf49cc205603a19a212ee2ea39ffec3339202e2fdbf1dd.png" src="../_images/cf3d16ae05c619291dcf49cc205603a19a212ee2ea39ffec3339202e2fdbf1dd.png" />
+<img alt="../_images/2f1cd1453d30a5a461b23eed6ea05f32498da661b52dc2fa9d30cb79b8763e0c.png" src="../_images/2f1cd1453d30a5a461b23eed6ea05f32498da661b52dc2fa9d30cb79b8763e0c.png" />
+<img alt="../_images/08aebc2174b452215adeffceb483166b1e45f004a0eb9c7148cca3820d80b1a5.png" src="../_images/08aebc2174b452215adeffceb483166b1e45f004a0eb9c7148cca3820d80b1a5.png" />
+<img alt="../_images/feb5c9f179de189597da5abc5d298d16a22adba40ed41f99b1ea82113286cd01.png" src="../_images/feb5c9f179de189597da5abc5d298d16a22adba40ed41f99b1ea82113286cd01.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -654,16 +639,12 @@ the next 25 slices are exterior of S_ref
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/977357d9ef6153091b37149fba18cf719bf3a6610132618736f670184ac3fc4b.png" src="../_images/977357d9ef6153091b37149fba18cf719bf3a6610132618736f670184ac3fc4b.png" />
-<img alt="../_images/2584cdab7c9aaab624034cdbe7878749c5213565634df4a5c9020d824b5ef071.png" src="../_images/2584cdab7c9aaab624034cdbe7878749c5213565634df4a5c9020d824b5ef071.png" />
-<img alt="../_images/6df0085fb1b0293b2e2c6979113307d595f7a15d31e1c277f49c227c02de3ae5.png" src="../_images/6df0085fb1b0293b2e2c6979113307d595f7a15d31e1c277f49c227c02de3ae5.png" />
-<img alt="../_images/99118b9b61e2bf759fb923f34cd832a394e58ebbc6bb997dd989745b84127b14.png" src="../_images/99118b9b61e2bf759fb923f34cd832a394e58ebbc6bb997dd989745b84127b14.png" />
-<img alt="../_images/3c01f36092dad797e634f57b04eac0b228b705a013c8f6743b25857e9e577dab.png" src="../_images/3c01f36092dad797e634f57b04eac0b228b705a013c8f6743b25857e9e577dab.png" />
-<img alt="../_images/59f071a9fc90a7508c44271968a2dbc3ce32bb9ca95aa65c1e969ce9cd10c0fe.png" src="../_images/59f071a9fc90a7508c44271968a2dbc3ce32bb9ca95aa65c1e969ce9cd10c0fe.png" />
-<img alt="../_images/b366d3bb77223409a557dac4aa4c582bfb757de73ae90b31c14a885aefcd8e28.png" src="../_images/b366d3bb77223409a557dac4aa4c582bfb757de73ae90b31c14a885aefcd8e28.png" />
-<img alt="../_images/04cc7327cfd7654a6c72527a527ac07566a682a4c077510bcb84f6aa42590725.png" src="../_images/04cc7327cfd7654a6c72527a527ac07566a682a4c077510bcb84f6aa42590725.png" />
-<img alt="../_images/528eebd6215dd4b704cc0b5e0a5d221f31d0ec414a75006a8649bc436516244d.png" src="../_images/528eebd6215dd4b704cc0b5e0a5d221f31d0ec414a75006a8649bc436516244d.png" />
-<img alt="../_images/4587f42cf72387ec68bbddd3c1aeafb4424f25fbdeb71b129d51db7ee83eb496.png" src="../_images/4587f42cf72387ec68bbddd3c1aeafb4424f25fbdeb71b129d51db7ee83eb496.png" />
+<img alt="../_images/74d624c9b092d78b608163da8a072cc41864bb6cbe6048bfc5f3c255b70d38b8.png" src="../_images/74d624c9b092d78b608163da8a072cc41864bb6cbe6048bfc5f3c255b70d38b8.png" />
+<img alt="../_images/d901f44505c1e1cf1aa667be3f2b533d00613843887458b60272b60ad0331cae.png" src="../_images/d901f44505c1e1cf1aa667be3f2b533d00613843887458b60272b60ad0331cae.png" />
+<img alt="../_images/76c5656dc43b2485b8f24ac03778820b1fea99bb1eed6bfff9f826dd2f84e9a6.png" src="../_images/76c5656dc43b2485b8f24ac03778820b1fea99bb1eed6bfff9f826dd2f84e9a6.png" />
+<img alt="../_images/0e56c135bf5cb21b3c520cbd25546e18f3cc9f81cac672b9a68e07aaead7ff2f.png" src="../_images/0e56c135bf5cb21b3c520cbd25546e18f3cc9f81cac672b9a68e07aaead7ff2f.png" />
+<img alt="../_images/8a0617cc46aab6dd5f4e6970748dfd20d4450a27e8147d9dd1ca9bde58218f1c.png" src="../_images/8a0617cc46aab6dd5f4e6970748dfd20d4450a27e8147d9dd1ca9bde58218f1c.png" />
+<img alt="../_images/38b2c66efdb8b020d1b9fb393f7d924445dfacc9ff7902792dbec58fe373113b.png" src="../_images/38b2c66efdb8b020d1b9fb393f7d924445dfacc9ff7902792dbec58fe373113b.png" />
 </div>
 </div>
 </section>
@@ -703,7 +684,7 @@ the next 25 slices are exterior of S_ref
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/e9af120bf54bc6a31e35ddd26f5161e68ab8cd263d8c891f749fe59e7267a5b9.png" src="../_images/e9af120bf54bc6a31e35ddd26f5161e68ab8cd263d8c891f749fe59e7267a5b9.png" />
+<img alt="../_images/d72b9ee46d7947d12de0a1dd5a3c1f1297efa86e0242f320a15f444fd32191d0.png" src="../_images/d72b9ee46d7947d12de0a1dd5a3c1f1297efa86e0242f320a15f444fd32191d0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -750,7 +731,7 @@ the next 25 slices are exterior of S_ref
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/d0e05711ab20d16d02081679b2bdfa5c0adb40ee501a4a11462f30f60e25c255.png" src="../_images/d0e05711ab20d16d02081679b2bdfa5c0adb40ee501a4a11462f30f60e25c255.png" />
+<img alt="../_images/e2ebf18ce52868ac5d328ce98f330d87d1fd467fd1553d831b759d78bb2e5d19.png" src="../_images/e2ebf18ce52868ac5d328ce98f330d87d1fd467fd1553d831b759d78bb2e5d19.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -784,7 +765,7 @@ the next 25 slices are exterior of S_ref
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/9fb73f61b7b431d9d8b51c49fcf2bb71d31143c4b96aa55f8fe4212ec52b87c4.png" src="../_images/9fb73f61b7b431d9d8b51c49fcf2bb71d31143c4b96aa55f8fe4212ec52b87c4.png" />
+<img alt="../_images/dc924b027a506ceb0606fe55f8bd22cef35e88edd52237afa3d4d3f05e305805.png" src="../_images/dc924b027a506ceb0606fe55f8bd22cef35e88edd52237afa3d4d3f05e305805.png" />
 </div>
 </div>
 </section>
@@ -808,7 +789,7 @@ the next 25 slices are exterior of S_ref
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\s205272\AppData\Local\Temp\ipykernel_14988\3525422746.py:9: UserWarning: example_results\bleb_example\step5_topographic_space\topographic_intensity_I_img.tif is a low contrast image
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\fyz11\AppData\Local\Temp\ipykernel_2320\3525422746.py:9: UserWarning: example_results\bleb_example\step5_topographic_space\topographic_intensity_I_img.tif is a low contrast image
   skio.imsave(os.path.join(savefolder, &#39;topographic_intensity_I_img.tif&#39;),
 </pre></div>
 </div>
@@ -842,8 +823,8 @@ the next 25 slices are exterior of S_ref
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/0155392e2c83a82f8b8fa4cb391dc259d95126dc57d160270e42e2396c827005.png" src="../_images/0155392e2c83a82f8b8fa4cb391dc259d95126dc57d160270e42e2396c827005.png" />
-<img alt="../_images/3b85b3bbe2aa9c7e7774f5d31d66c0108a0b91f12aac5fe67b968f664e53f707.png" src="../_images/3b85b3bbe2aa9c7e7774f5d31d66c0108a0b91f12aac5fe67b968f664e53f707.png" />
+<img alt="../_images/3e0adfb789966537a029910d0e0e8ede5c7b3467624a8bc3092662360b1ef9e9.png" src="../_images/3e0adfb789966537a029910d0e0e8ede5c7b3467624a8bc3092662360b1ef9e9.png" />
+<img alt="../_images/49a54813f5e22b27285b658304675567ea2ca5e3a5eeed73f7aa58748c493348.png" src="../_images/49a54813f5e22b27285b658304675567ea2ca5e3a5eeed73f7aa58748c493348.png" />
 </div>
 </div>
 </section>
@@ -885,8 +866,8 @@ the next 25 slices are exterior of S_ref
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/f3d040ac54757b5092d3b1ff805c83a088e02683f69894de6e957a8e433dde3f.png" src="../_images/f3d040ac54757b5092d3b1ff805c83a088e02683f69894de6e957a8e433dde3f.png" />
-<img alt="../_images/08633b94362e50475ccedc5f7fdccf6e0bb1eedf7e85810009db2b48d8259632.png" src="../_images/08633b94362e50475ccedc5f7fdccf6e0bb1eedf7e85810009db2b48d8259632.png" />
+<img alt="../_images/875d6bf592938b6d3abcd20069ad9ca2003d783f2cd3db7b450ab15e2928108d.png" src="../_images/875d6bf592938b6d3abcd20069ad9ca2003d783f2cd3db7b450ab15e2928108d.png" />
+<img alt="../_images/4c4726ffc0ef1ab324cee78b553a9fb80f5d66395105febb3d5b19f51a33fdb0.png" src="../_images/4c4726ffc0ef1ab324cee78b553a9fb80f5d66395105febb3d5b19f51a33fdb0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -901,7 +882,8 @@ the next 25 slices are exterior of S_ref
              <span class="p">{</span><span class="s1">&#39;topographic_map&#39;</span><span class="p">:</span> <span class="n">topography_space</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> 
               <span class="s1">&#39;uv_map_file&#39;</span><span class="p">:</span> <span class="n">uv_file</span><span class="p">,</span> 
               <span class="s1">&#39;N_inside&#39;</span><span class="p">:</span> <span class="n">N_in</span><span class="p">,</span> 
-              <span class="s1">&#39;N_outside&#39;</span><span class="p">:</span> <span class="n">N_out</span><span class="p">})</span> 
+              <span class="s1">&#39;N_outside&#39;</span><span class="p">:</span> <span class="n">N_out</span><span class="p">,</span>
+              <span class="s1">&#39;alpha_step&#39;</span><span class="p">:</span> <span class="n">alpha_step</span><span class="p">})</span> 
 </pre></div>
 </div>
 </div>
@@ -965,7 +947,8 @@ the next 25 slices are exterior of S_ref
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1033,8 +1016,8 @@ Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
   </footer>
