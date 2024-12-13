@@ -1,4 +1,4 @@
-jupyter-book build docs/
+jupyter-book build docs/ --html
 
 open docs/_build/html/index.html
 
