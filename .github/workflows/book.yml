@@ -12,11 +12,7 @@ jobs:
   deploy-book:
     runs-on: windows-latest
 
-    permissions:
-      contents: write  # To push a branch 
-      pages: write
-      repository-projects: write
-      deployments: write
+    permissions: write-all
 
     steps:
     - uses: actions/checkout@v2
