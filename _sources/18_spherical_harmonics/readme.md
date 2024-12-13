@@ -1,1 +1,0 @@
-# Harmonics analysis of surfaces
