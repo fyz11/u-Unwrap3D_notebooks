@@ -14,6 +14,7 @@ jobs:
 
     permissions:
       contents: write
+      pages: write
 
     steps:
     - uses: actions/checkout@v2
@@ -33,7 +34,7 @@ jobs:
     # Build the book
     - name: Build the book
       run: |
-        jupyter-book build docs/
+        jupyter-book build -W -n --keep-going docs/ --builder html
 
     # Push the book's HTML to github-pages
     - name: GitHub Pages action
