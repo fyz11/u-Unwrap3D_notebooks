@@ -34,7 +34,7 @@ jobs:
     # Build the book
     - name: Build the book
       run: |
-        jupyter-book build docs/ --keep-going docs/ --builder html
+        jupyter-book build --keep-going --all --builder html docs/
 
     # Push the book's HTML to github-pages
     - name: GitHub Pages action
