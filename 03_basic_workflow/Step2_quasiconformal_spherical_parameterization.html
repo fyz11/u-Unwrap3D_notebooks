@@ -1,0 +1,848 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Step 2: Quasi-conformal spherical parameterization of the genus-0 reference surface, \(S_{ref}(x,y,z)\) &#8212; u-Unwrap3D Analysis Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03_basic_workflow/Step2_quasiconformal_spherical_parameterization';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, \(S_{\text{ref}}(x,y,z)\)" href="Step3_equiareal_spherical_parameterization.html" />
+    <link rel="prev" title="Step 1: Find and create a genus-0 reference surface, \(S_{ref}(x,y,z)\)" href="Step1_find_reference_surface.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">u-Unwrap3D Analysis Notebooks</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    u-Unwrap3D Analysis Notebooks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Basics</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_introduction/readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_installation/readme.html">Installation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Standard Workflow</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Standard workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Step0_find_cell_surface_from_segmentation.html">Step 0: Segmenting a single cell from a volume image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Step1_find_reference_surface.html">Step 1: Find and create a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Step 2: Quasi-conformal spherical parameterization of the genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="Step4_uv_mapping_spherical_parameterization.html">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> into 2D using its spherical parameterization, <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\Omega}(x,y,z)\)</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="Step5_building_topography_surface.html">Step 5: Building the topographic <span class="math notranslate nohighlight">\((d,u,v)\)</span> space of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="Step6_find_topographic_surface_mesh.html">Step 6: Compute topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> from topographic binary segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Step7_topographic_cMCF_to_flatten.html">Step 7: Flattening the topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> onto the 2D plane</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="full_example_cells/readme.html">Full examples of standard workflow</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="full_example_cells/unwrap_bleb_cell.html">Example 1: Cell with blebs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="full_example_cells/unwrap_lamellipodia_cell.html">Example 2: Cell with lamellipodia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="full_example_cells/unwrap_filopodia_cell.html">Example 3: Cell with filopodia</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Customizing the standard workflow to input data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../04_customizing_basic_workflow/readme.html">Customizing the standard workflow for downstream analysis</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">In-depth Breakdown of Mapping Steps</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../05_obtaining_surfaces/readme.html">Extracting surfaces from microscopy imaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06_find_reference_surface/readme.html">Finding the best reference shape for the analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07_uv_parameterization/readme.html">UV unwrapping of spherical parameterizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08_building_topography_space/readme.html">Building topography space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09_spherical_parameterization/readme.html">Spherical parameterizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11_flatten_topography_surface/readme.html">Flattening topography surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Transporting measurements between representations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../22_transporting_measurements/readme.html">Transferring measurements across meshes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Applying u-Unwrap3D to live-cell imaging</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../16_shape_registration/readme.html">Shape registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15_compute_distortion_corrected_uv_measurements/readme.html">Computing distortion-corrected measurements for analysis in uv and topopraphy space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../20_surface_flow_analytics/readme.html">Motion and information flow of measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../19_tracking_in_uv/readme.html">Tracking protrusions in 2D uv space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../21_tracking_analytics/readme.html">Analyzing temporally tracked protrusions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Applications of different surface representations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../13_segmenting_surface_protrusions/readme.html">Segmenting surface protrusions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../13_segmenting_surface_protrusions/binary_segment_protrusions.html">Binary protrusion segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../13_segmenting_surface_protrusions/instance_segment_protrusions.html">Instance protrusion segmentation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../14_volumizing_reference_and_protrusions/readme.html">Decomposing surface into reference and protrusion meshes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../18_spherical_harmonics/readme.html">Harmonics analysis of surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Mapping open 3D surfaces into 2D</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../12_unwrapping_individual_protrusions/readme.html">Unwrapping individual protrusions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../12_unwrapping_individual_protrusions/unwrap_lamellipodia_protrusion.html">Example: Unwrapping a lamellipodia</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_introduction/glossary.html">Glossary</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks/issues/new?title=Issue%20on%20page%20%2F03_basic_workflow/Step2_quasiconformal_spherical_parameterization.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/03_basic_workflow/Step2_quasiconformal_spherical_parameterization.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Step 2: Quasi-conformal spherical parameterization of the genus-0 reference surface, S_{ref}(x,y,z)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-genus-0-s-ref-x-y-z-mesh">1. Load genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> mesh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conformal-mapping-of-s-ref-x-y-z-onto-the-3d-unit-sphere-to-get-s-text-ref-mathcal-q-x-y-z">2. Conformal mapping of  <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> onto the 3D unit sphere to get <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\mathcal{Q}}(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-of-the-spherical-parameterization">3. Quantifying and colormapping the conformal and equiareal distortion error of the spherical parameterization</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="step-2-quasi-conformal-spherical-parameterization-of-the-genus-0-reference-surface-s-ref-x-y-z">
+<h1>Step 2: Quasi-conformal spherical parameterization of the genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span><a class="headerlink" href="#step-2-quasi-conformal-spherical-parameterization-of-the-genus-0-reference-surface-s-ref-x-y-z" title="Link to this heading">#</a></h1>
+<p>Theoretically, any genus-0 3D surface can be mapped to a sphere. Practically, there is no unique way to do this. Various ways can be found to do this in the literature. What is good depends on the downstream application and whether we care about speed and size of mesh (i.e. the number of vertices and faces).</p>
+<p>u-Unwrap3D implements a fast iterative relaxation algorithm for quasi-conformal spherical parameterization. This does not give the lowest conformal error however it results for better triangle quality to enable area distortion relaxation in the next step to get a quasi-equiareal parameterization.</p>
+<p><strong>Note:</strong> u-Unwrap3D also provides implementation of the spherical quasiconformal map of <a class="reference external" href="https://arxiv.org/abs/1203.6819">Choi et al.</a> which guarantees a bijective mapping with no foldovers, and has lower conformal error but we find yields poorer triangle quality (smaller area triangles and smaller minimum angle), and is very slow, scaling poorly for larger meshes (&gt;100k vertices).</p>
+<section id="load-genus-0-s-ref-x-y-z-mesh">
+<h2>1. Load genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> mesh<a class="headerlink" href="#load-genus-0-s-ref-x-y-z-mesh" title="Link to this heading">#</a></h2>
+<p>We assume the user has worked through step 1 which generates and saves a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span>  for an input cell surface mesh, <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> to the folder <code class="docutils literal notranslate"><span class="pre">example_results/bleb_example/step1_cMCF_reference</span></code>. Moreover this surface has been colored by the mean curvature of <span class="math notranslate nohighlight">\(S(x,y,z)\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Utility_Functions.file_io</span> <span class="k">as</span> <span class="nn">fio</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Mesh.meshtools</span> <span class="k">as</span> <span class="nn">meshtools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span> 
+<span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">spio</span>
+<span class="kn">import</span> <span class="nn">igl</span>
+
+<span class="c1"># example cell used</span>
+<span class="n">imgfolder</span> <span class="o">=</span> <span class="s1">&#39;../../data/img&#39;</span>
+<span class="n">imgfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imgfolder</span><span class="p">,</span> <span class="s1">&#39;bleb_example.tif&#39;</span><span class="p">)</span>
+<span class="n">basefname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">imgfile</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get the filename with extension</span>
+
+<span class="c1"># create the analysis save folder for this step</span>
+<span class="n">savefolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;example_results&#39;</span><span class="p">,</span> 
+                         <span class="n">basefname</span><span class="p">,</span>
+                         <span class="s1">&#39;step2_conformal_sphere_param&#39;</span><span class="p">)</span>
+<span class="n">fio</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">savefolder</span><span class="p">)</span> <span class="c1"># auto generates the specified folder structure if doesn&#39;t currently exist.</span>
+
+
+<span class="c1"># load the pre-computed genus-0 reference surface mesh for the cell</span>
+<span class="n">S_ref_folder</span> <span class="o">=</span> <span class="s1">&#39;example_results/</span><span class="si">%s</span><span class="s1">/step1_cMCF_reference&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)</span>
+<span class="n">S_ref_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">S_ref_folder</span><span class="p">,</span> 
+                            <span class="s1">&#39;unwrap_cMCF_Sref_mesh_H_color.obj&#39;</span><span class="p">)</span> 
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">S_ref_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="conformal-mapping-of-s-ref-x-y-z-onto-the-3d-unit-sphere-to-get-s-text-ref-mathcal-q-x-y-z">
+<h2>2. Conformal mapping of  <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> onto the 3D unit sphere to get <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\mathcal{Q}}(x,y,z)\)</span><a class="headerlink" href="#conformal-mapping-of-s-ref-x-y-z-onto-the-3d-unit-sphere-to-get-s-text-ref-mathcal-q-x-y-z" title="Link to this heading">#</a></h2>
+<p>We will perform the spherical mapping using the i) recommended iterative approach and ii) the quasiconformal mapping of <a class="reference external" href="https://arxiv.org/abs/1203.6819">Choi et al.</a> to show the difference in timing and in the deformation errors.</p>
+<p><strong>i) Iterative conformal spherical map (preferred if performing equiareal parameterization, and large meshes)</strong></p>
+<p>This method first directly projects the mesh onto the unit sphere by normalizing the vertex displacement relative to the mesh centroid <span class="math notranslate nohighlight">\((v-c)\)</span>, i.e. <span class="math notranslate nohighlight">\(v\leftarrow \frac{v-c}{|v-c|}\)</span>. We then apply cMCF iteratively to ‘untangle’ the mesh directly on the sphere using the uniform Laplacian, and the mass matrix from the robust Laplacian construction. The result is always a spherical map. A valid bijective spherical map is one with no foldovers i.e no inverted faces. For most shapes, we get fast convergence within 5 iterations.</p>
+<p><strong>ii) Direct quasiconformal spherical map of <a class="reference external" href="https://arxiv.org/abs/1203.6819">Choi et al.</a></strong></p>
+<p>This method leverages stereographic projection and attempts to find a quasiconformal map by solving the Beltrami equation. Not robust for triangle quality. Will error for non genus-0 input, is memory-intensive and slow. Result can be more challenging to apply area-distortion relaxation to (more parameter tuning). Use for simpler or more downsamples meshes, or when the objective is to get a lower quasiconformal error.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># explicitly expose the vertex and faces.</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+
+<span class="c1"># import time module for timing</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">1) Iterative conformal spherical map (*recommended default*, faster, more robust, better triangle quality)</span>
+<span class="sd">&quot;&quot;&quot;</span> 
+<span class="n">t1_iterative</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">sphere_xyz_iterative</span><span class="p">,</span> <span class="n">n_inverted_faces</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">iterative_tutte_spherical_map</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">f</span><span class="p">,</span> 
+                                                               <span class="n">deltaL</span> <span class="o">=</span> <span class="mf">5e-3</span><span class="p">,</span> <span class="c1"># like the cMCF, controls speed of convergence. </span>
+                                                               <span class="n">min_iter</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="c1"># return as soon as iteration number &gt; min_iter, and number of inverted faces is 0  </span>
+                                                               <span class="n">max_iter</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="c1"># run this many iterations to see if number of inverted reduces to 0</span>
+                                                               <span class="n">mollify_factor</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> 
+                                                               <span class="n">scale</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span> <span class="c1"># gives just the vertices.</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">n_inverted_faces</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># the output takes the last iteration. </span>
+<span class="n">t2_iterative</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;printed number of inverted faces per iteration&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">n_inverted_faces</span><span class="p">)</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">2) Direct quasiconformal spherical map of Choi et al. (only for obtaining lower conformal error) </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">t1_direct</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">sphere_xyz_direct</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">direct_spherical_conformal_map</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">f</span><span class="p">)</span> <span class="c1"># gives just the vertices.</span>
+<span class="n">t2_direct</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;recommended iterative conformal: &#39;</span><span class="p">,</span> <span class="n">t2_iterative</span><span class="o">-</span><span class="n">t1_iterative</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Choi et al. direct conformal: &#39;</span><span class="p">,</span> <span class="n">t2_direct</span><span class="o">-</span><span class="n">t1_direct</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>printed number of inverted faces per iteration
+[0, 0, 0, 0, 0, 0]
+recommended iterative conformal:  4.810135841369629
+Choi et al. direct conformal:  14.325770616531372
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create mesh for iterative</span>
+<span class="n">sphere_mesh_iterative</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># this helps to copy the existing colormap</span>
+<span class="n">sphere_mesh_iterative</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">sphere_xyz_iterative</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">sphere_mesh_iterative</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> <span class="s1">&#39;iterative-conformal_sphere_param_Sref_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+<span class="n">triangle_props_iterative</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">measure_triangle_props</span><span class="p">(</span><span class="n">sphere_mesh_iterative</span><span class="p">,</span> <span class="n">clean</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;triangle props iterative:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">triangle_props_iterative</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=========================&#39;</span><span class="p">)</span>
+
+<span class="c1"># create mesh for Choi direct method</span>
+<span class="n">sphere_mesh_direct</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># this helps to copy the existing colormap</span>
+<span class="n">sphere_mesh_direct</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">sphere_xyz_direct</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">sphere_mesh_direct</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> <span class="s1">&#39;direct-conformal_sphere_param_Sref_</span><span class="si">%s</span><span class="s1">.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+<span class="n">triangle_props_direct</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">measure_triangle_props</span><span class="p">(</span><span class="n">sphere_mesh_direct</span><span class="p">,</span> <span class="n">clean</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;triangle props direct:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">triangle_props_direct</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=========================&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>triangle props iterative:
+{&#39;min_angle&#39;: 37.72755825012703, &#39;avg_angle&#39;: 60.00000000000001, &#39;max_angle&#39;: 96.77951462608578, &#39;std_dev_angle&#39;: 4.602416979613976, &#39;min_quality&#39;: 0.7544342656414823, &#39;avg_quality&#39;: 0.9904537832406153, &#39;max_quality&#39;: 0.9999998443829548, &#39;quality&#39;: array([0.99022527, 0.98870827, 0.98488669, ..., 0.98583723, 0.9777652 ,
+       0.99995536]), &#39;angles&#39;: array([[0.99094327, 0.98729905, 1.16335033],
+       [1.16315121, 0.9516156 , 1.02682584],
+       [0.9635418 , 0.98645905, 1.1915918 ],
+       ...,
+       [1.18472648, 1.00075562, 0.95611055],
+       [0.92452656, 0.99967113, 1.21739496],
+       [1.03953202, 1.05172123, 1.0503394 ]])}
+=========================
+triangle props direct:
+{&#39;min_angle&#39;: 30.930843003120742, &#39;avg_angle&#39;: 60.00000000000001, &#39;max_angle&#39;: 98.11151126528594, &#39;std_dev_angle&#39;: 7.829824117694427, &#39;min_quality&#39;: 0.6931658075816856, &#39;avg_quality&#39;: 0.9728591140223615, &#39;max_quality&#39;: 0.9999983516674269, &#39;quality&#39;: array([0.99567969, 0.99565083, 0.99566051, ..., 0.96767302, 0.91652935,
+       0.90920887]), &#39;angles&#39;: array([[1.09158677, 0.97249596, 1.07750992],
+       [1.07778518, 1.09157683, 0.97223065],
+       [1.09195766, 0.97236561, 1.07726938],
+       ...,
+       [1.01109782, 0.88512555, 1.24536928],
+       [0.74086023, 1.09982487, 1.30090755],
+       [1.08785054, 1.32211514, 0.73162698]])}
+=========================
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Plotting using matplotlib for comparison. The final version should have vertices more evenly distributed over the sphere. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.plotting</span> <span class="k">as</span> <span class="nn">plotting</span> 
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">plt</span> 
+
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># plot every just so its not fully dense in the plot so we don&#39;t see anything!</span>
+
+<span class="c1"># plotting the before</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Iterative spherical parameterization&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">sphere_mesh_iterative</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+           <span class="n">sphere_mesh_iterative</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+           <span class="n">sphere_mesh_iterative</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+           <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+           <span class="n">c</span><span class="o">=</span><span class="n">sphere_mesh_iterative</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># plotting the after</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Direct spherical parameterization&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">(</span><span class="n">aspect</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">sphere_mesh_direct</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+           <span class="n">sphere_mesh_direct</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+           <span class="n">sphere_mesh_direct</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+           <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+           <span class="n">c</span><span class="o">=</span><span class="n">sphere_mesh_direct</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/84d5450dbe26e807ea57e2d12d497b8ac8357f6121f0000da0c5da96db8872c1.png" src="../_images/84d5450dbe26e807ea57e2d12d497b8ac8357f6121f0000da0c5da96db8872c1.png" />
+<img alt="../_images/ba5a1d96610831293866495150f25416e24ebea531f9b54d65440d931561f62b.png" src="../_images/ba5a1d96610831293866495150f25416e24ebea531f9b54d65440d931561f62b.png" />
+</div>
+</div>
+</section>
+<section id="quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-of-the-spherical-parameterization">
+<h2>3. Quantifying and colormapping the conformal and equiareal distortion error of the spherical parameterization<a class="headerlink" href="#quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-of-the-spherical-parameterization" title="Link to this heading">#</a></h2>
+<p>We compute the conformal and equiareal errors for the iterative spherical parameterization to be used in the next step. We will also show how to map this onto the mesh.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.colors</span> <span class="k">as</span> <span class="nn">vol_colors</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span> 
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Conformal error</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">conformal_error</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">quasi_conformal_error</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> 
+                                                  <span class="n">sphere_xyz_iterative</span><span class="p">,</span> 
+                                                  <span class="n">f</span><span class="p">)</span>
+<span class="c1"># color the error</span>
+<span class="n">conformal_error_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">conformal_error</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+
+<span class="n">sphere_conformal_error</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">create_mesh</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">sphere_xyz_iterative</span><span class="p">,</span>
+                                               <span class="n">faces</span><span class="o">=</span><span class="n">f</span><span class="p">,</span>
+                                               <span class="n">face_colors</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mi">255</span><span class="o">*</span><span class="n">conformal_error_colors</span><span class="p">[</span><span class="o">...</span><span class="p">,:</span><span class="mi">3</span><span class="p">]))</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">sphere_conformal_error</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                                           <span class="s1">&#39;conformal_sphere_param_Sref_</span><span class="si">%s</span><span class="s1">_conformal-error.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Area distortion error</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">area_distortion_error</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">area_distortion_measure</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> 
+                                                          <span class="n">sphere_xyz_iterative</span><span class="p">,</span> 
+                                                          <span class="n">f</span><span class="p">)</span>  
+<span class="n">area_distortion_error_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">area_distortion_error</span><span class="p">),</span> 
+                                                     <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span> 
+                                                     <span class="n">vmin</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span> 
+                                                     <span class="n">vmax</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">sphere_areal_error</span> <span class="o">=</span> <span class="n">sphere_conformal_error</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">sphere_areal_error</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">face_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mi">255</span><span class="o">*</span><span class="n">area_distortion_error_colors</span><span class="p">[</span><span class="o">...</span><span class="p">,:</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">sphere_areal_error</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                                       <span class="s1">&#39;conformal_sphere_param_Sref_</span><span class="si">%s</span><span class="s1">_log_equiareal-error.obj&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">basefname</span><span class="p">)))</span>
+
+<span class="c1"># save the statistics</span>
+<span class="n">spio</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                          <span class="s1">&#39;conformal_sphere-param_conformal_area_errors.mat&#39;</span><span class="p">),</span> 
+                          <span class="p">{</span><span class="s1">&#39;conformal_Jac_eigvals&#39;</span><span class="p">:</span> <span class="n">conformal_error</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> 
+                          <span class="s1">&#39;conformal_stretch_factors&#39;</span><span class="p">:</span> <span class="n">conformal_error</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> 
+                          <span class="s1">&#39;mean_conformal_stretch_factors&#39;</span><span class="p">:</span> <span class="n">conformal_error</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> 
+                          <span class="s1">&#39;conformal_tri_area_pairs&#39;</span><span class="p">:</span> <span class="n">conformal_error</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> 
+                          <span class="s1">&#39;conformal_area_distortion_factor&#39;</span><span class="p">:</span> <span class="n">area_distortion_error</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now also compute the errors for the Choi direct quasiconformal map for comparison.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_conformal_error_iterative</span> <span class="o">=</span> <span class="n">conformal_error</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># ideal is 1</span>
+<span class="n">mean_equiareal_error_iterative</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">area_distortion_error</span><span class="p">)</span> <span class="c1"># ideal is 1 </span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;quasiconformal error of iterative method:&#39;</span><span class="p">,</span> <span class="n">mean_conformal_error_iterative</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mean equiareal error of iterative method:&#39;</span><span class="p">,</span> <span class="n">mean_equiareal_error_iterative</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-----------------------------------------&#39;</span><span class="p">)</span>
+
+<span class="c1"># compute mean conformal and equiareal for direct method</span>
+<span class="n">conformal_error_direct</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">quasi_conformal_error</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> 
+                                                        <span class="n">sphere_xyz_direct</span><span class="p">,</span> 
+                                                        <span class="n">f</span><span class="p">)</span>
+<span class="n">area_distortion_error_direct</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">area_distortion_measure</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> 
+                                                                <span class="n">sphere_xyz_direct</span><span class="p">,</span> 
+                                                                <span class="n">f</span><span class="p">)</span>
+<span class="n">mean_conformal_error_direct</span> <span class="o">=</span> <span class="n">conformal_error_direct</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># ideal is 1</span>
+<span class="n">mean_equiareal_error_direct</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">area_distortion_error_direct</span><span class="p">)</span> <span class="c1"># ideal is 1 </span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;quasiconformal error of direct method:&#39;</span><span class="p">,</span> <span class="n">mean_conformal_error_direct</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mean equiareal error of direct method:&#39;</span><span class="p">,</span> <span class="n">mean_equiareal_error_direct</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-----------------------------------------&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>quasiconformal error of iterative method: 1.1873036453396435
+mean equiareal error of iterative method: 1.4135101985988752
+-----------------------------------------
+quasiconformal error of direct method: 1.0192368494880721
+mean equiareal error of direct method: 1.5193297616244414
+-----------------------------------------
+</pre></div>
+</div>
+</div>
+</div>
+<p>The direct quasiconformal map achieves lower conformal error but at the expense of greater area distortion.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./03_basic_workflow"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Step1_find_reference_surface.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Step 1: Find and create a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Step3_equiareal_spherical_parameterization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-genus-0-s-ref-x-y-z-mesh">1. Load genus-0 <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> mesh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conformal-mapping-of-s-ref-x-y-z-onto-the-3d-unit-sphere-to-get-s-text-ref-mathcal-q-x-y-z">2. Conformal mapping of  <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> onto the 3D unit sphere to get <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\mathcal{Q}}(x,y,z)\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifying-and-colormapping-the-conformal-and-equiareal-distortion-error-of-the-spherical-parameterization">3. Quantifying and colormapping the conformal and equiareal distortion error of the spherical parameterization</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Felix Y. Zhou
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>
+Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/main/LICENSE" target="_blank">GPL3</a> unless mentioned otherwise. 
+</p>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1435 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Binary protrusion segmentation &#8212; u-Unwrap3D Analysis Notebooks</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '13_segmenting_surface_protrusions/binary_segment_protrusions';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Instance protrusion segmentation" href="instance_segment_protrusions.html" />
+    <link rel="prev" title="Segmenting surface protrusions" href="readme.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">u-Unwrap3D Analysis Notebooks</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    u-Unwrap3D Analysis Notebooks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Basics</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_introduction/readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02_installation/readme.html">Installation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Standard Workflow</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../03_basic_workflow/readme.html">Standard workflow for unwrapping 3D surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_basic_workflow/Step0_find_cell_surface_from_segmentation.html">Step 0: Segmenting a single cell from a volume image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_basic_workflow/Step1_find_reference_surface.html">Step 1: Find and create a genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_basic_workflow/Step2_quasiconformal_spherical_parameterization.html">Step 2: Quasi-conformal spherical parameterization of the genus-0 reference surface, <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_basic_workflow/Step3_equiareal_spherical_parameterization.html">Step 3: Quasi-equiareal spherical parameterization of a genus-0 surface, <span class="math notranslate nohighlight">\(S_{\text{ref}}(x,y,z)\)</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_basic_workflow/Step4_uv_mapping_spherical_parameterization.html">Step 4: UV mapping <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span> into 2D using its spherical parameterization, <span class="math notranslate nohighlight">\(S_{\text{ref}}^{\Omega}(x,y,z)\)</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_basic_workflow/Step5_building_topography_surface.html">Step 5: Building the topographic <span class="math notranslate nohighlight">\((d,u,v)\)</span> space of <span class="math notranslate nohighlight">\(S_{ref}(x,y,z)\)</span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_basic_workflow/Step6_find_topographic_surface_mesh.html">Step 6: Compute topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> from topographic binary segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_basic_workflow/Step7_topographic_cMCF_to_flatten.html">Step 7: Flattening the topographic surface <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> onto the 2D plane</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../03_basic_workflow/full_example_cells/readme.html">Full examples of standard workflow</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/full_example_cells/unwrap_bleb_cell.html">Example 1: Cell with blebs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/full_example_cells/unwrap_lamellipodia_cell.html">Example 2: Cell with lamellipodia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../03_basic_workflow/full_example_cells/unwrap_filopodia_cell.html">Example 3: Cell with filopodia</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Customizing the standard workflow to input data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../04_customizing_basic_workflow/readme.html">Customizing the standard workflow for downstream analysis</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">In-depth Breakdown of Mapping Steps</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../05_obtaining_surfaces/readme.html">Extracting surfaces from microscopy imaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06_find_reference_surface/readme.html">Finding the best reference shape for the analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07_uv_parameterization/readme.html">UV unwrapping of spherical parameterizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08_building_topography_space/readme.html">Building topography space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../09_spherical_parameterization/readme.html">Spherical parameterizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../11_flatten_topography_surface/readme.html">Flattening topography surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Transporting measurements between representations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../22_transporting_measurements/readme.html">Transferring measurements across meshes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Applying u-Unwrap3D to live-cell imaging</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../16_shape_registration/readme.html">Shape registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../15_compute_distortion_corrected_uv_measurements/readme.html">Computing distortion-corrected measurements for analysis in uv and topopraphy space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../20_surface_flow_analytics/readme.html">Motion and information flow of measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../19_tracking_in_uv/readme.html">Tracking protrusions in 2D uv space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../21_tracking_analytics/readme.html">Analyzing temporally tracked protrusions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Applications of different surface representations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="readme.html">Segmenting surface protrusions</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Binary protrusion segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance_segment_protrusions.html">Instance protrusion segmentation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../14_volumizing_reference_and_protrusions/readme.html">Decomposing surface into reference and protrusion meshes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../18_spherical_harmonics/readme.html">Harmonics analysis of surfaces</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Mapping open 3D surfaces into 2D</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../12_unwrapping_individual_protrusions/readme.html">Unwrapping individual protrusions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../12_unwrapping_individual_protrusions/unwrap_lamellipodia_protrusion.html">Example: Unwrapping a lamellipodia</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_introduction/glossary.html">Glossary</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fyz11/u-Unwrap3D_notebooks/issues/new?title=Issue%20on%20page%20%2F13_segmenting_surface_protrusions/binary_segment_protrusions.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/13_segmenting_surface_protrusions/binary_segment_protrusions.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Binary protrusion segmentation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-surface-mesh">0. Read in the surface mesh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-a-vertex-based-protrusion-height">1. Defining a vertex-based protrusion height</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cmcf-s-text-ref-x-y-z">cMCF <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cmcf-distance-function-s-text-ref-x-y-z">cMCF + distance function <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#als-baseline-s-text-als-text-ref-d-u-v">ALS baseline <span class="math notranslate nohighlight">\(S^{\text{ALS}}_\text{ref}(d,u,v)\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#segmentation-by-thresholding-measured-height">2. Segmentation by thresholding measured height</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">cMCF <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cmcf-distance-function-s-text-external-cmcf-text-ref-x-y-z">cMCF + distance function <span class="math notranslate nohighlight">\(S^\text{external cMCF}_\text{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">ALS baseline <span class="math notranslate nohighlight">\(S^\text{ALS}_\text{ref}(d,u,v)\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postprocessing-of-segmentation">3. Postprocessing of segmentation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="binary-protrusion-segmentation">
+<h1>Binary protrusion segmentation<a class="headerlink" href="#binary-protrusion-segmentation" title="Link to this heading">#</a></h1>
+<p>The task of binary segmentation is to label each vertex (or alternatively face) of a mesh as being on a protrusion - 1, or not on a protrusion - 0.</p>
+<p>We will do this by measuring the ‘height’ of a vertex from a constructed reference.</p>
+<div class="alert alert-block alert-info"> 
+<b>NOTE</b> The reference used for measuring height need not be that used for unwrapping. It may be more optimal to construct a different reference depending on the problem as we show.
+</div>
+<p>The mesh we we will use to demonstrate is <code class="docutils literal notranslate"><span class="pre">../../data/mesh/lamellipodia_cell.obj</span></code>, as well as its corresponding topography mesh <code class="docutils literal notranslate"><span class="pre">../../data/mesh/topography/curvature_topographic_mesh_lamellipodia_cell.obj</span></code>. The method demonstrated generalizes for all protrusions, but may require tweaking of parameters.</p>
+<section id="read-in-the-surface-mesh">
+<h2>0. Read in the surface mesh<a class="headerlink" href="#read-in-the-surface-mesh" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unwrap3D.Mesh.meshtools</span> <span class="k">as</span> <span class="nn">meshtools</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Segmentation.segmentation</span> <span class="k">as</span> <span class="nn">segmentation</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Utility_Functions.file_io</span> <span class="k">as</span> <span class="nn">fio</span> <span class="c1"># for common IO functions</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Unzipping.unzip</span> <span class="k">as</span> <span class="nn">uzip</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.colors</span> <span class="k">as</span> <span class="nn">vol_colors</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Visualisation.plotting</span> <span class="k">as</span> <span class="nn">plotting</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span> 
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">plt</span> 
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Specifying image file location and parsing its name. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">meshfolder</span> <span class="o">=</span> <span class="s1">&#39;../../data/mesh&#39;</span>
+<span class="n">meshfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">meshfolder</span><span class="p">,</span> <span class="s1">&#39;lamellipodia_cell.obj&#39;</span><span class="p">)</span>
+
+<span class="n">basefname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">meshfile</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.obj&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get the filename with extension</span>
+
+<span class="n">mesh_S</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">meshfile</span><span class="p">,</span>
+                             <span class="n">keep_largest_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># read only the largest if there is multiple separate objects in the mesh</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Also get its topography mesh</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">topo_meshfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">meshfolder</span><span class="p">,</span> <span class="s1">&#39;topography&#39;</span><span class="p">,</span> <span class="s1">&#39;curvature_topographic_mesh_lamellipodia_cell.obj&#39;</span><span class="p">)</span>
+<span class="n">mesh_S_duv</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">topo_meshfile</span><span class="p">,</span> 
+                                 <span class="n">keep_largest_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Create a master save folder</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">savefolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;example_results&#39;</span><span class="p">,</span> 
+                         <span class="n">basefname</span><span class="p">)</span>
+<span class="n">fio</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">savefolder</span><span class="p">)</span> <span class="c1"># auto generates the specified folder structure if doesn&#39;t currently exist.</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Visualize the input mesh</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">45</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/cf2261e3a07a6bae90d85a91abc61e9dc5cae8d58ed460074722e9af582d4668.png" src="../_images/cf2261e3a07a6bae90d85a91abc61e9dc5cae8d58ed460074722e9af582d4668.png" />
+</div>
+</div>
+</section>
+<section id="defining-a-vertex-based-protrusion-height">
+<h2>1. Defining a vertex-based protrusion height<a class="headerlink" href="#defining-a-vertex-based-protrusion-height" title="Link to this heading">#</a></h2>
+<p>The function should measure protrusion ‘height’. However, the height of a protrusion is a relative concept, necessarily requiring a reference surface to measure with respect to.</p>
+<p>We explore 3 different constructions of a reference surface to derive 3 different heights for binary segmentation:</p>
+<ul class="simple">
+<li><p>cMCF <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span></p></li>
+<li><p>cMCF + distance function <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span></p></li>
+<li><p>asymmetric least squares (ALS) baseline reference,<span class="math notranslate nohighlight">\(S_\text{ref}(d,u,v)\)</span> (for <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> only)</p></li>
+</ul>
+<section id="cmcf-s-text-ref-x-y-z">
+<h3>cMCF <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span><a class="headerlink" href="#cmcf-s-text-ref-x-y-z" title="Link to this heading">#</a></h3>
+<p>Running cMCF and stopping criteria for this cell was explained as a fully worked example in the standard workflow section. For clarity, we repeat the code here, and recompute the reference here</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Usteps_MCF_img</span><span class="p">,</span> <span class="n">mesh_F</span><span class="p">,</span> <span class="n">MCF_measures_dict</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">conformalized_mean_curvature_flow</span><span class="p">(</span><span class="n">mesh_S</span><span class="p">,</span> 
+                                                                                    <span class="n">max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
+                                                                                    <span class="n">rescale_output</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1"># cMCF is solved in normalized coordinates, when True, the output will be rescaled to be in image coordinates.  </span>
+                                                                                    <span class="n">delta</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span> 
+                                                                                    <span class="n">conformalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># set this flag to run cMCF, else it will run MCF</span>
+                                                                                    <span class="n">robust_L</span> <span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># if set, runs MCF/cMCF using the robust Laplacian instead of cotangent Laplacian</span>
+                                                                                    <span class="n">mollify_factor</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="c1"># this is a parameter used in the robust Laplacian</span>
+                                                                                    <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;pardiso&#39;</span><span class="p">)</span>  <span class="c1"># &#39;scipy&#39;: standard scipy solver, &#39;pardiso&#39; for using Intel&#39;s pardiso solver to solve in parallel. &#39;pariso&#39; is much faster. But you must use &#39;scipy&#39; if you plan to multiprocess over different cells.</span>
+
+<span class="n">gauss_curve_MCF</span> <span class="o">=</span> <span class="n">MCF_measures_dict</span><span class="p">[</span><span class="s1">&#39;gauss_curvature_iter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># find changepoints in the curve, generally default is fine.</span>
+<span class="n">inds</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">find_all_curvature_cutoff_index</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">,</span> 
+                                                 <span class="n">avg_fnc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">,</span> <span class="c1"># use moving means </span>
+                                                 <span class="n">absval</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># absolute value after subtracting baseline </span>
+                                                 <span class="n">winsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="c1"># window size for moving means, larger tends to slightly bias the found iteration number to later </span>
+                                                 <span class="n">min_peak_height</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="c1"># minimum peak height</span>
+                                                 <span class="n">min_peak_distance</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># minimal distance between detected peaks. </span>
+
+<span class="n">cMCF_S_ref</span> <span class="o">=</span> <span class="n">mesh_S</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">cMCF_S_ref</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">inds</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [04:43&lt;00:00,  5.67s/it]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The number of vertices of input and output is the same. Height is defined as the total curvilinear distance traversed from <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> to <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+h_\text{cMCF} = \text{sgn}(S(x,y,z))\left (\sum_{i=0}^{i_\text{cMCF}-1} \left| S_{i+1}(x,y,z)-S_i(x,y,z)\right|\right )
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(i\)</span> is the iteration index of cMCF so that <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)=S_{i_\text{cMCF}}(x,y,z)\)</span>, and <span class="math notranslate nohighlight">\(\text{sgn}(\cdot)\)</span> is +1 if the vertex on <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> is exterior of <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span> and -1 if interior of <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute sgn(S(x,y,z)) by checking the sign of the cosine distance between the displacement vector of S to S_ref with the surface normal vector of S</span>
+<span class="c1"># If the sign is positive, this means S is exterior of S_ref. Otherwise it is interior of S_ref</span>
+
+<span class="n">sign_h_cMCF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">((</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span> <span class="o">-</span> <span class="n">cMCF_S_ref</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span><span class="o">*</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertex_normals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># compute the summed distances up to the S_ref cMCF iteration index</span>
+<span class="n">dist_cMCF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="n">inds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">Usteps_MCF_img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">inds</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># combine</span>
+<span class="n">h_cMCF</span> <span class="o">=</span> <span class="n">sign_h_cMCF</span> <span class="o">*</span> <span class="n">dist_cMCF</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cmcf-distance-function-s-text-ref-x-y-z">
+<h3>cMCF + distance function <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span><a class="headerlink" href="#cmcf-distance-function-s-text-ref-x-y-z" title="Link to this heading">#</a></h3>
+<p>We use active contours to perform a curvature minimizing flow guided by the Harmonic distance transform distance function of the input shape. This will specifically erode positive curvature protrusions most, and negative curvature protrusions least. The advantage of this method is it guarantees intermediate shapes stay within the input shape. Moreover, by targeting positive protrusions, the result is a much tighter estimate of the shape minus protrusions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct the SDF of the input mesh after voxelization it </span>
+<span class="n">mesh_S_binary</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">voxelize_image_mesh_pts</span><span class="p">(</span><span class="n">mesh_S</span><span class="p">,</span> 
+                                                  <span class="n">pad</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
+                                                  <span class="n">dilate_ksize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                                  <span class="n">erode_ksize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># use the poisson instead. </span>
+<span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="k">as</span> <span class="nn">ndimage</span>
+<span class="n">ds_factor</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mf">2.</span> <span class="c1"># try to use highest posssible (closest to 1) that computes in reasonable speed to capture best resolution</span>
+<span class="n">mesh_S_binary_ds</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">zoom</span><span class="p">(</span><span class="n">mesh_S_binary</span><span class="o">*</span><span class="mf">255.</span><span class="p">,</span> <span class="n">zoom</span><span class="o">=</span><span class="p">[</span><span class="n">ds_factor</span><span class="p">,</span> <span class="n">ds_factor</span><span class="p">,</span> <span class="n">ds_factor</span><span class="p">],</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
+<span class="n">poisson_dtform_ds</span> <span class="o">=</span> <span class="n">segmentation</span><span class="o">.</span><span class="n">poisson_dist_tform_3D</span><span class="p">(</span><span class="n">mesh_S_binary_ds</span><span class="p">,</span> <span class="n">pts</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">poisson_dtform</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">zoom</span><span class="p">(</span><span class="n">poisson_dtform_ds</span><span class="p">,</span> <span class="n">zoom</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">mesh_S_binary</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">mesh_S_binary_ds</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">mesh_S_binary</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">poisson_dtform</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>laplacian 3D construction... 13.588892698287964
+(317, 343, 177) (317, 343, 177)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="k">as</span> <span class="nn">ndimage</span>
+
+<span class="n">sdf_vol_normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">poisson_dtform</span><span class="p">))</span>
+<span class="n">sdf_vol_normal</span> <span class="o">=</span> <span class="n">sdf_vol_normal</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">sdf_vol_normal</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span><span class="o">...</span><span class="p">]</span><span class="o">+</span><span class="mf">1e-20</span><span class="p">)</span>
+<span class="n">sdf_vol_normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">sdf_vol_normal</span><span class="p">[</span><span class="n">iii</span><span class="p">],</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">iii</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+<span class="n">sdf_vol_normal</span> <span class="o">=</span> <span class="n">sdf_vol_normal</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">sdf_vol_normal</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span><span class="o">...</span><span class="p">]</span><span class="o">+</span><span class="mf">1e-20</span><span class="p">)</span>
+
+<span class="n">H_normal</span> <span class="o">=</span> <span class="n">segmentation</span><span class="o">.</span><span class="n">mean_curvature_field</span><span class="p">(</span><span class="n">sdf_vol_normal</span><span class="p">)</span>
+
+<span class="c1"># multiply the gradient field by the rescaled H_normal</span>
+<span class="n">sdf_vol_normal</span> <span class="o">=</span> <span class="n">sdf_vol_normal</span><span class="o">*</span><span class="n">meshtools</span><span class="o">.</span><span class="n">_normalize99</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">H_normal</span><span class="p">))[</span><span class="kc">None</span><span class="p">,</span><span class="o">...</span><span class="p">]</span> <span class="c1"># set a minimum speed. </span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sdf_vol_normal</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Perform active contours</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">Usteps_external</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">parametric_mesh_constant_img_flow</span><span class="p">(</span><span class="n">mesh_S</span><span class="p">,</span> 
+                                                            <span class="n">external_img_gradient</span><span class="o">=</span><span class="n">sdf_vol_normal</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> 
+                                                            <span class="n">deltaL</span> <span class="o">=</span> <span class="mf">5e-2</span><span class="p">,</span>
+                                                              <span class="n">niters</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>  
+                                                              <span class="n">step_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                                                              <span class="n">method</span><span class="o">=</span><span class="s1">&#39;implicit&#39;</span><span class="p">,</span> 
+                                                              <span class="n">robust_L</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                                                              <span class="n">mollify_factor</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
+                                                              <span class="n">conformalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># use active contours </span>
+                                                              <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
+                                                              <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                                              <span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+                                                              <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;pardiso&#39;</span><span class="p">,</span> 
+                                                              <span class="n">normalize_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(3, 317, 343, 177)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 100/100 [00:36&lt;00:00,  2.72it/s]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Similar to cMCF compute the discrete Gaussian curvature to monitor the changes in shape. Unlike cMCF we don’t look for changepoints, but instead take the minimum value (the smoothest mesh) to define the reference shape, <span class="math notranslate nohighlight">\(S_\text{ref}^\text{external}(x,y,z)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">igl</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Analysis_Functions.timeseries</span> <span class="k">as</span> <span class="nn">tsa</span>
+
+<span class="n">gauss_curve_vals_iters</span> <span class="o">=</span> <span class="p">[</span><span class="n">igl</span><span class="o">.</span><span class="n">gaussian_curvature</span><span class="p">(</span><span class="n">Usteps_external</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">step_ii</span><span class="p">],</span> <span class="n">mesh_S</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span> <span class="k">for</span> <span class="n">step_ii</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Usteps_external</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">gauss_curve_MCF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gauss_curve_vals_iter</span><span class="p">))</span> <span class="k">for</span> <span class="n">gauss_curve_vals_iter</span> <span class="ow">in</span> <span class="n">gauss_curve_vals_iters</span><span class="p">])</span>
+
+<span class="c1"># this curve is noisy, therefore we can try smoothing before taking</span>
+<span class="n">gauss_curve_MCF_smooth</span> <span class="o">=</span> <span class="n">tsa</span><span class="o">.</span><span class="n">baseline_als</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">1e2</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">gauss_curve_MCF_smooth</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">plot the evolution of the curve and mark the iteration of minimum curvature</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">)),</span> 
+          <span class="n">gauss_curve_MCF</span><span class="p">,</span> <span class="s1">&#39;.-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">)),</span> 
+          <span class="n">gauss_curve_MCF_smooth</span><span class="p">,</span> <span class="s1">&#39;.-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> 
+            <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">),</span> 
+            <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">gauss_curve_MCF</span><span class="p">),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">Usteps_external</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration Number&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Abs. Gaussian Curvature&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fontname</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                          <span class="s1">&#39;external_MCF_iterations_&#39;</span><span class="o">+</span><span class="n">basefname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">,</span> <span class="s1">&#39;.svg&#39;</span><span class="p">)),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b17549f11d16f1a076c124b3b188f43d89f06f41d51d8b106076eb229df48c9f.png" src="../_images/b17549f11d16f1a076c124b3b188f43d89f06f41d51d8b106076eb229df48c9f.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">external_ref_mesh</span> <span class="o">=</span> <span class="n">mesh_S</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">external_ref_mesh</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">Usteps_external</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">external_ref_mesh</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                                   <span class="s1">&#39;external_cMCF_Sref.obj&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The number of vertices of input and output is the same. Height is defined as the total curvilinear distance traversed from <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> to <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+h_\text{external cMCF} = \text{sgn}(S(x,y,z))\left (\sum_{i=0}^{i_\text{external cMCF}-1} \left| S_{i+1}(x,y,z)-S_i(x,y,z)\right|\right )
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(i\)</span> is the iteration index of external cMCF so that <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)=S_{i_\text{external cMCF}}(x,y,z)\)</span>, and <span class="math notranslate nohighlight">\(\text{sgn}(\cdot)\)</span> is +1 if the vertex on <span class="math notranslate nohighlight">\(S(x,y,z)\)</span> is exterior of <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span> and -1 if interior of <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute sgn(S(x,y,z)) by checking the sign of the cosine distance between the displacement vector of S to S_ref with the surface normal vector of S</span>
+<span class="c1"># If the sign is positive, this means S is exterior of S_ref. Otherwise it is interior of S_ref</span>
+
+<span class="n">sign_h_external_cMCF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">((</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span> <span class="o">-</span> <span class="n">external_ref_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span><span class="o">*</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertex_normals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># compute the summed distances up to the S_ref cMCF iteration index</span>
+<span class="n">dist_external_cMCF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Usteps_external</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">Usteps_external</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">ind</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># combine</span>
+<span class="n">h_external_cMCF</span> <span class="o">=</span> <span class="n">sign_h_external_cMCF</span> <span class="o">*</span> <span class="n">dist_external_cMCF</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="als-baseline-s-text-als-text-ref-d-u-v">
+<h3>ALS baseline <span class="math notranslate nohighlight">\(S^{\text{ALS}}_\text{ref}(d,u,v)\)</span><a class="headerlink" href="#als-baseline-s-text-als-text-ref-d-u-v" title="Link to this heading">#</a></h3>
+<p>We modify the original <a class="reference external" href="https://www.researchgate.net/publication/228961729_Baseline_Correction_with_Asymmetric_Least_Squares_Smoothing">asymmetric least squares filter</a> also known as the Whittaker filter which can be used to find baselines for 1D data, to work for topography <span class="math notranslate nohighlight">\((d,u,v)\)</span> surfaces. Specifically, we operate on the binary topography volume image of the mesh.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skimage.io</span> <span class="k">as</span> <span class="nn">skio</span> 
+<span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">spio</span> 
+
+<span class="c1"># read the topography volume image of the cell </span>
+<span class="n">binary_topography_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">meshfolder</span><span class="p">,</span> <span class="s1">&#39;topography&#39;</span><span class="p">,</span> <span class="s1">&#39;topography_binary.tif&#39;</span><span class="p">)</span>
+<span class="n">binary_topography_volume</span> <span class="o">=</span> <span class="n">skio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">binary_topography_file</span><span class="p">)</span>
+
+<span class="c1"># read the topography space </span>
+<span class="n">topography_space_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">meshfolder</span><span class="p">,</span> <span class="s1">&#39;topography&#39;</span><span class="p">,</span> <span class="s1">&#39;topographic_volume_space.mat&#39;</span><span class="p">)</span>
+<span class="n">topography_space_obj</span> <span class="o">=</span> <span class="n">spio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">topography_space_file</span><span class="p">)</span>
+
+<span class="n">topographic_coordinates</span> <span class="o">=</span> <span class="n">topography_space_obj</span><span class="p">[</span><span class="s1">&#39;topographic_map&#39;</span><span class="p">]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Make topography volume so that the surface is 1-to-1 with a (u,v) pixel</span>
+<span class="sd">i.e. S(d,u,v) is converted to the surface parameterization, d=F(u,v) </span>
+<span class="sd">&quot;&quot;&quot;</span> 
+<span class="kn">import</span> <span class="nn">unwrap3D.Analysis_Functions.topography</span> <span class="k">as</span> <span class="nn">topotools</span>
+
+<span class="n">d_surface</span> <span class="o">=</span> <span class="n">topotools</span><span class="o">.</span><span class="n">estimate_base_topography_uv_img</span><span class="p">(</span><span class="n">binary_topography_volume</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">vu_coords_d_surface</span> <span class="o">=</span> <span class="n">d_surface</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">d_surface</span> <span class="o">=</span> <span class="n">d_surface</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">run ALS on d=F(u,v) to get a baseline d_base = G(u,v)</span>
+<span class="sd">&quot;&quot;&quot;</span> 
+<span class="c1"># regularized baseline estimation. -&gt; this outputs an image </span>
+<span class="n">d_surface_ALS</span> <span class="o">=</span> <span class="n">topotools</span><span class="o">.</span><span class="n">penalized_smooth_topography_uv_img</span><span class="p">(</span><span class="n">d_surface</span><span class="p">,</span> 
+                                                            <span class="n">ds</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="c1"># controls the smoothness of the baseline, increase to get smoother/flatter, decrease up to 1 to retain more ruggedness. </span>
+                                                            <span class="n">padding_multiplier</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> 
+                                                            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;ALS&#39;</span><span class="p">,</span> 
+                                                            <span class="n">lam</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                                            <span class="n">p</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>  <span class="c1"># decrease for more asymmetric.</span>
+                                                            <span class="n">niter</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># niter is for convergence, 10 pretty much always converge</span>
+                                                            
+<span class="c1"># plot the cross-section of a mid-slice with the binary topography volume</span>
+<span class="n">d_surface_ALS_midsection</span> <span class="o">=</span> <span class="n">d_surface_ALS</span><span class="p">[</span><span class="n">binary_topography_volume</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">binary_topography_volume</span><span class="p">[:,</span><span class="n">binary_topography_volume</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d_surface_ALS_midsection</span><span class="p">)),</span>
+         <span class="n">d_surface_ALS_midsection</span><span class="p">,</span>
+         <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ALS baseline&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Interpolate this for the mesh</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">unwrap3D.Image_Functions.image</span> <span class="k">as</span> <span class="nn">image_fn</span>
+
+<span class="n">topo_mesh_d_ref_ALS</span> <span class="o">=</span> <span class="n">image_fn</span><span class="o">.</span><span class="n">map_intensity_interp2</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:],</span> 
+                                                <span class="n">grid_shape</span><span class="o">=</span><span class="n">d_surface_ALS</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> 
+                                                <span class="n">I_ref</span><span class="o">=</span><span class="n">d_surface_ALS</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Construct the baseline topography surface S_ref(d,u,v)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">mesh_Sref_duv</span> <span class="o">=</span> <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">mesh_Sref_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">topo_mesh_d_ref_ALS</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/24735d65a7942e4c8c0ae53d8ea1f0a00389aa805396f2292eb593cafe83e0c0.png" src="../_images/24735d65a7942e4c8c0ae53d8ea1f0a00389aa805396f2292eb593cafe83e0c0.png" />
+</div>
+</div>
+<p>The number of vertices of input and output is the same. Topography space is constructed such that every <span class="math notranslate nohighlight">\(d\)</span>-slice corresponds to the same physical curvilinear distance in Cartesian space. Thus height is simply defined as the difference in the <span class="math notranslate nohighlight">\(d\)</span> coordinates of <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> to that of the baseline <span class="math notranslate nohighlight">\(S_\text{ref}(d,u,v)\)</span> for our purpose here. Technically, to get the real size we need to multiply by the <span class="math notranslate nohighlight">\(\alpha\)</span> stepsize used in constructing the topography space i.e. <span class="math notranslate nohighlight">\(\alpha \cdot h_\text{ALS}(d,u,v)\)</span>, or sum the curvilinear distance traversed in Cartesian space as for the other two height functions.</p>
+<div class="math notranslate nohighlight">
+\[
+h_\text{ALS}(d,u,v) = d(S(d,u,v)) - d(S_\text{ref}(d,u,v))
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(d(\cdot)\)</span> denotes taking the <span class="math notranslate nohighlight">\(d\)</span>-coordinate of the corresponding surface mesh inside the bracket.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h_ALS_topo</span> <span class="o">=</span> <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">mesh_Sref_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="segmentation-by-thresholding-measured-height">
+<h2>2. Segmentation by thresholding measured height<a class="headerlink" href="#segmentation-by-thresholding-measured-height" title="Link to this heading">#</a></h2>
+<p>To obtain the binary segmentation we threshold on the measured height. The height can be thresholded in any number of automated methods e.g. automatically by applying Otsu’s method to the height values or based on statistics e.g. mean value threshold or by expliciting setting a cutoff value.</p>
+<p>We will show mean value threshold and Otsu method for each different height function. Mean value typically gives better results, Otsu tends to be a more liberal cutoff and classifies too much of the surface as protrusions.</p>
+<section id="id1">
+<h3>cMCF <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span><a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>We will now binary segment by taking the mean of the height as cutoff and by Otsu’s method.</p>
+<p>We then visualize side-by-side the 5 plots:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(S(x,y,z)\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(h_\text{cMCF}\)</span></p></li>
+</ol>
+<p>and the binary segmentation by:</p>
+<ol class="arabic simple" start="4">
+<li><p>mean value,</p></li>
+<li><p>Otsu’s method</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skimage.filters</span> <span class="k">as</span> <span class="nn">skfilters</span>
+
+<span class="c1"># obtain the binary segmentation by mean value</span>
+<span class="n">cutoff_h_cMCF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">h_cMCF</span><span class="p">)</span>
+<span class="n">binary_h_cMCF</span> <span class="o">=</span> <span class="n">h_cMCF</span> <span class="o">&gt;</span> <span class="n">cutoff_h_cMCF</span>
+
+<span class="c1"># obtain the binary segmentation by otsu</span>
+<span class="n">cutoff_h_cMCF_otsu</span> <span class="o">=</span> <span class="n">skfilters</span><span class="o">.</span><span class="n">threshold_otsu</span><span class="p">(</span><span class="n">h_cMCF</span><span class="p">)</span>
+<span class="n">binary_h_cMCF_otsu</span> <span class="o">=</span> <span class="n">h_cMCF</span> <span class="o">&gt;</span> <span class="n">cutoff_h_cMCF_otsu</span>
+
+<span class="c1"># create colors for height and binary</span>
+<span class="n">h_cMCF_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">h_cMCF</span><span class="p">,</span> 
+                                        <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+                                        <span class="n">vmin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">h_cMCF</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+                                        <span class="n">vmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">h_cMCF</span><span class="p">,</span><span class="mi">99</span><span class="p">))</span>
+
+<span class="n">binary_h_cMCF_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">binary_h_cMCF</span><span class="o">*</span><span class="mi">1</span><span class="p">,</span> 
+                                        <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+                                        <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">binary_h_cMCF_otsu_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">binary_h_cMCF_otsu</span><span class="o">*</span><span class="mi">1</span><span class="p">,</span> 
+                                        <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+                                        <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># visualize</span>
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cMCF_S_ref</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">cMCF_S_ref</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">cMCF_S_ref</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">cMCF_S_ref</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">h_cMCF_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">binary_h_cMCF_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">binary_h_cMCF_otsu_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/dfad479fc0b3be10a16fa3991e7dfbb243b6d50699dda716f5c47bac716c8ce5.png" src="../_images/dfad479fc0b3be10a16fa3991e7dfbb243b6d50699dda716f5c47bac716c8ce5.png" />
+</div>
+</div>
+</section>
+<section id="cmcf-distance-function-s-text-external-cmcf-text-ref-x-y-z">
+<h3>cMCF + distance function <span class="math notranslate nohighlight">\(S^\text{external cMCF}_\text{ref}(x,y,z)\)</span><a class="headerlink" href="#cmcf-distance-function-s-text-external-cmcf-text-ref-x-y-z" title="Link to this heading">#</a></h3>
+<p>We will now binary segment by taking the mean of the height as cutoff and by Otsu’s method.</p>
+<p>We then visualize side-by-side the 5 plots:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(S(x,y,z)\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(S^\text{external cMCF}_\text{ref}(x,y,z)\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(h_\text{external cMCF}\)</span></p></li>
+</ol>
+<p>and the binary segmentation by:</p>
+<ol class="arabic simple" start="4">
+<li><p>mean value,</p></li>
+<li><p>Otsu’s method</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skimage.filters</span> <span class="k">as</span> <span class="nn">skfilters</span>
+
+<span class="c1"># obtain the binary segmentation by mean value</span>
+<span class="n">cutoff_h_external_cMCF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">h_external_cMCF</span><span class="p">)</span>
+<span class="n">binary_h_external_cMCF</span> <span class="o">=</span> <span class="n">h_external_cMCF</span> <span class="o">&gt;</span> <span class="n">cutoff_h_external_cMCF</span>
+
+<span class="c1"># obtain the binary segmentation by otsu</span>
+<span class="n">cutoff_h_external_cMCF_otsu</span> <span class="o">=</span> <span class="n">skfilters</span><span class="o">.</span><span class="n">threshold_otsu</span><span class="p">(</span><span class="n">h_external_cMCF</span><span class="p">)</span>
+<span class="n">binary_h_external_cMCF_otsu</span> <span class="o">=</span> <span class="n">h_external_cMCF</span> <span class="o">&gt;</span> <span class="n">cutoff_h_external_cMCF_otsu</span>
+
+<span class="c1"># create colors for height and binary</span>
+<span class="n">h_external_cMCF_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">h_external_cMCF</span><span class="p">,</span> 
+                                        <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+                                        <span class="n">vmin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">h_external_cMCF</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+                                        <span class="n">vmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">h_external_cMCF</span><span class="p">,</span><span class="mi">99</span><span class="p">))</span>
+
+<span class="n">binary_h_external_cMCF_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">binary_h_external_cMCF</span><span class="o">*</span><span class="mi">1</span><span class="p">,</span> 
+                                        <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+                                        <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">binary_h_external_cMCF_otsu_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">binary_h_external_cMCF_otsu</span><span class="o">*</span><span class="mi">1</span><span class="p">,</span> 
+                                        <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+                                        <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># visualize</span>
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">external_ref_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">external_ref_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">external_ref_mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">cMCF_S_ref</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">h_external_cMCF_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">binary_h_external_cMCF_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">binary_h_external_cMCF_otsu_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># export the mean value threshold mesh and height function colormap onto the shape</span>
+<span class="n">height_color_mesh</span> <span class="o">=</span> <span class="n">mesh_S</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">height_color_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mf">255.</span><span class="o">*</span><span class="n">h_external_cMCF_colors</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">height_color_mesh</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                            <span class="s1">&#39;external_cMCF_height_mesh.obj&#39;</span><span class="p">))</span>
+
+<span class="n">binary_mean_height_color_mesh</span> <span class="o">=</span> <span class="n">mesh_S</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">binary_mean_height_color_mesh</span><span class="o">.</span><span class="n">visual</span><span class="o">.</span><span class="n">vertex_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mf">255.</span><span class="o">*</span><span class="n">binary_h_external_cMCF_colors</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">binary_mean_height_color_mesh</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span>
+                                            <span class="s1">&#39;binary_mean-value_external_cMCF_height_mesh.obj&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/361dcd816ce47b019fcae01cbce3ac103528a8a68468368c3bf8dd81e5d6b617.png" src="../_images/361dcd816ce47b019fcae01cbce3ac103528a8a68468368c3bf8dd81e5d6b617.png" />
+</div>
+</div>
+</section>
+<section id="id2">
+<h3>ALS baseline <span class="math notranslate nohighlight">\(S^\text{ALS}_\text{ref}(d,u,v)\)</span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>We will now binary segment by taking the mean of the height as cutoff and by Otsu’s method. Since the segmentation is in <span class="math notranslate nohighlight">\((d,u,v)\)</span> space, we will show the following plots in topography space, then we will then map <span class="math notranslate nohighlight">\(S(d,u,v)\)</span> mesh back to <span class="math notranslate nohighlight">\((x,y,z)\)</span> space for comparison, consistent with the other height functions.</p>
+<p>We then visualize side-by-side the 5 plots:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(S(d,u,v)\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(S^\text{ALS}_\text{ref}(d,u,v)\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(h_\text{ALS}(d,u,v)\)</span></p></li>
+</ol>
+<p>and the binary segmentation by:</p>
+<ol class="arabic simple" start="4">
+<li><p>mean value,</p></li>
+<li><p>Otsu’s method</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skimage.filters</span> <span class="k">as</span> <span class="nn">skfilters</span>
+
+<span class="c1"># obtain the binary segmentation by mean value</span>
+<span class="n">cutoff_h_ALS_topo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">h_ALS_topo</span><span class="p">)</span>
+<span class="n">binary_h_ALS_topo</span> <span class="o">=</span> <span class="n">h_ALS_topo</span> <span class="o">&gt;</span> <span class="n">cutoff_h_ALS_topo</span>
+
+<span class="c1"># obtain the binary segmentation by otsu</span>
+<span class="n">cutoff_h_ALS_topo_otsu</span> <span class="o">=</span> <span class="n">skfilters</span><span class="o">.</span><span class="n">threshold_otsu</span><span class="p">(</span><span class="n">h_ALS_topo</span><span class="p">)</span>
+<span class="n">binary_h_ALS_topo_otsu</span> <span class="o">=</span> <span class="n">h_ALS_topo</span> <span class="o">&gt;</span> <span class="n">cutoff_h_ALS_topo_otsu</span>
+
+<span class="c1"># create colors for height and binary</span>
+<span class="n">h_ALS_topo_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">h_ALS_topo</span><span class="p">,</span> 
+                                        <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+                                        <span class="n">vmin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">h_ALS_topo</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+                                        <span class="n">vmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">h_ALS_topo</span><span class="p">,</span><span class="mi">99</span><span class="p">))</span>
+
+<span class="n">binary_h_ALS_topo_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">binary_h_ALS_topo</span><span class="o">*</span><span class="mi">1</span><span class="p">,</span> 
+                                        <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+                                        <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">binary_h_ALS_topo_otsu_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">binary_h_ALS_topo_otsu</span><span class="o">*</span><span class="mi">1</span><span class="p">,</span> 
+                                        <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+                                        <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># visualize</span>
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_Sref_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">mesh_Sref_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">mesh_Sref_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">h_ALS_topo_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">binary_h_ALS_topo_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">binary_h_ALS_topo_otsu_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">180</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8150ee6e14faf9b85f6a4bc41b21c0bf53a0ade39c5673a064881584055a6c5c.png" src="../_images/8150ee6e14faf9b85f6a4bc41b21c0bf53a0ade39c5673a064881584055a6c5c.png" />
+</div>
+</div>
+<p>We will now map the topographic coordinates back to the Cartesian space to revisualize.</p>
+<p>Now we will plot:</p>
+<p>We then visualize side-by-side the 5 plots:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(S(x,y,z)\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(S^\text{ALS}_\text{ref}(x,y,z)\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(h_\text{ALS}(x,y,z)\)</span></p></li>
+</ol>
+<p>and the binary segmentation by:</p>
+<ol class="arabic simple" start="4">
+<li><p>mean value,</p></li>
+<li><p>Otsu’s method</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mesh_S_duv_to_xyz</span> <span class="o">=</span> <span class="n">topotools</span><span class="o">.</span><span class="n">uv_depth_pts3D_to_xyz_pts3D</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">topographic_coordinates</span><span class="p">)</span>
+<span class="n">mesh_Sref_duv_to_xyz</span> <span class="o">=</span> <span class="n">topotools</span><span class="o">.</span><span class="n">uv_depth_pts3D_to_xyz_pts3D</span><span class="p">(</span><span class="n">mesh_Sref_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">topographic_coordinates</span><span class="p">)</span>
+
+<span class="c1"># visualize</span>
+<span class="n">sampling</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_Sref_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_Sref_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_Sref_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">h_ALS_topo_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">binary_h_ALS_topo_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">binary_h_ALS_topo_otsu_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d5e59f30dd3985492f3ef0b2ee35f3953487c210f608d56b17514d9b1751809b.png" src="../_images/d5e59f30dd3985492f3ef0b2ee35f3953487c210f608d56b17514d9b1751809b.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="postprocessing-of-segmentation">
+<h2>3. Postprocessing of segmentation<a class="headerlink" href="#postprocessing-of-segmentation" title="Link to this heading">#</a></h2>
+<p>Inevitably there may be some imperfections in the segmentation e.g. too small areas, holes that should be filled or insufficient coverage of segmentation. u-Unwrap3D implements two essential postprocessing operations for cleaning up segmentations on meshes.</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">unwrap3D.Mesh.meshtools.remove_small_mesh_components_binary</span></code></p></li>
+</ol>
+<p>This removes small objects in the binary segmentation, based on either physical size (i.e. actual surface area) or by number of vertex points. Objects are defined as contiguous mesh areas.</p>
+<ol class="arabic simple" start="2">
+<li><p><code class="docutils literal notranslate"><span class="pre">unwrap3D.Mesh.meshtools.labelspreading_mesh_binary</span></code></p></li>
+</ol>
+<p>This conducts adapts <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.semi_supervised.LabelSpreading.html">labelspreading</a> to work on meshes with a given affinity graph.</p>
+<p>We demonstrate the usage of both in application to the binary segmentation of <span class="math notranslate nohighlight">\(S^\text{ALS}_\text{ref}(d,u,v)\)</span> obtained by mean value thresholding.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. perform small object removal after mapping vertices for d,u,v to x,y,z space</span>
+<span class="n">vertex_labels_binary</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">remove_small_mesh_components_binary</span><span class="p">(</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">,</span>
+                                                                        <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span>
+                                                                        <span class="n">labels</span><span class="o">=</span><span class="n">binary_h_ALS_topo</span><span class="o">*</span><span class="mi">1</span><span class="p">,</span> 
+                                                                        <span class="n">vertex_labels_bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                                                        <span class="n">physical_size</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                                                        <span class="n">minsize</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span> <span class="c1"># you don&#39;t want to set this too low, as it might expand after diffusion.</span>
+        
+<span class="c1"># 2. perform diffusion which enforces spatial contiguity and propagates segmentation in (d,u,v)</span>
+<span class="c1"># construct affinity matrix first. </span>
+<span class="n">W_topography</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">vertex_geometric_affinity_matrix</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="p">,</span> 
+                                                        <span class="n">gamma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                                                        <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> 
+                                                        <span class="n">alpha</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="c1"># weighting between distance vs convexity. The higher, the more weight to distance.</span>
+                                                        <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">z_label_props_labels</span><span class="p">,</span> <span class="n">z_label_props_labels_proba</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">labelspreading_mesh_binary</span><span class="p">(</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span>
+                                                                                        <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span>
+                                                                                        <span class="p">(</span><span class="n">vertex_labels_binary</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="p">,</span>
+                                                                                        <span class="n">W</span><span class="o">=</span><span class="n">W_topography</span><span class="p">,</span> 
+                                                                                        <span class="n">niters</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="c1"># how many iterations? </span>
+                                                                                        <span class="n">return_proba</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                                                                        <span class="n">thresh</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span><span class="c1"># thresholding gives faster convergence</span>
+
+<span class="c1"># 3. (optional, might be overkill) perform a second round of object removal </span>
+<span class="n">vertex_labels_binary_new</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">remove_small_mesh_label_holes_binary</span><span class="p">(</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">,</span>
+                                                                        <span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span>
+                                                                        <span class="n">labels</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">z_label_props_labels</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="p">,</span> 
+                                                                        <span class="n">vertex_labels_bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                                                        <span class="n">physical_size</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                                                        <span class="n">minsize</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+<span class="n">binary_h_ALS_topo_postprocess</span> <span class="o">=</span> <span class="p">(</span><span class="n">vertex_labels_binary_new</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">binary_h_ALS_topo_postprocess_colors</span> <span class="o">=</span> <span class="n">vol_colors</span><span class="o">.</span><span class="n">get_colors</span><span class="p">(</span><span class="n">binary_h_ALS_topo_postprocess</span><span class="p">,</span>
+                                                             <span class="n">colormap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+                                                             <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">re-visualize</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;before postprocess&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">binary_h_ALS_topo_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;after postprocess&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> 
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mesh_S_duv_to_xyz</span><span class="p">[::</span><span class="n">sampling</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> 
+            <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">c</span><span class="o">=</span><span class="n">binary_h_ALS_topo_postprocess_colors</span><span class="p">[::</span><span class="n">sampling</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plotting</span><span class="o">.</span><span class="n">set_axes_equal</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1"># lets save both meshes out for better viewing in external mesh viewers. </span>
+<span class="n">mesh_S_duv_xyz_binary_mean</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">create_mesh</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">,</span>
+                                                   <span class="n">faces</span><span class="o">=</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span>
+                                                   <span class="n">vertex_colors</span><span class="o">=</span><span class="n">binary_h_ALS_topo_colors</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">mesh_S_duv_xyz_binary_mean</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                                                        <span class="s1">&#39;binary_ALS_mean_threshold.obj&#39;</span><span class="p">))</span>
+
+<span class="n">mesh_S_duv_xyz_binary_mean_postprocess</span> <span class="o">=</span> <span class="n">meshtools</span><span class="o">.</span><span class="n">create_mesh</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">mesh_S_duv_to_xyz</span><span class="p">,</span>
+                                                   <span class="n">faces</span><span class="o">=</span><span class="n">mesh_S_duv</span><span class="o">.</span><span class="n">faces</span><span class="p">,</span>
+                                                   <span class="n">vertex_colors</span><span class="o">=</span><span class="n">binary_h_ALS_topo_postprocess_colors</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">mesh_S_duv_xyz_binary_mean_postprocess</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">savefolder</span><span class="p">,</span> 
+                                                                 <span class="s1">&#39;binary_ALS_mean_threshold_postprocess.obj&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fdb2dbd649415f553613fd42153aeb9416add765528b5c46f5361512b7cdd5a8.png" src="../_images/fdb2dbd649415f553613fd42153aeb9416add765528b5c46f5361512b7cdd5a8.png" />
+</div>
+</div>
+<p>You can see that the segmentation has grown (diffused) larger after postprocessing.</p>
+<p>We could further take this output and combine with other filtering e.g. cross-checking with curvature, masking with instance protrusion segmentation etc.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./13_segmenting_surface_protrusions"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="readme.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Segmenting surface protrusions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="instance_segment_protrusions.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Instance protrusion segmentation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-surface-mesh">0. Read in the surface mesh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-a-vertex-based-protrusion-height">1. Defining a vertex-based protrusion height</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cmcf-s-text-ref-x-y-z">cMCF <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cmcf-distance-function-s-text-ref-x-y-z">cMCF + distance function <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#als-baseline-s-text-als-text-ref-d-u-v">ALS baseline <span class="math notranslate nohighlight">\(S^{\text{ALS}}_\text{ref}(d,u,v)\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#segmentation-by-thresholding-measured-height">2. Segmentation by thresholding measured height</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">cMCF <span class="math notranslate nohighlight">\(S_\text{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cmcf-distance-function-s-text-external-cmcf-text-ref-x-y-z">cMCF + distance function <span class="math notranslate nohighlight">\(S^\text{external cMCF}_\text{ref}(x,y,z)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">ALS baseline <span class="math notranslate nohighlight">\(S^\text{ALS}_\text{ref}(d,u,v)\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postprocessing-of-segmentation">3. Postprocessing of segmentation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Felix Y. Zhou
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>
+Copyright: Licensed <a href="https://github.com/fyz11/u-Unwrap3D_notebooks/blob/main/LICENSE" target="_blank">GPL3</a> unless mentioned otherwise. 
+</p>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
